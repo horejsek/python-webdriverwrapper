@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import inspect
-
 from selenium.webdriver import *
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
