@@ -1,48 +1,29 @@
 # -*- coding: utf-8 -*-
 
-import os
 from selenium.common.exceptions import NoSuchElementException
 
-
-def fillout_form_and_send(driver, id_, data):
-    form = Form(driver, id_)
-    form.fill_out(data)
-    form.submit()
+from webdriverwrapper import _WebElementWrapper
 
 
-def fillout_form(driver, id_, data):
-    form = Form(driver, id_)
-    form.fill_out(data)
-
-
-def reset_from(driver, id_):
-    form = Form(driver, id_)
-    form.reset()
-
-
-class Form(object):
-    def __init__(self, driver, id_):
-        self.driver = driver
-        self.id = id_
-        self.form_elm = self.get_form()
-
-    def get_form(self):
-        return self.driver.get_elm(self.id)
+class Form(_WebElementWrapper):
+    def fill_out_and_submit(self, data):
+        self.fill_out(data)
+        self.submit()
 
     def fill_out(self, data):
         for elm_name, value in data.iteritems():
-            FormElement(self.form_elm, elm_name).fill_out(value)
+            FormElement(self, elm_name).fill_out(value)
 
     def submit(self):
         elm_name = '%s_submit' % self.id
         try:
-            self.form_elm.click(elm_name)
+            self.click(elm_name)
         except NoSuchElementException:
-            self.form_elm.submit()
+            super(Form, self).submit()
 
     def reset(self):
         elm_name = '%s_reset' % self.id
-        self.form_elm.click(elm_name)
+        self.click(elm_name)
 
 
 class FormElement(object):
@@ -69,10 +50,10 @@ class FormElement(object):
     def fill_out(self, value):
         tag_name, elm_type = self.analyze_element()
         method_name = ('fill_%s_%s' % (tag_name, elm_type)).replace('-', '')
-        getattr(self, method_name, self.fillout_common)(value)
+        getattr(self, method_name, self.fill_common)(value)
 
     def analyze_element(self):
-        elms = self.form_elm.get_elm(name=self.elm_name)
+        elms = self.form_elm.get_elms(name=self.elm_name)
         for elm in elms:
             elm_type = elm.get_attribute('type')
             if elm_type == 'hidden':

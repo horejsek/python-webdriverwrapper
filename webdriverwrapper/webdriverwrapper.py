@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import inspect
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import *
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
@@ -46,12 +47,15 @@ class _WebdriverBaseWrapper(object):
         else:
             raise Exception('You must specify id or name of element on which you want to click.')
 
+    def click(self, *args, **kwds):
+        if args or kwds:
+            elm = self.get_elm(*args, **kwds)
+            elm.click()
+        else:
+            super(_WebdriverBaseWrapper, self).click()
+
 
 class _WebdriverWrapper(_WebdriverBaseWrapper):
-    def click(self, *args, **kwds):
-        elm = self.get_elm(*args, **kwds)
-        elm.click()
-
     def wait_for_element(self, timeout=10, *args, **kwds):
         """Alias for WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))."""
         return WebDriverWait(self, timeout).until(lambda driver: driver.get_elm(*args, **kwds))
@@ -77,7 +81,10 @@ def _webelement_wrapper_decorator(f):
     def wrapper(*args, **kwds):
         res = f(*args, **kwds)
         if type(res) is WebElement:
-            res = _WebElementWrapper(res)
+            if res.tag_name == 'form':
+                res = Form(res)
+            else:
+                res = _WebElementWrapper(res)
         return res
     return wrapper
 
@@ -105,3 +112,7 @@ class Opera(Opera, _WebdriverWrapper):
 @_webdriver_wrapper_decorator
 class Remote(Remote, _WebdriverWrapper):
     pass
+
+
+from forms import Form
+
