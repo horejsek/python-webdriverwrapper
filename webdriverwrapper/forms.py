@@ -4,6 +4,8 @@ from selenium.common.exceptions import NoSuchElementException
 
 from webdriverwrapper import _WebElementWrapper
 
+__all__ = ('Form',)
+
 
 class Form(_WebElementWrapper):
     def fill_out_and_submit(self, data):
@@ -53,7 +55,7 @@ class FormElement(object):
         getattr(self, method_name, self.fill_common)(value)
 
     def analyze_element(self):
-        elms = self.form_elm.get_elms(name=self.elm_name)
+        elms = self.form_elm.get_elms(tag_name=self.elm_name)
         for elm in elms:
             elm_type = elm.get_attribute('type')
             if elm_type == 'hidden':
@@ -67,21 +69,21 @@ class FormElement(object):
         self.fillOut_input_checkbox_single(value)
 
     def fill_input_checkbox_single(self, value):
-        elm = self.formElm.find_element_by_xpath('//input[@type="checkbox"][@name="%s"]' % self.elmName)
+        elm = self.formElm.get_elm(xpath='//input[@type="checkbox"][@name="%s"]' % self.elmName)
         if bool(value) != elm.is_selected():
             elm.click()
 
     def fill_input_checkbox_multiple(self, value):
         for item in value:
-            elm = self.formElm.find_element_by_xpath('//input[@type="checkbox"][@name="%s"][@value="%s"]' %  (self.elmName, self.convertValue(item)))
+            elm = self.formElm.get_elm(xpath='//input[@type="checkbox"][@name="%s"][@value="%s"]' %  (self.elmName, self.convertValue(item)))
             elm.click()
 
     def fill_input_radio(self, value):
-        elm = self.form_elm.find_element_by_xpath('//input[@type="radio"][@name="%s"][@value="%s"]' % (self.elm_name, self.convert_value(value)))
+        elm = self.form_elm.get_elm(xpath='//input[@type="radio"][@name="%s"][@value="%s"]' % (self.elm_name, self.convert_value(value)))
         elm.click()
 
     def fill_input_file(self, value):
-        elm = self.form_elm.find_element_by_name(self.elm_name)
+        elm = self.form_elm.get_elm(tag_name=self.elm_name)
         elm.send_keys(self.convert_value(value))
 
     def fill_select_selectone(self, value):
@@ -97,17 +99,17 @@ class FormElement(object):
 
         # In multiselect I have to unselected already selected options.
         not_values = ''.join('[@value!="%s"]' % v for v in self.convert_value(value))
-        elms = self.form_elm.find_elements_by_xpath('//select[@name="%s"]/descendant::option%s' % (self.elm_name, not_values))
+        elms = self.form_elm.get_elm(xpath='//select[@name="%s"]/descendant::option%s' % (self.elm_name, not_values))
         for elm in elms:
             if elm.is_selected():
                 elm.click()
 
     def _fill_select(self, value):
-        elm = self.form_elm.find_element_by_xpath('//select[@name="%s"]/descendant::option[@value="%s"]' % (self.elm_name, value))
+        elm = self.form_elm.get_elm(xpath='//select[@name="%s"]/descendant::option[@value="%s"]' % (self.elm_name, value))
         if not elm.is_selected():
             elm.click()
 
     def fill_common(self, value):
-        elm = self.form_elm.find_element_by_name(self.elm_name)
+        elm = self.form_elm.get_elm(tag_name=self.elm_name)
         elm.clear()
         elm.send_keys(self.convert_value(value))
