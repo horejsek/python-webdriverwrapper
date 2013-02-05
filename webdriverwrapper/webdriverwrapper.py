@@ -6,6 +6,8 @@ from selenium.webdriver import *
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 
+import gotopage
+
 
 class _WebdriverBaseWrapper(object):
     def find_elements_by_text(self, text):
@@ -59,6 +61,15 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
     def wait_for_element(self, timeout=10, *args, **kwds):
         """Alias for WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))."""
         WebDriverWait(self, timeout).until(lambda driver: driver.get_elm(*args, **kwds))
+
+    def go_to(self, path=None, query=None, domain=None):
+        """Go to page. You can pass only `path`, because this
+        method can get domain from current_url from driver
+        instance. But you can force your own domain by `domain`.
+        `query` can be dictionary.
+        """
+        domain = gotopage._get_domain(self, domain)
+        gotopage.go_to_page(self, path, query, domain)
 
 
 class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):

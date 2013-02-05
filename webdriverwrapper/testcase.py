@@ -120,3 +120,6 @@ class WebdriverTestCase(unittest.TestCase):
 
     def wait_for_element(self, *args, **kwds):
         self.driver.wait_for_element(*args, **kwds)
+
+    def go_to(self, *args, **kwds):
+        self.driver.go_to(*args, **kwds)
