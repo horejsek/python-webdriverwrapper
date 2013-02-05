@@ -99,3 +99,24 @@ class WebdriverTestCase(unittest.TestCase):
 
         if errors:
             raise exceptions.ErrorsException(self.driver.current_url, errors)
+
+
+    ### Aliases to driver.
+
+    def find_elements_by_text(self, text):
+        return self.driver.find_elements_by_text(text)
+
+    def contains_text(self, text):
+        return self.driver.contains_text(text)
+
+    def get_elm(self, *args, **kwds):
+        return self.driver.get_elm(*args, **kwds)
+
+    def get_elms(self, *args, **kwds):
+        return self.driver.get_elms(*args, **kwds)
+
+    def click(self, *args, **kwds):
+        self.driver.click(*args, **kwds)
+
+    def wait_for_element(self, *args, **kwds):
+        self.driver.wait_for_element(*args, **kwds)
