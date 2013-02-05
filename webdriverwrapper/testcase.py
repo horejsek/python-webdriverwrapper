@@ -31,7 +31,7 @@ class WebdriverTestCase(unittest.TestCase):
             except KeyboardInterrupt:
                 raise
             except:
-                result.addError(self, self._exc_info())
+                result.addError(self, sys.exc_info())
                 return
 
             ok = False
@@ -39,11 +39,11 @@ class WebdriverTestCase(unittest.TestCase):
                 testMethod()
                 ok = True
             except self.failureException:
-                result.addFailure(self, self._exc_info())
+                result.addFailure(self, sys.exc_info())
             except KeyboardInterrupt:
                 raise
             except:
-                result.addError(self, self._exc_info())
+                result.addError(self, sys.exc_info())
 
             try:
                 self._check_errors()
@@ -56,7 +56,7 @@ class WebdriverTestCase(unittest.TestCase):
             except KeyboardInterrupt:
                 raise
             except:
-                result.addError(self, self._exc_info())
+                result.addError(self, sys.exc_info())
                 ok = False
 
             if ok: 
@@ -91,7 +91,7 @@ class WebdriverTestCase(unittest.TestCase):
         errors = None
 
         try:
-            error_elms = self.driver.get_elms(class_='error')
+            error_elms = self.driver.get_elms(class_name='error')
         except NoSuchElementException:
             pass
         else:
