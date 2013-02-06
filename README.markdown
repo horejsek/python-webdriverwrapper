@@ -19,6 +19,7 @@ Just install Chrome/ium and download chromedriver from [this site](https://code.
 ## Documentation
 
 ```python
+from webdriverwrapper import Firefox
 driver = Firefox()
 ```
 
@@ -92,7 +93,7 @@ driver.wait_for_element(id_='someid')
 
 Go to page. It uses `driver.get` method.
 
-Domain is parsed from `current_url` if you don't specify any, so you can define domain only once. Query can be string or dictionary.
+Domain is parsed from `current_url` if you don't specify any, so you can define domain only once. Query can be string or dictionary. `path` can be whole URL.
 
 ```python
 driver.go_to(domain='google.com')
@@ -131,19 +132,49 @@ Some forms have more buttons than one. Simple example is: one for submit and one
 
 This looks for element with id "`form id`_reset" and clicks on it.
 
+### TestCase
 
+TestCase provides method aliases on driver and some other cool stuff. If you need driver instance, it's hide in `self.driver`.
 
+```python
+from webdriverwrapper import WebdriverTestCase
 
+class TestCase(WebdriverTestCase):
+    def test(self):
+        self.go_to('http://www.google.com')
+        self.click('gbqfsb')  # I'm feeling luck.
+        self.contains_text('Doodles')
+```
 
+TestCase looks for JavaScript errors in you web application. For that you need put to your site this code:
 
+```javascript
+<script type="text/javascript">
+    window.jsErrors = [];
+    window.onerror = function(errorMessage) {
+        window.jsErrors[window.jsErrors.length] = errorMessage;
+    }
+</script>
+```
 
+#### `_get_driver()`
 
+By default TestCase create instance of Firefox. You can overwrite this method and create which instance of driver you want.
 
+#### `_check_error_messages()`
 
+TestCase check your web application on errors. When your page contains some elements with class `error`, this method finds them and print that there is some problem.
 
+#### Usefull decorators
 
+##### `GoToPage`
 
+##### `ShouldBeOnPage`
 
-
-
+class TestCase(WebdriverTestCase):
+    @GoToPage('http://www.google.com')
+    @ShouldBeOnPage('doodles/finder/2013/All%20doodles')
+    def test(self):
+        self.click('gbqfsb')
+        self.contains_text('Doodles')
 
