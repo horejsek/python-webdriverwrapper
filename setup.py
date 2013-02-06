@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from distutils.core import setup, find_packages
 
 version = '0.1'
 
 setup(
     name = 'webdriverwrapper',
-    packages = [
-        'webdriverwrapper',
-    ],
     version = version,
+    packages = find_packages(),
+
+    install_requires = ['selenium'],
+
     url = 'https://github.com/horejsek/python-webdriverwrapper',
-    description = 'Better interface for WebDriver (Selenium 2).',
     author = 'Michal Horejsek',
     author_email = 'horejsekmichal@gmail.com',
-    license = 'GNU General Public License (GPL)',
+    description = 'Better interface for WebDriver (Selenium 2).',
+    license = 'PSF',
+
     classifiers = [
         'Programming Language :: Python :: 2',
         'License :: OSI Approved :: Python Software Foundation License',
