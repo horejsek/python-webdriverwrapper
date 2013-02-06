@@ -12,6 +12,10 @@
 * Makes filling out forms easier.
 * Provide TestCase.
 
+## How to install chromedriver
+
+Just install Chrome/ium and download chromedriver from [this site](https://code.google.com/p/chromedriver/downloads/list).
+
 ## Documentation
 
 ```python
