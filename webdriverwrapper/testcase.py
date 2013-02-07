@@ -11,6 +11,8 @@ __all__ = ('WebdriverTestCase',)
 
 
 class WebdriverTestCase(unittest.TestCase):
+    domain = None
+
     def setUp(self):
         self.driver = self._get_driver()
 

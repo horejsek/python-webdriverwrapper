@@ -22,7 +22,7 @@ class GoToPage(object):
     def create_wrapper(self):
         @wraps(self.func)
         def f(self_of_wrapped_method):
-            _append_domain(self_of_wrapped_method.driver, self.url_kwds)
+            _append_domain(self.url_kwds, self_of_wrapped_method)
             go_to_page(self_of_wrapped_method.driver, **self.url_kwds)
             self.func(self_of_wrapped_method)
         return f
@@ -47,7 +47,7 @@ class ShouldBeOnPage(object):
         @wraps(self.func)
         def f(self_of_wrapped_method):
             self.func(self_of_wrapped_method)
-            _append_domain(self_of_wrapped_method.driver, self.url_kwds)
+            _append_domain(self.url_kwds, self_of_wrapped_method)
             url = _make_url(**self.url_kwds)
             self_of_wrapped_method.assertEqual(
                 url,
@@ -82,8 +82,9 @@ def _make_url(path=None, query=None, domain=None):
     return url
 
 
-def _append_domain(driver, url_kwds):
-    url_kwds['domain'] = _get_domain(driver, url_kwds['domain'])
+def _append_domain(url_kwds, testcase_instance):
+    domain = _get_domain(testcase_instance.driver, url_kwds['domain'] or testcase_instance.domain)
+    url_kwds['domain'] = domain
 
 
 def _get_domain(driver, domain):
