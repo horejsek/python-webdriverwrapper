@@ -1,7 +1,5 @@
 # Better interface for WebDriver in Python
 
-> **Warning: Do not use it yet! Work in progress.**
-
 ## What this wrapper do
 
 * Adds some usefull method to WebDriver and WebElement. Such as
@@ -25,10 +23,10 @@ driver = Firefox()
 
 ### Method added to `WebDriver` and `WebElement`
 
-#### `find_element_by_text(text)`
+#### `find_elements_by_text(text)`
 
 ```python
-elements = driver.find_element_by_text('hello')
+elements = driver.find_elements_by_text('hello')
 another_elements = elements[0].find_element_by_text('world')
 ```
 
@@ -41,7 +39,7 @@ if driver.contains_text(text):
 
 #### `get_elm(id_|class_name|tag_name|xpath[, parent_id|parent_class_name|parent_tag_name])`
 
-It returns first element from list of found elements.
+Returns first element from list of found elements.
 
 ```python
 elm = driver.find_element_by_id('someid')
@@ -58,7 +56,7 @@ Same as `get_elm` but it returns all found elements.
 
 #### `click([id_|class_name|tag_name|xpath[, parent_id|parent_class_name|parent_tag_name]])`
 
-It clicks on first found element if you pass some arguments. Otherwise it calls webdriver's click method.
+Clicks on first found element if you pass some arguments. Otherwise it calls webdriver's click method.
 
 ```python
 elm = driver.find_element_by_id('someid')
@@ -130,11 +128,11 @@ Some forms have more buttons than one. Simple example is: one for submit and one
 
 #### `reset()`
 
-This looks for element with id "`form id`_reset" and clicks on it.
+Looks for element with id "`form id`_reset" and clicks on it.
 
-### TestCase
+### `WebdriverTestCase`
 
-TestCase provides method aliases on driver and some other cool stuff. If you need driver instance, it's hide in `self.driver`.
+`WebdriverTestCase` provides method aliases on driver and some other cool stuff. If you need driver instance, it's *hide* in `self.driver`.
 
 ```python
 from webdriverwrapper import WebdriverTestCase
@@ -146,7 +144,17 @@ class TestCase(WebdriverTestCase):
         self.contains_text('Doodles')
 ```
 
-TestCase looks for JavaScript errors in you web application. For that you need put to your site this code:
+#### `_get_driver()`
+
+By default `WebdriverTestCase` create instance of Firefox. You can overwrite this method and create which instance of driver you want.
+
+#### `_check_error_messages()`
+
+`WebdriverTestCase` check your web application on errors. When your page contains some elements with class `error`, this method finds them and print that there is some problem.
+
+#### `_check_js_errors()`
+
+`WebdriverTestCase` looks for JavaScript errors in your web application. For that you need put into your site this code:
 
 ```javascript
 <script type="text/javascript">
@@ -157,13 +165,13 @@ TestCase looks for JavaScript errors in you web application. For that you need p
 </script>
 ```
 
-#### `_get_driver()`
+#### `debug(msg)`
 
-By default TestCase create instance of Firefox. You can overwrite this method and create which instance of driver you want.
+Show message in console. (Uses module `logging`.)
 
-#### `_check_error_messages()`
+#### `break_point()`
 
-TestCase check your web application on errors. When your page contains some elements with class `error`, this method finds them and print that there is some problem.
+Waits for user input. Good for debuging.
 
 #### Usefull decorators
 
@@ -171,10 +179,71 @@ TestCase check your web application on errors. When your page contains some elem
 
 ##### `ShouldBeOnPage`
 
+```python
 class TestCase(WebdriverTestCase):
     @GoToPage('http://www.google.com')
     @ShouldBeOnPage('doodles/finder/2013/All%20doodles')
     def test(self):
         self.click('gbqfsb')
         self.contains_text('Doodles')
+```
+
+##### `ShouldBeError`
+
+By default `WebdriverTestCase` looks for error messages in elements with class `error`. If you want to test that some page have some error message, use this decorator.
+
+You can override method `get_errors` which returns list of error messages on page.
+
+```python
+class TestCase(WebdriverTestCase):
+    @ShouldBeError('some-error')
+    def test(self):
+        # ...
+```
+
+#### TestCase options
+
+##### `domain`
+
+By default you have to specify domain in first `go_to` call. It's not good because you should not know which test is called first. So you can specify domain by this class variable.
+
+```python
+class TestCase(WebdriverTestCase):
+    domain = 'www.example.com'
+```
+
+##### `instances_of_driver`
+
+By default `WebdriverTestCase` create one driver for all tests. If you want one driver for every `TestCase` or for every test, change this variable.
+
+Note: It's good to define it in some base TestCase for all TestCases.
+
+```python
+class TestCase(WebdriverTestCase):
+    instances_of_driver = ONE_INSTANCE_FOR_ALL_TESTS
+```
+
+Options are:
+
+ * `ONE_INSTANCE_FOR_ALL_TESTS`
+ * `ONE_INSTANCE_PER_TESTCASE`
+ * `ONE_INSTANCE_PER_TEST`
+
+##### `wait_after_test`
+
+When you have to do some debug page (for example with Firebug or with Chrome Developer tools), you can set `wait_after_test` and after each test it waits for input to continue.
+
+```python
+class TestCase(WebdriverTestCase):
+    wait_after_test = True
+```
+
+
+
+
+
+
+
+
+
 
