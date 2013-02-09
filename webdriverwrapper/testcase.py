@@ -38,7 +38,7 @@ class WebdriverTestCase(unittest.TestCase):
             result = self.defaultTestResult()
         result.startTest(self)
         test_method = getattr(self, self._testMethodName)
-        self.__test_method = test_method
+        self._test_method = test_method
         try:
             self._set_up()
 
@@ -113,7 +113,7 @@ class WebdriverTestCase(unittest.TestCase):
         self._check_js_errors()
         #  Check for any error message only if there isn't decorator which
         #+ already checked it.
-        if not getattr(self.__test_method, '__should_be_error__', False):
+        if not getattr(self._test_method, '__should_be_error__', False):
             self._check_error_messages()
 
     def _check_js_errors(self):
