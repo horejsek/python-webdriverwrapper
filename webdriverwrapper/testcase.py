@@ -8,6 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 import exceptions
 from webdriverwrapper import Firefox
+from errors import get_error_messages
 
 __all__ = ('WebdriverTestCase',)
 
@@ -19,7 +20,7 @@ ONE_INSTANCE_PER_TEST = 2
 
 class WebdriverTestCase(unittest.TestCase):
     domain = None
-    instances_of_driver = ONE_INSTANCE_PER_TESTCASE
+    instances_of_driver = ONE_INSTANCE_FOR_ALL_TESTS
     wait_after_test = False
 
     def __init__(self, *args, **kwds):
@@ -31,7 +32,8 @@ class WebdriverTestCase(unittest.TestCase):
         if result is None:
             result = self.defaultTestResult()
         result.startTest(self)
-        testMethod = getattr(self, self._testMethodName)
+        test_method = getattr(self, self._testMethodName)
+        self.__test_method = test_method
         try:
             self._set_up()
 
@@ -45,7 +47,7 @@ class WebdriverTestCase(unittest.TestCase):
 
             ok = False
             try:
-                testMethod()
+                test_method()
                 ok = True
             except self.failureException:
                 result.addFailure(self, sys.exc_info())
@@ -104,7 +106,10 @@ class WebdriverTestCase(unittest.TestCase):
 
     def _check_errors(self):
         self._check_js_errors()
-        self._check_error_messages()
+        #  Check for any error message only if there isn't decorator which
+        #+ already checked it.
+        if not getattr(self.__test_method, '__should_be_error__', False):
+            self._check_error_messages()
 
     def _check_js_errors(self):
         """Check for JS errors. This method is called after each test.
@@ -126,15 +131,7 @@ class WebdriverTestCase(unittest.TestCase):
         method is called after each test.
         By default it looks for elements with class `error`.
         """
-        errors = None
-
-        try:
-            error_elms = self.driver.get_elms(class_name='error')
-        except NoSuchElementException:
-            pass
-        else:
-            errors = [error_elm.text for error_elm in error_elms]
-
+        errors = get_error_messages(self.driver)
         if errors:
             raise exceptions.ErrorsException(self.driver.current_url, errors)
 
