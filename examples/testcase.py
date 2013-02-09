@@ -4,7 +4,7 @@ from webdriverwrapper import WebdriverTestCase, GoToPage, ShouldBeOnPage
 
 
 class TestCase(WebdriverTestCase):
-    domain = 'http://www.google.com'
+    domain = 'www.google.com'
 
     @GoToPage('')
     @ShouldBeOnPage('doodles/finder/2013/All%20doodles')

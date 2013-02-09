@@ -70,7 +70,10 @@ def go_to_page(driver, path=None, query=None, domain=None):
 
 
 def _make_url(path=None, query=None, domain=None):
-    url = 'http://' + domain
+    url = ''
+    if not domain or not domain.startswith('http'):
+        url = 'http://'
+    url += domain
     if path:
         url += '/' + path
     if query:
