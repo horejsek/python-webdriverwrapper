@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import logging
+logging.basicConfig(level=logging.INFO)
 import unittest
 import sys
 from selenium.common.exceptions import NoSuchElementException
@@ -17,27 +19,13 @@ ONE_INSTANCE_PER_TEST = 2
 
 class WebdriverTestCase(unittest.TestCase):
     domain = None
-    instances_of_driver = ONE_INSTANCE_FOR_ALL_TESTS
+    instances_of_driver = ONE_INSTANCE_PER_TESTCASE
+    wait_after_test = False
 
     def __init__(self, *args, **kwds):
         super(WebdriverTestCase, self).__init__(*args, **kwds)
         self.__class__._number_of_test = 0
-        self.__class__._count_of_tests = len([True for m in dir(self) if m.startswith('test')])
-
-    def setUp(self):
-        self.__class__._number_of_test += 1
-        if not hasattr(WebdriverTestCase, 'driver'):
-            WebdriverTestCase.driver = self._get_driver()
-
-    def _get_driver(self):
-        return Firefox()
-
-    def tearDown(self):
-        if self.instances_of_driver == ONE_INSTANCE_PER_TEST or (
-            self.instances_of_driver == ONE_INSTANCE_PER_TESTCASE and
-            self._number_of_test == self._count_of_tests
-        ):
-            del WebdriverTestCase.driver
+        self.__class__._count_of_tests = len(filter(lambda m: m.startswith('test'), dir(self)))
 
     def run(self, result=None):
         if result is None:
@@ -45,6 +33,8 @@ class WebdriverTestCase(unittest.TestCase):
         result.startTest(self)
         testMethod = getattr(self, self._testMethodName)
         try:
+            self._set_up()
+
             try:
                 self.setUp()
             except KeyboardInterrupt:
@@ -80,8 +70,37 @@ class WebdriverTestCase(unittest.TestCase):
 
             if ok:
                 result.addSuccess(self)
+
+            # Is nice to see at break point if test passed or not.
+            # So this call have to be after all addError/addSuccess calls.
+            self._tear_down()
         finally:
             result.stopTest(self)
+
+    def _set_up(self):
+        self.__class__._number_of_test += 1
+        if not hasattr(WebdriverTestCase, 'driver'):
+            WebdriverTestCase.driver = self._get_driver()
+
+    def _get_driver(self):
+        return Firefox()
+
+    def _tear_down(self):
+        if self.wait_after_test:
+            self.break_point()
+
+        if self.instances_of_driver == ONE_INSTANCE_PER_TEST or (
+            self.instances_of_driver == ONE_INSTANCE_PER_TESTCASE and
+            self._number_of_test == self._count_of_tests
+        ):
+            del WebdriverTestCase.driver
+
+    def break_point(self):
+        logging.info('Break point. Type enter to continue.')
+        raw_input()
+
+    def debug(self, msg):
+        logging.info(msg)
 
     def _check_errors(self):
         self._check_js_errors()
