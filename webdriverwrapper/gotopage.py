@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import logging
-logging.basicConfig(level=logging.INFO)
 from functools import wraps
 import re
 import urlparse
@@ -51,7 +49,6 @@ class ShouldBeOnPage(object):
         def f(self_of_wrapped_method):
             self.func(self_of_wrapped_method)
             _append_domain(self.url_kwds, self_of_wrapped_method)
-            logging.info( self.url_kwds)
             url = _make_url(**self.url_kwds)
             self_of_wrapped_method.assertEqual(
                 url.strip('/'),
