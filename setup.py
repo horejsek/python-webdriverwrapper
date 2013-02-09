@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-from distutils.core import setup, find_packages
+from distutils.core import setup
 
 version = '0.1'
 
 setup(
     name = 'webdriverwrapper',
     version = version,
-    packages = find_packages(),
+    packages = ['webdriverwrapper'],
 
     install_requires = ['selenium'],
 
@@ -21,7 +21,7 @@ setup(
         'Programming Language :: Python :: 2',
         'License :: OSI Approved :: Python Software Foundation License',
         'Operating System :: OS Independent',
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         #'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Libraries :: Python Modules',

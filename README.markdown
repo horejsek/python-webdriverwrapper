@@ -237,13 +237,3 @@ When you have to do some debug page (for example with Firebug or with Chrome Dev
 class TestCase(WebdriverTestCase):
     wait_after_test = True
 ```
-
-
-
-
-
-
-
-
-
-
