@@ -5,22 +5,39 @@ import sys
 from selenium.common.exceptions import NoSuchElementException
 
 import exceptions
-from webdriverwrapper import Chrome
+from webdriverwrapper import Firefox
 
 __all__ = ('WebdriverTestCase',)
 
 
+ONE_INSTANCE_FOR_ALL_TESTS = 0
+ONE_INSTANCE_PER_TESTCASE = 1
+ONE_INSTANCE_PER_TEST = 2
+
+
 class WebdriverTestCase(unittest.TestCase):
     domain = None
+    instances_of_driver = ONE_INSTANCE_FOR_ALL_TESTS
+
+    def __init__(self, *args, **kwds):
+        super(WebdriverTestCase, self).__init__(*args, **kwds)
+        self.__class__._number_of_test = 0
+        self.__class__._count_of_tests = len([True for m in dir(self) if m.startswith('test')])
 
     def setUp(self):
-        self.driver = self._get_driver()
+        self.__class__._number_of_test += 1
+        if not hasattr(WebdriverTestCase, 'driver'):
+            WebdriverTestCase.driver = self._get_driver()
 
     def _get_driver(self):
-        return Chrome()
+        return Firefox()
 
     def tearDown(self):
-        self.driver.quit()
+        if self.instances_of_driver == ONE_INSTANCE_PER_TEST or (
+            self.instances_of_driver == ONE_INSTANCE_PER_TESTCASE and
+            self._number_of_test == self._count_of_tests
+        ):
+            del WebdriverTestCase.driver
 
     def run(self, result=None):
         if result is None:
@@ -61,7 +78,7 @@ class WebdriverTestCase(unittest.TestCase):
                 result.addError(self, sys.exc_info())
                 ok = False
 
-            if ok: 
+            if ok:
                 result.addSuccess(self)
         finally:
             result.stopTest(self)
