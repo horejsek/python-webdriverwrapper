@@ -65,21 +65,27 @@ class FormElement(object):
 
     def fill_input_checkbox(self, value):
         if isinstance(value, (list, tuple)):
-            self.fillOut_input_checkbox_multiple(value)
-        self.fillOut_input_checkbox_single(value)
+            self.fill_input_checkbox_multiple(value)
+        self.fill_input_checkbox_single(value)
 
     def fill_input_checkbox_single(self, value):
-        elm = self.formElm.get_elm(xpath='//input[@type="checkbox"][@name="%s"]' % self.elmName)
+        elm = self.form_elm.get_elm(xpath='//input[@type="checkbox"][@name="%s"]' % self.elm_name)
         if bool(value) != elm.is_selected():
             elm.click()
 
     def fill_input_checkbox_multiple(self, value):
         for item in value:
-            elm = self.formElm.get_elm(xpath='//input[@type="checkbox"][@name="%s"][@value="%s"]' %  (self.elmName, self.convertValue(item)))
+            elm = self.form_elm.get_elm(xpath='//input[@type="checkbox"][@name="%s"][@value="%s"]' %  (
+                self.elm_name, 
+                self.convertValue(item),
+            ))
             elm.click()
 
     def fill_input_radio(self, value):
-        elm = self.form_elm.get_elm(xpath='//input[@type="radio"][@name="%s"][@value="%s"]' % (self.elm_name, self.convert_value(value)))
+        elm = self.form_elm.get_elm(xpath='//input[@type="radio"][@name="%s"][@value="%s"]' % (
+            self.elm_name, 
+            self.convert_value(value),
+        ))
         elm.click()
 
     def fill_input_file(self, value):
@@ -87,7 +93,7 @@ class FormElement(object):
         elm.send_keys(self.convert_value(value))
 
     def fill_select_selectone(self, value):
-        self._fillout_select(self.convert_value(value))
+        self._fill_select(self.convert_value(value))
 
     def fill_select_selectmultiple(self, value):
         if not isinstance(value, (list, tuple)):
@@ -99,13 +105,19 @@ class FormElement(object):
 
         # In multiselect I have to unselected already selected options.
         not_values = ''.join('[@value!="%s"]' % v for v in self.convert_value(value))
-        elms = self.form_elm.get_elm(xpath='//select[@name="%s"]/descendant::option%s' % (self.elm_name, not_values))
+        elms = self.form_elm.get_elms(xpath='//select[@name="%s"]/descendant::option%s' % (
+            self.elm_name,
+            not_values,
+        ))
         for elm in elms:
             if elm.is_selected():
                 elm.click()
 
     def _fill_select(self, value):
-        elm = self.form_elm.get_elm(xpath='//select[@name="%s"]/descendant::option[@value="%s"]' % (self.elm_name, value))
+        elm = self.form_elm.get_elm(xpath='//select[@name="%s"]/descendant::option[@value="%s"]' % (
+            self.elm_name,
+            value,
+        ))
         if not elm.is_selected():
             elm.click()
 

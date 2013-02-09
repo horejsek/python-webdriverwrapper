@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import logging
+logging.basicConfig(level=logging.INFO)
 from functools import wraps
+import re
 import urlparse
 
 __all__ = ('GoToPage', 'ShouldBeOnPage')
@@ -8,7 +11,7 @@ __all__ = ('GoToPage', 'ShouldBeOnPage')
 
 class GoToPage(object):
     """Decorator object for test method."""
-    def __init__(self, path=None, query=None, domain=None):
+    def __init__(self, path='', query='', domain=''):
         self.url_kwds = {
             'domain': domain,
             'path': path,
@@ -32,7 +35,7 @@ class ShouldBeOnPage(object):
     """Decorator object for test method.
     After test this decorator check if page has expected url.
     """
-    def __init__(self, path=None, query=None, domain=None):
+    def __init__(self, path='', query='', domain=''):
         self.url_kwds = {
             'domain': domain,
             'path': path,
@@ -48,10 +51,11 @@ class ShouldBeOnPage(object):
         def f(self_of_wrapped_method):
             self.func(self_of_wrapped_method)
             _append_domain(self.url_kwds, self_of_wrapped_method)
+            logging.info( self.url_kwds)
             url = _make_url(**self.url_kwds)
             self_of_wrapped_method.assertEqual(
-                url,
-                self_of_wrapped_method.driver.current_url,
+                url.strip('/'),
+                self_of_wrapped_method.driver.current_url.strip('/'),
                 msg='"%s" url excepted after test, but is "%s".' % (
                     url,
                     self_of_wrapped_method.driver.current_url,
@@ -60,18 +64,18 @@ class ShouldBeOnPage(object):
         return f
 
 
-def go_to_page(driver, path=None, query=None, domain=None):
-    # If in url is present netloc, in path is probably whole url.
-    if urlparse.urlparse(path).netloc:
-        url = path
-    else:
-        url = _make_url(path, query, domain)
+def go_to_page(driver, path='', query='', domain=''):
+    url = _make_url(path, query, domain)
     driver.get(url)
 
 
-def _make_url(path=None, query=None, domain=None):
+def _make_url(path='', query='', domain=''):
+    # If in url is present netloc or scheme, in path is probably whole url.
+    if urlparse.urlparse(path).netloc or urlparse.urlparse(path).scheme:
+        return path
+
     url = ''
-    if not domain or not domain.startswith('http'):
+    if not re.match('\w+://', domain):
         url = 'http://'
     url += domain
     if path:

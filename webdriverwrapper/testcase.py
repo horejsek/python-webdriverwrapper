@@ -10,7 +10,12 @@ import exceptions
 from webdriverwrapper import Firefox
 from errors import get_error_messages
 
-__all__ = ('WebdriverTestCase',)
+__all__ = (
+    'WebdriverTestCase', 
+    'ONE_INSTANCE_FOR_ALL_TESTS', 
+    'ONE_INSTANCE_PER_TESTCASE', 
+    'ONE_INSTANCE_PER_TEST',
+)
 
 
 ONE_INSTANCE_FOR_ALL_TESTS = 0
