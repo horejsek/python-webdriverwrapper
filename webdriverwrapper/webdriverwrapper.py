@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import inspect
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import *
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 
+from exceptions import NoSuchElementException
 import gotopage
 
 
@@ -23,9 +23,13 @@ class _WebdriverBaseWrapper(object):
         elms = self.get_elms(id_, class_name, tag_name, xpath, parent_id, parent_class_name, parent_tag_name)
         if not elms:
             raise NoSuchElementException(
-                'No element [id=%s, class=%s, name=%s, xpath=%s] found in parent element [id=%s, class=%s, name=%s].' % (
-                    id_, class_name, tag_name, xpath, parent_id, parent_class_name, parent_tag_name,
-                )
+                id_,
+                class_name,
+                tag_name,
+                xpath,
+                parent_id,
+                parent_class_name,
+                parent_tag_name,
             )
         return elms[0]
 
