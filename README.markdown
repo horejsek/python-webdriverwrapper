@@ -12,9 +12,11 @@
 
 ## How to install chromedriver
 
-Just install Chrome/ium and download chromedriver from [this site](https://code.google.com/p/chromedriver/downloads/list).
+Just install Chrome/ium and put [chromedriver](https://code.google.com/p/chromedriver/downloads/list) into `/bin`.
 
 ## Documentation
+
+This is documentation of wrapper. Documentation of Selenium is on [googlecode.com](http://selenium.googlecode.com/svn/trunk/docs/api/py/index.html).
 
 ```python
 from webdriverwrapper import Firefox
