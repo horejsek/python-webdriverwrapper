@@ -47,7 +47,7 @@ class _WebdriverBaseWrapper(object):
         elif class_name is not None:
             return parent.find_elements_by_class_name(class_name)
         elif tag_name is not None:
-            return parent.find_elements_by_name(tag_name)
+            return parent.find_elements_by_tag_name(tag_name)
         elif xpath is not None:
             return parent.find_elements_by_xpath(xpath)
         else:
