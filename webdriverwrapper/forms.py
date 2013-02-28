@@ -55,7 +55,7 @@ class FormElement(object):
         getattr(self, method_name, self.fill_common)(value)
 
     def analyze_element(self):
-        elms = self.form_elm.get_elms(tag_name=self.elm_name)
+        elms = self.form_elm.get_elms(name=self.elm_name)
         for elm in elms:
             elm_type = elm.get_attribute('type')
             if elm_type == 'hidden':
@@ -89,7 +89,7 @@ class FormElement(object):
         elm.click()
 
     def fill_input_file(self, value):
-        elm = self.form_elm.get_elm(tag_name=self.elm_name)
+        elm = self.form_elm.get_elm(name=self.elm_name)
         elm.send_keys(self.convert_value(value))
 
     def fill_select_selectone(self, value):
@@ -122,6 +122,6 @@ class FormElement(object):
             elm.click()
 
     def fill_common(self, value):
-        elm = self.form_elm.get_elm(tag_name=self.elm_name)
+        elm = self.form_elm.get_elm(name=self.elm_name)
         elm.clear()
         elm.send_keys(self.convert_value(value))

@@ -6,9 +6,9 @@ __all__ = ('WebdriverWrapperException', 'ErrorsException', 'JSErrorsException')
 
 
 class NoSuchElementException(NoSuchElementException):
-    def __init__(self, id_=None, class_name=None, tag_name=None, xpath=None, parent_id=None, parent_class_name=None, parent_tag_name=None):
-        elm_text = self._create_text_elm(id_, class_name, tag_name, xpath)
-        parent_text = self._create_text_elm(parent_id, parent_class_name, parent_tag_name)
+    def __init__(self, id_=None, class_name=None, name=None, tag_name=None, xpath=None, parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None):
+        elm_text = self._create_text_elm(id_, class_name, name, tag_name, xpath)
+        parent_text = self._create_text_elm(parent_id, parent_class_name, parent_name, parent_tag_name)
 
         msg = 'No element %s found' % elm_text
         if parent_text:
@@ -16,7 +16,7 @@ class NoSuchElementException(NoSuchElementException):
         super(NoSuchElementException, self).__init__(msg)
 
     @classmethod
-    def _create_text_elm(cls, id_=None, class_name=None, tag_name=None, xpath=None):
+    def _create_text_elm(cls, id_=None, class_name=None, name=None, tag_name=None, xpath=None):
         if xpath:
             return xpath
         elif id_ or class_name or tag_name:
@@ -25,6 +25,8 @@ class NoSuchElementException(NoSuchElementException):
                 msg += ' id=%s' % id_
             if class_name:
                 msg += ' class=%s' % class_name
+            if name:
+                msg += ' name=%s' % name
             msg += '>'
             return msg
         return ''

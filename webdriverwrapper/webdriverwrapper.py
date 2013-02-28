@@ -19,23 +19,25 @@ class _WebdriverBaseWrapper(object):
         """Does page contains `text`?"""
         return bool(self.find_elements_by_text(text))
 
-    def get_elm(self, id_=None, class_name=None, tag_name=None, xpath=None, parent_id=None, parent_class_name=None, parent_tag_name=None):
-        elms = self.get_elms(id_, class_name, tag_name, xpath, parent_id, parent_class_name, parent_tag_name)
+    def get_elm(self, id_=None, class_name=None, name=None, tag_name=None, xpath=None, parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None):
+        elms = self.get_elms(id_, class_name, name, tag_name, xpath, parent_id, parent_class_name, parent_name, parent_tag_name)
         if not elms:
             raise NoSuchElementException(
                 id_,
                 class_name,
+                name,
                 tag_name,
                 xpath,
                 parent_id,
                 parent_class_name,
+                parent_name,
                 parent_tag_name,
             )
         return elms[0]
 
-    def get_elms(self, id_=None, class_name=None, tag_name=None, xpath=None, parent_id=None, parent_class_name=None, parent_tag_name=None):
-        if parent_id or parent_class_name or parent_tag_name:
-            parent = self.get_elm(parent_id, parent_class_name, parent_tag_name)
+    def get_elms(self, id_=None, class_name=None, name=None, tag_name=None, xpath=None, parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None):
+        if parent_id or parent_class_name or parent_name or parent_tag_name:
+            parent = self.get_elm(parent_id, parent_class_name, parent_name, parent_tag_name)
         else:
             parent = self
 
@@ -46,6 +48,8 @@ class _WebdriverBaseWrapper(object):
             return parent.find_elements_by_id(id_)
         elif class_name is not None:
             return parent.find_elements_by_class_name(class_name)
+        elif name is not None:
+            return parent.find_elements_by_name(name)
         elif tag_name is not None:
             return parent.find_elements_by_tag_name(tag_name)
         elif xpath is not None:
