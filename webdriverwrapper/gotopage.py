@@ -24,9 +24,12 @@ class GoToPage(object):
         @wraps(self.func)
         def f(self_of_wrapped_method):
             _append_domain(self.url_kwds, self_of_wrapped_method)
-            go_to_page(self_of_wrapped_method.driver, **self.url_kwds)
+            self.go_to_page(self_of_wrapped_method.driver)
             self.func(self_of_wrapped_method)
         return f
+
+    def go_to_page(self, driver):
+        go_to_page(drive, **self.url_kwds)
 
 
 class ShouldBeOnPage(object):
