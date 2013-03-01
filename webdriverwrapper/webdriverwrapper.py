@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import inspect
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver import *
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select, WebDriverWait
@@ -117,13 +118,16 @@ def _webelement_wrapper_decorator(f):
     def wrapper(*args, **kwds):
         res = f(*args, **kwds)
         if type(res) is WebElement:
-            if res.tag_name == 'form':
-                from forms import Form
-                res = Form(res)
-            elif res.tag_name == 'select':
-                res = _SelectWrapper(res)
-            else:
-                res = _WebElementWrapper(res)
+            try:
+                if res.tag_name == 'form':
+                    from forms import Form
+                    res = Form(res)
+                elif res.tag_name == 'select':
+                    res = _SelectWrapper(res)
+                else:
+                    res = _WebElementWrapper(res)
+            except StaleElementReferenceException:
+                pass
         return res
     return wrapper
 
