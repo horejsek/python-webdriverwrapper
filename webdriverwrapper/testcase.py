@@ -11,9 +11,9 @@ from webdriverwrapper import Firefox
 from errors import get_error_messages
 
 __all__ = (
-    'WebdriverTestCase', 
-    'ONE_INSTANCE_FOR_ALL_TESTS', 
-    'ONE_INSTANCE_PER_TESTCASE', 
+    'WebdriverTestCase',
+    'ONE_INSTANCE_FOR_ALL_TESTS',
+    'ONE_INSTANCE_PER_TESTCASE',
     'ONE_INSTANCE_PER_TEST',
 )
 
@@ -132,7 +132,7 @@ class WebdriverTestCase(unittest.TestCase):
             raise exceptions.JSErrorsException(self.driver.current_url, js_errors)
 
     def _check_error_messages(self):
-        """There should be tests for error messages on page. This 
+        """There should be tests for error messages on page. This
         method is called after each test.
         By default it looks for elements with class `error`.
         """
@@ -160,6 +160,9 @@ class WebdriverTestCase(unittest.TestCase):
 
     def wait_for_element(self, *args, **kwds):
         self.driver.wait_for_element(*args, **kwds)
+
+    def wait(self, timeout=10):
+        return self.driver.wait(timeout)
 
     def go_to(self, *args, **kwds):
         self.driver.go_to(*args, **kwds)

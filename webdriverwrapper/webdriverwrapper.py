@@ -71,7 +71,17 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
 
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
         """Alias for WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))."""
-        WebDriverWait(self, timeout).until(lambda driver: driver.get_elm(*args, **kwds), message=message)
+        self.wait(timeout).until(lambda driver: driver.get_elm(*args, **kwds), message=message)
+
+    def wait(self, timeout=10):
+        """Alias for selenium.webdriver.support.ui.WebDriverWait(driver, timeout).
+        Returns instance which has method until which takes function.
+
+        Example:
+        self.wait().until(lambda driver: len(driver.find_element_by_id('elm')) > 10)
+        """
+        return WebDriverWait(self, timeout)
+    #enddef
 
     def go_to(self, path=None, query=None, domain=None):
         """Go to page. You can pass only `path`, because this
