@@ -8,13 +8,13 @@ __all__ = ('Form',)
 
 
 class Form(_WebElementWrapper):
-    def fill_out_and_submit(self, data):
-        self.fill_out(data)
+    def fill_out_and_submit(self, data, prefix=''):
+        self.fill_out(data, prefix)
         self.submit()
 
-    def fill_out(self, data):
+    def fill_out(self, data, prefix=''):
         for elm_name, value in data.iteritems():
-            FormElement(self, elm_name).fill_out(value)
+            FormElement(self, prefix + elm_name).fill_out(value)
 
     def submit(self):
         elm_name = '%s_submit' % self.id
@@ -76,14 +76,14 @@ class FormElement(object):
     def fill_input_checkbox_multiple(self, value):
         for item in value:
             elm = self.form_elm.get_elm(xpath='//input[@type="checkbox"][@name="%s"][@value="%s"]' %  (
-                self.elm_name, 
+                self.elm_name,
                 self.convertValue(item),
             ))
             elm.click()
 
     def fill_input_radio(self, value):
         elm = self.form_elm.get_elm(xpath='//input[@type="radio"][@name="%s"][@value="%s"]' % (
-            self.elm_name, 
+            self.elm_name,
             self.convert_value(value),
         ))
         elm.click()
