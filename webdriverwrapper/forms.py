@@ -77,7 +77,7 @@ class FormElement(object):
         for item in value:
             elm = self.form_elm.get_elm(xpath='//input[@type="checkbox"][@name="%s"][@value="%s"]' %  (
                 self.elm_name,
-                self.convertValue(item),
+                self.convert_value(item),
             ))
             elm.click()
 
@@ -93,33 +93,17 @@ class FormElement(object):
         elm.send_keys(self.convert_value(value))
 
     def fill_select_selectone(self, value):
-        self._fill_select(self.convert_value(value))
+        select = self.form_elm.get_elm(name=self.elm_name)
+        select.select_by_value(self.convert_value(value))
 
     def fill_select_selectmultiple(self, value):
         if not isinstance(value, (list, tuple)):
-            self._fill_select(self.convert_value(value))
-            return
+            value = [value]
 
+        select = self.form_elm.get_elm(name=self.elm_name)
+        select.deselect_all()
         for item in self.convert_value(value):
-            self._fill_select(item)
-
-        # In multiselect I have to unselected already selected options.
-        not_values = ''.join('[@value!="%s"]' % v for v in self.convert_value(value))
-        elms = self.form_elm.get_elms(xpath='//select[@name="%s"]/descendant::option%s' % (
-            self.elm_name,
-            not_values,
-        ))
-        for elm in elms:
-            if elm.is_selected():
-                elm.click()
-
-    def _fill_select(self, value):
-        elm = self.form_elm.get_elm(xpath='//select[@name="%s"]/descendant::option[@value="%s"]' % (
-            self.elm_name,
-            value,
-        ))
-        if not elm.is_selected():
-            elm.click()
+            select.select_by_value(item)
 
     def fill_common(self, value):
         elm = self.form_elm.get_elm(name=self.elm_name)
