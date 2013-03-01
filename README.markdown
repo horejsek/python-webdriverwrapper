@@ -39,7 +39,7 @@ if driver.contains_text(text):
     print 'good'
 ```
 
-#### `get_elm(id_|class_name|tag_name|xpath[, parent_id|parent_class_name|parent_tag_name])`
+#### `get_elm(id_|class_name|name|tag_name|xpath[, parent_id|parent_class_name|parent_name|parent_tag_name])`
 
 Returns first element from list of found elements.
 
@@ -52,11 +52,11 @@ elm.find_elements_by_class_name('someclasss')
 elm = driver.get_elm(class_name='someclass', parent_id='someid')
 ```
 
-#### `get_elms(id_|class_name|tag_name|xpath[, parent_id|parent_class_name|parent_tag_name])`
+#### `get_elms(id_|class_name|name|tag_name|xpath[, parent_id|parent_class_name|parent_name|parent_tag_name])`
 
 Same as `get_elm` but it returns all found elements.
 
-#### `click([id_|class_name|tag_name|xpath[, parent_id|parent_class_name|parent_tag_name]])`
+#### `click([id_|class_name|name|tag_name|xpath[, parent_id|parent_class_name|parent_name|parent_tag_name]])`
 
 Clicks on first found element if you pass some arguments. Otherwise it calls webdriver's click method.
 
@@ -70,7 +70,7 @@ elm.click()
 elm = driver.get_elm(class_name='someclass', parent_id='someid')
 elm.click()
 
-# or 
+# or
 
 driver.get_elm('someid').click(class_name='someclass')
 
@@ -81,12 +81,20 @@ driver.click(class_name='someclass', parent_id='someid')
 
 ### `WebDriver` specific method
 
-#### `wait_for_element(timeout=10, id_|class_name|tag_name|xpath[, parent_id|parent_class_name|parent_tag_name])`
+#### `wait_for_element(timeout=10, message='', id_|class_name|name|tag_name|xpath[, parent_id|parent_class_name|parent_name|parent_tag_name])`
 
-Alias for `WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))`.
+Alias for `WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...), message)`.
 
 ```python
 driver.wait_for_element(id_='someid')
+```
+
+#### `wait(timeout=10)`
+
+Alias for `WebDriverWait(driver, timeout)`.
+
+```python
+driver.wait().until_not(lambda driver: len(driver.get_elms('id')) > 10)
 ```
 
 #### `go_to([path[, query[, domain]]])`
@@ -116,7 +124,7 @@ form.fill_out({
     'name': 'WebdriverWrapper',  # Normal input
     'type': 'testing-tool',  # Selectbox
     'is_awesome': True,  # Checkbox
-    'whatever': [1, 2, 3],  # Multicheckbox  
+    'whatever': [1, 2, 3],  # Multicheckbox
 })
 ```
 
@@ -131,6 +139,17 @@ Some forms have more buttons than one. Simple example is: one for submit and one
 #### `reset()`
 
 Looks for element with id "`form id`_reset" and clicks on it.
+
+### Select
+
+If some element is select, it returns Select instance inherited from selenium's Select and WebDriver wrapper. So you can use all method from WebDriver and Select.
+
+```python
+select = driver.get_elm(tag_name='select')
+select.get_attribute('name')
+select.select_by_value('value')
+select.find_elements_by_text('Option text')
+```
 
 ### `WebdriverTestCase`
 
