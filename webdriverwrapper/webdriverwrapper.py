@@ -69,9 +69,9 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
     def __del__(self):
         self.quit()
 
-    def wait_for_element(self, timeout=10, *args, **kwds):
+    def wait_for_element(self, timeout=10, message='', *args, **kwds):
         """Alias for WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))."""
-        WebDriverWait(self, timeout).until(lambda driver: driver.get_elm(*args, **kwds))
+        WebDriverWait(self, timeout).until(lambda driver: driver.get_elm(*args, **kwds), message=message)
 
     def go_to(self, path=None, query=None, domain=None):
         """Go to page. You can pass only `path`, because this
