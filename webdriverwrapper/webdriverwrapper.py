@@ -3,7 +3,7 @@
 import inspect
 from selenium.webdriver import *
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from exceptions import NoSuchElementException
 import gotopage
@@ -93,6 +93,10 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
         pass
 
 
+class _SelectWrapper(Select, _WebElementWrapper):
+    pass
+
+
 def _webdriver_wrapper_decorator(cls):
     for name, method in inspect.getmembers(cls, inspect.ismethod):
         setattr(cls, name, _webelement_wrapper_decorator(method))
@@ -106,6 +110,8 @@ def _webelement_wrapper_decorator(f):
             if res.tag_name == 'form':
                 from forms import Form
                 res = Form(res)
+            elif res.tag_name == 'select':
+                res = _SelectWrapper(res)
             else:
                 res = _WebElementWrapper(res)
         return res
