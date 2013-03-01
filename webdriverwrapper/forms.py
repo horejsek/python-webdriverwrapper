@@ -17,14 +17,14 @@ class Form(_WebElementWrapper):
             FormElement(self, prefix + elm_name).fill_out(value)
 
     def submit(self):
-        elm_name = '%s_submit' % self.id
+        elm_name = '%s_submit' % self.get_attribute('id')
         try:
             self.click(elm_name)
         except NoSuchElementException:
             super(Form, self).submit()
 
     def reset(self):
-        elm_name = '%s_reset' % self.id
+        elm_name = '%s_reset' % self.get_attribute('id')
         self.click(elm_name)
 
 
