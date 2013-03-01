@@ -52,7 +52,7 @@ class ShouldBeOnPage(object):
         def f(self_of_wrapped_method):
             self.func(self_of_wrapped_method)
             _append_domain(self.url_kwds, self_of_wrapped_method)
-            url = _make_url(**self.url_kwds)
+            url = self.get_url()
             self_of_wrapped_method.assertEqual(
                 url.strip('/'),
                 self_of_wrapped_method.driver.current_url.strip('/'),
@@ -62,6 +62,9 @@ class ShouldBeOnPage(object):
                 ),
             )
         return f
+
+    def get_url(self):
+        return _make_url(**self.url_kwds)
 
 
 def go_to_page(driver, path='', query='', domain=''):
