@@ -3,11 +3,12 @@
 from mock import Mock, call
 import os
 
-from webdriverwrapper import *
+from webdriverwrapper import testcase, Chrome
+from webdriverwrapper.decorators import *
 
 
-class TestCaseDecoratorsTest(WebdriverTestCase):
-    instances_of_driver = ONE_INSTANCE_PER_TESTCASE
+class TestCaseDecoratorsTest(testcase.WebdriverTestCase):
+    instances_of_driver = testcase.ONE_INSTANCE_PER_TESTCASE
 
     def _get_driver(self):
         return Chrome()

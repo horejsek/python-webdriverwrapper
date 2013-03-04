@@ -7,12 +7,14 @@
 from mock import Mock, call
 import os
 
-from webdriverwrapper import WebdriverTestCase, Chrome
+from webdriverwrapper import testcase, Chrome
 from webdriverwrapper.webdriverwrapper import _WebElementWrapper
 from webdriverwrapper.exceptions import NoSuchElementException
 
 
-class WebdriverWrapperTest(WebdriverTestCase):
+class WebdriverWrapperTest(testcase.WebdriverTestCase):
+    instances_of_driver = testcase.ONE_INSTANCE_PER_TESTCASE
+
     def setUp(self):
         self.driver.go_to('http://www.google.com')
 

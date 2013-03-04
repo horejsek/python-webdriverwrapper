@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from errors import *
-from exceptions import *
+import decorators
+import exceptions
+import testcase
 from webdriverwrapper import *
-from testcase import *
-from gotopage import *

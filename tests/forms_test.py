@@ -3,12 +3,11 @@
 from mock import Mock, call
 import os
 
-from webdriverwrapper import Chrome, WebdriverTestCase
-import webdriverwrapper
+from webdriverwrapper import testcase, Chrome
 
 
-class FormTest(WebdriverTestCase):
-    instances_of_driver = webdriverwrapper.ONE_INSTANCE_PER_TESTCASE
+class FormTest(testcase.WebdriverTestCase):
+    instances_of_driver = testcase.ONE_INSTANCE_PER_TESTCASE
 
     def _get_driver(self):
         return Chrome()
