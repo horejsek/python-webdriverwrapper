@@ -156,9 +156,12 @@ class _WebdriverBaseWrapper(object):
 
     @_ConvertToWebelementWrapper()
     def _find_element_or_elements(self, callback, by, value):
-        msg = _create_exception_msg(**{
-            self._by_to_string_param_map[by]: value,
-        })
+        if by in self._by_to_string_param_map:
+            msg = _create_exception_msg(**{
+                self._by_to_string_param_map[by]: value,
+            })
+        else:
+            msg = ''
         try:
             return callback(self, by, value)
         except (
