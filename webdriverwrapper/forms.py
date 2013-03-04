@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.keys import Keys
 
 from webdriverwrapper import _WebElementWrapper
 
@@ -109,3 +110,5 @@ class FormElement(object):
         elm = self.form_elm.get_elm(name=self.elm_name)
         elm.clear()
         elm.send_keys(self.convert_value(value))
+        elm.send_keys(Keys.TAB)  # Send TAB for losing focus. (Trigger change events.)
+
