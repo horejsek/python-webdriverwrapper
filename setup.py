@@ -2,7 +2,7 @@
 
 from distutils.core import setup
 
-version = '0.7'
+version = '0.7.1'
 
 setup(
     name = 'webdriverwrapper',
