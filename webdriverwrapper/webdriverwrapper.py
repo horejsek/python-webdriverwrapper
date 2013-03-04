@@ -10,6 +10,21 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from exceptions import _create_exception_msg
 import gotopage
 
+__all__ = (
+    'Firefox', 
+    'FirefoxProfile',
+    'Chrome',
+    'ChromeOptions',
+    'Ie',
+    'Opera',
+    'PhantomJS',
+    'Remote',
+    'DesiredCapabilities',
+    'ActionChains',
+    'TouchActions',
+    'Proxy',
+)
+
 
 class _ConvertToWebelementWrapper(object):
     def __call__(self, f):
@@ -221,6 +236,10 @@ class Ie(_WebdriverWrapper, Ie):
 
 
 class Opera(_WebdriverWrapper, Opera):
+    pass
+
+
+class PhantomJS(_WebdriverWrapper, PhantomJS):
     pass
 
 
