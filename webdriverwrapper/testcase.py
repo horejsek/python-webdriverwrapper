@@ -32,6 +32,10 @@ class WebdriverTestCase(unittest.TestCase):
         super(WebdriverTestCase, self).__init__(*args, **kwds)
         self.__class__._number_of_test = 0
         self.__class__._count_of_tests = len(filter(lambda m: m.startswith('test'), dir(self)))
+        self.init()
+
+    def init(self):
+        pass
 
     def run(self, result=None):
         if result is None:
