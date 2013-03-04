@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
-from errors import ShouldBeError
+from errors import ShouldBeErrorPage, ShouldBeError
 from gotopage import GoToPage, ShouldBeOnPage
