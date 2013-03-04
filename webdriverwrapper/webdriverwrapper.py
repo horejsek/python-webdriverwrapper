@@ -168,7 +168,7 @@ class _WebdriverBaseWrapper(object):
             selenium_exc.ElementNotVisibleException,
             selenium_exc.ElementNotSelectableException,
         ), e:
-            raise e.__clas__(msg)
+            raise e.__class__(msg)
 
 
 class _WebdriverWrapper(_WebdriverBaseWrapper):

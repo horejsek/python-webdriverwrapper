@@ -34,6 +34,19 @@ class WebdriverWrapperTest(testcase.WebdriverTestCase):
         else:
             self.fail('NoSuchElementException not raised')
 
+    def test_exception_from_find_methods(self):
+        try:
+            self.driver.find_element_by_id('some_non_exist_id')
+        except NoSuchElementException, e:
+            self.assertTrue(
+                e.msg and 'some_non_exist_id' in e.msg, 
+                'Exception has bad message (%s)' % e.msg,
+            )
+        except Exception, e:
+            self.fail('Excepted NoSuchElementException, but raised %s instead' % e.__class__)
+        else:
+            self.fail('NoSuchElementException not raised')
+
     def test_returns_wrapped_element(self):
         element = self.driver.find_element_by_id('gbqfq')
         self.assertTrue(isinstance(element, _WebElementWrapper), 'Element instance is not WebElementWrapper')
