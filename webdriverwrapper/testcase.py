@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 import exceptions
 from webdriverwrapper import Firefox
-from errors import get_error_messages
+from errors import get_error_page, get_error_messages
 
 __all__ = (
     'WebdriverTestCase',
@@ -117,6 +117,8 @@ class WebdriverTestCase(unittest.TestCase):
         self._check_js_errors()
         #  Check for any error message only if there isn't decorator which
         #+ already checked it.
+        if not getattr(self._test_method, '__should_be_error_page__', False):
+            self._check_error_page()
         if not getattr(self._test_method, '__should_be_error__', False):
             self._check_error_messages()
 
@@ -135,6 +137,14 @@ class WebdriverTestCase(unittest.TestCase):
         if js_errors:
             raise exceptions.JSErrorsException(self.driver.current_url, js_errors)
 
+    def _check_error_page(self):
+        """There should be tests for error page. This method is called after each
+        test. By default it looks for elements with class `error-page`.
+        """
+        error_page = get_error_page(self.driver)
+        if error_page:
+            raise exceptions.ErrorPageException(self.driver.current_url, error_page)
+
     def _check_error_messages(self):
         """There should be tests for error messages on page. This
         method is called after each test.
@@ -143,7 +153,6 @@ class WebdriverTestCase(unittest.TestCase):
         errors = get_error_messages(self.driver)
         if errors:
             raise exceptions.ErrorsException(self.driver.current_url, errors)
-
 
     ### Aliases to driver.
 

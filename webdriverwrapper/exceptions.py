@@ -23,6 +23,13 @@ class WebdriverWrapperException(Exception):
         return msg.encode('utf-8') if isinstance(msg, unicode) else str(msg)
 
 
+class ErrorPageException(WebdriverWrapperException):
+    def __init__(self, url, error_page, traceback=''):
+        self.msg = 'Page %s has unexpected error page: %s' % (url, error_page)
+        self.traceback = traceback
+        super(ErrorPageException, self).__init__(msg, traceback)
+
+
 class ErrorsException(WebdriverWrapperException):
     def __init__(self, url, errors=[]):
         msg = 'Page %s has these unexpected errors: %s' % (url, errors)

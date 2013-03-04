@@ -6,6 +6,48 @@ from selenium.common.exceptions import NoSuchElementException
 __all__ = ('ShouldBeError',)
 
 
+class ShouldBeErrorPage(object):
+    """Decorator object for test method.
+
+    If test method has this decorator, it must end with error page with error
+    code passed in `expected_error_page`. It can raise some exception - exceptions
+    are ignored. `expected_error_page` can be - 403, 404, "Not Found" etc.
+    """
+    def __init__(self, expected_error_page):
+        self.expected_error_page = str(expected_error_page)
+
+    def __call__(self, func):
+        self.func = func
+        return self.create_wrapper()
+
+    def create_wrapper(self):
+        self.func.__should_be_error_page__ = True
+        @wraps(self.func)
+        def f(self_of_wrapped_method):
+            try:
+                self.func(self_of_wrapped_method)
+            except:
+                pass
+            finally:
+                if not self.is_expected_error_page(self_of_wrapped_method.driver):
+                    self_of_wrapped_method.fail('Expected error page "%s", but isn\'t.' % self.expected_error_page)
+        return f
+
+    def is_expected_error_page(self, driver):
+        error_page = get_error_page(driver)
+        return bool(error_page and self.expected_error_page in error_page)
+
+
+def get_error_page(driver):
+    try:
+        error_page = driver.get_elm(class_name='error-page')
+    except NoSuchElementException:
+        pass
+    else:
+        header = error_page.get_elm(tag_name='h1')
+        return header.text
+
+
 class ShouldBeError(object):
     """Decorator object for test method.
     If test method has this decorator, it must end with error message passed in
