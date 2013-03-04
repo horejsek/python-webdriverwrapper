@@ -2,12 +2,15 @@
 
 ## What this wrapper do
 
+* Adds messges into webdriver's exceptions (by default there is no information about which element is missing etc.).
 * Adds some usefull method to WebDriver and WebElement. Such as
  * `find_element_by_text`,
  * `contains_text`,
  * `wait_for_element`,
  * or `go_to` (explained below).
 * Makes filling out forms easier.
+ * If some WebElement is also form element, you can call method `fill_out` with dictionary as parameter. More info below.
+ * If some WebElement is also Select, you can call methods from webdriver's Select class.
 * Provide TestCase.
 
 ## How to install chromedriver
@@ -128,6 +131,8 @@ form.fill_out({
 })
 ```
 
+Method will send key TAB if element is input of type text or textarea. Purpose of this is because of onchange event - JS function registred on that event will be called after losing of focus. 
+
 #### `fill_out_and_submit(data)`
 
 Same as `fill_out`, but after that calls `submit`.
@@ -156,7 +161,7 @@ select.find_elements_by_text('Option text')
 `WebdriverTestCase` provides method aliases on driver and some other cool stuff. If you need driver instance, it's *hide* in `self.driver`.
 
 ```python
-from webdriverwrapper import WebdriverTestCase
+from webdriverwrapper.testcase import WebdriverTestCase
 
 class TestCase(WebdriverTestCase):
     def test(self):
@@ -164,6 +169,8 @@ class TestCase(WebdriverTestCase):
         self.click('gbqfsb')  # I'm feeling luck.
         self.contains_text('Doodles')
 ```
+
+Tip: if you want to write something into `__init__`, write it into method `init` and you do not have to call parent's `__init__`.
 
 #### `_get_driver()`
 
@@ -195,6 +202,10 @@ Show message in console. (Uses module `logging`.)
 Waits for user input. Good for debuging.
 
 #### Usefull decorators
+
+```python
+from webdriverwrapper.decorators import *
+```
 
 ##### `GoToPage`
 
@@ -240,6 +251,8 @@ By default `WebdriverTestCase` create one driver for all tests. If you want one 
 Note: It's good to define it in some base TestCase for all TestCases.
 
 ```python
+from webdriverwrapper.testcase import ONE_INSTANCE_FOR_ALL_TESTS
+
 class TestCase(WebdriverTestCase):
     instances_of_driver = ONE_INSTANCE_FOR_ALL_TESTS
 ```
