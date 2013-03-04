@@ -34,8 +34,11 @@ class ShouldBeErrorPage(object):
         return f
 
     def is_expected_error_page(self, driver):
-        error_page = get_error_page(driver)
+        error_page = self.get_error_page(driver)
         return bool(error_page and self.expected_error_page in error_page)
+
+    def get_error_page(self, driver):
+        return get_error_page(driver)
 
 
 def get_error_page(driver):
@@ -81,6 +84,15 @@ class ShouldBeError(object):
 
     def get_errors(self, driver):
         return get_error_messages(driver)
+
+
+class CanBeError(ShouldBeError):
+    """Same as ShouldBeError, but no error is OK."""
+    def is_expected_error(self, driver):
+        errors = self.get_errors(driver)
+        if not errors:
+            return True
+        return super(CanBeError, self).is_expected_error(driver)
 
 
 def get_error_messages(driver):
