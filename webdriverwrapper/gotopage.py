@@ -29,7 +29,7 @@ class GoToPage(object):
         return f
 
     def go_to_page(self, driver):
-        go_to_page(drive, **self.url_kwds)
+        go_to_page(driver, **self.url_kwds)
 
 
 class ShouldBeOnPage(object):
