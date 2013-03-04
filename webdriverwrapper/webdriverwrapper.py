@@ -6,7 +6,7 @@ from selenium.webdriver import *
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
-from exceptions import NoSuchElementException
+from exceptions import NoSuchElementException, _create_elm_text
 import gotopage
 
 
@@ -71,11 +71,15 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
         self.quit()
 
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
-        """Alias for WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))."""
+        """Same as WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...)),
+        but appends useful message if it's not provided.
+        """
+        if not message:
+            message = _create_elm_text(*args, **kwds)
         self.wait(timeout).until(lambda driver: driver.get_elm(*args, **kwds), message=message)
 
     def wait(self, timeout=10):
-        """Alias for selenium.webdriver.support.ui.WebDriverWait(driver, timeout).
+        """Alias for WebDriverWait(driver, timeout).
         Returns instance which has method until which takes function.
 
         Example:
