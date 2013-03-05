@@ -4,7 +4,6 @@ import logging
 logging.basicConfig(level=logging.INFO)
 import unittest
 import sys
-from selenium.common.exceptions import NoSuchElementException
 
 import exceptions
 from webdriverwrapper import Firefox

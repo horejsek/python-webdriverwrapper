@@ -4,9 +4,6 @@
 #+ test. There is testing mainly driver instance.
 #  WebdriverTestCase is used because of creating of driver.
 
-from mock import Mock, call
-import os
-
 from webdriverwrapper import testcase, Chrome
 from webdriverwrapper.webdriverwrapper import _WebElementWrapper
 from webdriverwrapper.exceptions import NoSuchElementException
@@ -26,7 +23,7 @@ class WebdriverWrapperTest(testcase.WebdriverTestCase):
             self.driver.get_elm('some_non_exist_id')
         except NoSuchElementException, e:
             self.assertTrue(
-                e.msg and 'some_non_exist_id' in e.msg, 
+                e.msg and 'some_non_exist_id' in e.msg,
                 'Exception has bad message (%s)' % e.msg,
             )
         except Exception, e:
@@ -39,7 +36,7 @@ class WebdriverWrapperTest(testcase.WebdriverTestCase):
             self.driver.find_element_by_id('some_non_exist_id')
         except NoSuchElementException, e:
             self.assertTrue(
-                e.msg and 'some_non_exist_id' in e.msg, 
+                e.msg and 'some_non_exist_id' in e.msg,
                 'Exception has bad message (%s)' % e.msg,
             )
         except Exception, e:

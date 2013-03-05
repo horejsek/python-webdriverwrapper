@@ -11,7 +11,7 @@ from exceptions import _create_exception_msg
 import gotopage
 
 __all__ = (
-    'Firefox', 
+    'Firefox',
     'FirefoxProfile',
     'Chrome',
     'ChromeOptions',
@@ -78,12 +78,12 @@ class _WebdriverBaseWrapper(object):
             super(_WebdriverBaseWrapper, self).click()
 
     def get_elm(
-        self, 
+        self,
         id_=None, class_name=None, name=None, tag_name=None, xpath=None,
         parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None
     ):
         elms = self.get_elms(
-            id_, class_name, name, tag_name, xpath, 
+            id_, class_name, name, tag_name, xpath,
             parent_id, parent_class_name, parent_name, parent_tag_name
         )
         if not elms:
@@ -213,7 +213,7 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
         return instance
 
     def __init__(self, webelement):
-        #  Nothing to do because whole __dict__ of original WebElement was 
+        #  Nothing to do because whole __dict__ of original WebElement was
         #+ copied during creation of instance.
         pass
 

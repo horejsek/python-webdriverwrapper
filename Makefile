@@ -3,7 +3,7 @@ PYTHON=`which python`
 
 
 test:
-	cd tests; nosetests
+	cd tests; nosetests --nologcapture
 
 
 source:
