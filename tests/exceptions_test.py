@@ -3,7 +3,7 @@
 from mock import Mock, call
 import unittest
 
-from webdriverwrapper.exceptions import _create_exception_msg_tag
+from webdriverwrapper.exceptions import _create_exception_msg, _create_exception_msg_tag
 
 
 class CreateElmTextTagTest(unittest.TestCase):
@@ -26,3 +26,9 @@ class CreateElmTextTagTest(unittest.TestCase):
     def test_make_msg_xpath(self):
         msg = _create_exception_msg_tag(xpath='//*')
         self.assertEquals(msg, '//*')
+
+
+class CreateElmTextTest(unittest.TestCase):
+    def test_make_msg_with_url(self):
+        msg = _create_exception_msg(id_='id', url='http://example.com')
+        self.assertEquals(msg, 'No element <* id=id> found at http://example.com')

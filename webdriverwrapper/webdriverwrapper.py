@@ -90,6 +90,7 @@ class _WebdriverBaseWrapper(object):
             raise selenium_exc.NoSuchElementException(_create_exception_msg(
                 id_, class_name, name, tag_name, xpath,
                 parent_id, parent_class_name, parent_name, parent_tag_name,
+                self.current_url,
             ))
         return elms[0]
 
@@ -159,6 +160,7 @@ class _WebdriverBaseWrapper(object):
         if by in self._by_to_string_param_map:
             msg = _create_exception_msg(**{
                 self._by_to_string_param_map[by]: value,
+                'url': self.current_url,
             })
         else:
             msg = ''
@@ -216,6 +218,15 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
         #  Nothing to do because whole __dict__ of original WebElement was
         #+ copied during creation of instance.
         pass
+
+    @property
+    def current_url(self):
+        try:
+            current_url = self._parent.current_url
+        except Exception:
+            current_url = 'unknown'
+        finally:
+            return current_url
 
 
 class _SelectWrapper(_WebElementWrapper, Select):

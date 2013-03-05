@@ -19,24 +19,17 @@ class WebdriverWrapperTest(testcase.WebdriverTestCase):
         return Chrome()
 
     def test_exception(self):
-        try:
-            self.driver.get_elm('some_non_exist_id')
-        except NoSuchElementException, e:
-            self.assertTrue(
-                e.msg and 'some_non_exist_id' in e.msg,
-                'Exception has bad message (%s)' % e.msg,
-            )
-        except Exception, e:
-            self.fail('Excepted NoSuchElementException, but raised %s instead' % e.__class__)
-        else:
-            self.fail('NoSuchElementException not raised')
+        self._test_exception(lambda: self.driver.get_elm('some_non_exist_id'))
 
     def test_exception_from_find_methods(self):
+        self._test_exception(lambda: self.driver.find_element_by_id('some_non_exist_id'))
+
+    def _test_exception(self, callback):
         try:
-            self.driver.find_element_by_id('some_non_exist_id')
+            callback()
         except NoSuchElementException, e:
             self.assertTrue(
-                e.msg and 'some_non_exist_id' in e.msg,
+                e.msg and 'some_non_exist_id' in e.msg and 'http://' in e.msg,
                 'Exception has bad message (%s)' % e.msg,
             )
         except Exception, e:
