@@ -25,8 +25,7 @@ class WebdriverWrapperException(Exception):
 
 class ErrorPageException(WebdriverWrapperException):
     def __init__(self, url, error_page, traceback=''):
-        self.msg = 'Page %s has unexpected error page: %s' % (url, error_page)
-        self.traceback = traceback
+        msg = 'Page %s has unexpected error page: %s' % (url, error_page)
         super(ErrorPageException, self).__init__(msg, traceback)
 
 
