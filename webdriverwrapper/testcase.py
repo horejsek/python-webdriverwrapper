@@ -51,6 +51,13 @@ class WebdriverTestCase(unittest.TestCase):
                 raise
             except:
                 result.addError(self, sys.exc_info())
+                #  setUp can fail because of app in some state returns internal
+                #+ server error. It's good to know about it - it can say more
+                #+ than that some element couldn't be found.
+                try:
+                    self._check_errors()
+                except:
+                    result.addError(self, sys.exc_info())
                 return
 
             ok = False
@@ -80,12 +87,11 @@ class WebdriverTestCase(unittest.TestCase):
 
             if ok:
                 result.addSuccess(self)
-
-            # Is nice to see at break point if test passed or not.
-            # So this call have to be after all addError/addSuccess calls.
-            self._tear_down()
         finally:
             result.stopTest(self)
+            # Is nice to see at break point if test passed or not.
+            # So this call have to be after stopTest which print result of test.
+            self._tear_down()
 
     def _set_up(self):
         self.__class__._number_of_test += 1
