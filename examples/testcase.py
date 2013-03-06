@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from webdriverwrapper import Chrome, WebdriverTestCase, GoToPage, ShouldBeOnPage
+from webdriverwrapper import Chrome
+from webdriverwrapper.testcase import WebdriverTestCase
+from webdriverwrapper.decorators import GoToPage, ShouldBeOnPage
 
 
 class TestCase(WebdriverTestCase):
