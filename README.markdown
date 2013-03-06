@@ -271,3 +271,7 @@ When you have to do some debug page (for example with Firebug or with Chrome Dev
 class TestCase(WebdriverTestCase):
     wait_after_test = True
 ```
+
+#### Windows
+
+If you in your test switch to another window, you don't have to remeber that you have to switch back into main window. `WebdriverTestCase` ensure that every tests starts in main window.

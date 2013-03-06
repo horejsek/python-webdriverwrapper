@@ -97,6 +97,11 @@ class WebdriverTestCase(unittest.TestCase):
         self.__class__._number_of_test += 1
         if not hasattr(WebdriverTestCase, 'driver'):
             WebdriverTestCase.driver = self._get_driver()
+            WebdriverTestCase._main_window = WebdriverTestCase.driver.current_window_handle
+
+        # Ensure that test starts in main window.
+        if self.driver.current_window_handle != self._main_window:
+            self.driver.switch_to_window(self._main_window)
 
     def _get_driver(self):
         return Firefox()
