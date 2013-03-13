@@ -69,7 +69,9 @@ class _WebdriverBaseWrapper(object):
         """Find every element in page which contain `text`."""
         if not isinstance(text, unicode):
             text = unicode(text, 'utf-8')
-        elms = self.find_elements_by_xpath('.//*[contains(text(), "%s")]' % text)
+        elms = self.find_elements_by_xpath(
+            './/*[contains(text(), "%s") and not(ancestor-or-self::*[@data-selenium-not-search])]' % text
+        )
         return elms
 
     def click(self, *args, **kwds):

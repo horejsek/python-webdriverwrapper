@@ -35,6 +35,8 @@ elements = driver.find_elements_by_text('hello')
 another_elements = elements[0].find_element_by_text('world')
 ```
 
+If you want to ignore some elements (for example some debug texts in development), add to these elements attribute `data-selenium-not-search`.
+
 #### `contains_text(text)`
 
 ```python

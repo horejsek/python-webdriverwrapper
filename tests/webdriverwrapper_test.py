@@ -4,6 +4,7 @@
 #+ test. There is testing mainly driver instance.
 #  WebdriverTestCase is used because of creating of driver.
 
+import os
 from webdriverwrapper import testcase, Chrome
 from webdriverwrapper.webdriverwrapper import _WebElementWrapper
 from webdriverwrapper.exceptions import NoSuchElementException
@@ -40,3 +41,12 @@ class WebdriverWrapperTest(testcase.WebdriverTestCase):
     def test_returns_wrapped_element(self):
         element = self.driver.find_element_by_id('gbqfq')
         self.assertTrue(isinstance(element, _WebElementWrapper), 'Element instance is not WebElementWrapper')
+
+    def test_find_elements_by_text(self):
+        path = os.path.dirname(os.path.realpath(__file__))
+        self.go_to('file://%s/html/find_elements.html' % path)
+
+        #  Check that text there is only one element - other elements are ignored
+        #+ by attribute data-selenium-not-search.
+        elms = self.find_elements_by_text('text')
+        self.assertEqual(len(elms), 1)
