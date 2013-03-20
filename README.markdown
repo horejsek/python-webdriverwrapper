@@ -133,7 +133,7 @@ form.fill_out({
 })
 ```
 
-Method will send key TAB if element is input of type text or textarea. Purpose of this is because of onchange event - JS function registred on that event will be called after losing of focus. 
+Method will send key TAB if element is input of type text or textarea. Purpose of this is because of onchange event - JS function registred on that event will be called after losing of focus.
 
 #### `fill_out_and_submit(data)`
 
@@ -194,6 +194,10 @@ By default `WebdriverTestCase` create instance of Firefox. You can overwrite thi
     }
 </script>
 ```
+
+#### `check_errors()`
+
+When your test need check of errors somewhere in the middle of the test, just call this method. It call same check as is called after each test.
 
 #### `debug(msg)`
 

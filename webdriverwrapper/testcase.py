@@ -123,6 +123,9 @@ class WebdriverTestCase(unittest.TestCase):
     def debug(self, msg):
         logging.info(msg)
 
+    def check_errors(self):
+        self._check_errors()
+
     def _check_errors(self):
         self._check_js_errors()
         #  Check for any error message only if there isn't decorator which
