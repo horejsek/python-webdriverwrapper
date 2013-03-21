@@ -9,6 +9,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from exceptions import _create_exception_msg
 import gotopage
+from downloadfile import DownloadFile
 
 __all__ = (
     'Firefox',
@@ -231,6 +232,9 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
             current_url = 'unknown'
         finally:
             return current_url
+
+    def download_file(self):
+        return DownloadFile(self)
 
 
 class _SelectWrapper(_WebElementWrapper, Select):
