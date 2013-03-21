@@ -114,6 +114,22 @@ driver.go_to('search')  # See, I do not need to write again google.com.
 driver.go_to(query={'q': 'hello from cool webdriverwrapper'})
 ```
 
+### `WebElement` specific method
+
+#### `download_file()`
+
+Download file by clicking on some link using Selenium is not good idea. With Chrome it's working thanks to no save dialog by default, but still you can't check status code, data, headers, etc. For that purpose there is special method `download_file`. You can call it will try download file using Python's `urllib2`. Method returns special object (not response or file data) which hold some useful information.
+
+```python
+f = driver.get_elm('some-link').download_file()
+f.method  # You can check if method was GET or POST (returns in lowercase).
+f.status_code
+f.headers  # Dictionary of all response headers.
+f.data
+```
+
+This method support downloading from link (use attribute href) or from button in form (use action or current URL). If form has method POST, POST is used and for now is sending only button name and value, nothing more. If method is GET, it uses only URL without params.
+
 ### Forms
 
 If some element is form, it provides some more methods.
