@@ -60,7 +60,7 @@ def _create_exception_msg(
 def _create_exception_msg_tag(id_=None, class_name=None, name=None, tag_name=None, xpath=None):
     if xpath:
         return xpath
-    elif id_ or class_name or tag_name:
+    elif id_ or class_name or tag_name or name:
         msg = '<%s' % (tag_name or '*')
         if id_:
             msg += ' id=%s' % id_

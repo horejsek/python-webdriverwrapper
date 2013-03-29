@@ -19,6 +19,10 @@ class CreateElmTextTagTest(unittest.TestCase):
         msg = _create_exception_msg_tag(tag_name='div')
         self.assertEquals(msg, '<div>')
 
+    def test_make_msg_name(self):
+        msg = _create_exception_msg_tag(name='xx')
+        self.assertEquals(msg, '<* name=xx>')
+
     def test_make_msg_all(self):
         msg = _create_exception_msg_tag(tag_name='div', id_='id', class_name='class')
         self.assertEquals(msg, '<div id=id class=class>')
