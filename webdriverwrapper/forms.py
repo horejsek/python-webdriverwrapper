@@ -4,6 +4,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 
 from webdriverwrapper import _WebElementWrapper
+from exceptions import _create_exception_msg
 
 __all__ = ('Form',)
 
@@ -62,7 +63,7 @@ class FormElement(object):
             if elm_type == 'hidden':
                 continue
             return elm.tag_name, elm_type
-        raise NoSuchElementException()
+        raise NoSuchElementException(_create_exception_msg(name=self.elm_name))
 
     def fill_input_checkbox(self, value):
         if isinstance(value, (list, tuple)):
