@@ -93,12 +93,11 @@ def _make_url(path='', query='', domain=''):
 
 
 def _append_domain(url_kwds, testcase_instance):
-    domain = _get_domain(testcase_instance.driver, url_kwds['domain'] or testcase_instance.domain)
+    domain = url_kwds['domain'] or testcase_instance.domain or _get_domain_from_driver(testcase_instance.driver)
     url_kwds['domain'] = domain
 
 
-def _get_domain(driver, domain):
-    if not domain:
-        url = driver.current_url
-        domain = urlparse.urlparse(url).netloc
+def _get_domain_from_driver(driver):
+    url = driver.current_url
+    domain = urlparse.urlparse(url).netloc
     return domain

@@ -209,13 +209,20 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
         instance. But you can force your own domain by `domain`.
         `query` can be dictionary.
         """
-        domain = gotopage._get_domain(self, domain)
+        if not domain:
+            domain = gotopage._get_domain_from_driver(self)
         gotopage.go_to_page(self, path, query, domain)
 
     def switch_to_window(self, window_name=None, title=None, url=None):
         if window_name:
             self._get_seleniums_driver_class().switch_to_window(self, window_name)
             return
+
+        if url:
+            if not isinstance(url, dict):
+                url = {'path': url}
+            url.setdefault('domain', gotopage._get_domain_from_driver(self))
+            url = gotopage._make_url(**url)
 
         for window_handle in self.window_handles:
             self._get_seleniums_driver_class().switch_to_window(self, window_handle)

@@ -15,6 +15,14 @@ class WindowsTest(WebdriverWrapperBaseClassTest):
     def test_switch_to_window_by_url(self):
         self._test_swith_to_window(lambda: self.switch_to_window(url=self.new_window_path))
 
+    def test_switch_to_window_by_url_args(self):
+        try:
+            self._test_swith_to_window(lambda: self.switch_to_window(url={'path': 'aa', 'domain': 'example.com'}))
+        except Exception, e:
+            self.assertTrue('http://example.com/aa' in str(e))
+        else:
+            self.fail('No window found.')
+
     def _test_swith_to_window(self, callback):
         main_window_handle = self.driver.current_window_handle
         self.assertEqual(len(self.driver.window_handles), 1)
