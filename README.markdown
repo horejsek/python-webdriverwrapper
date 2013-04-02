@@ -124,6 +124,14 @@ driver.switch_to_window(title='New popup window')
 # make some work in popup
 ```
 
+Param `url` can be dictionary and this dictionary can have three keys: `path`, `query` and `domain`. It's same as for method `go_to`. If you don't specify `domain`, it will be recognized from current url.
+
+```python
+driver.switch_to_window(url='http://www.example.com/path')
+# or
+driver.switch_to_window(url={'path': 'path'})
+```
+
 #### `close_window(window_name|title|url)`
 
 Close window and stay in current window. Params are same as in `switch_to_window`.
