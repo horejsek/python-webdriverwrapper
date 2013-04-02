@@ -212,6 +212,34 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
         domain = gotopage._get_domain(self, domain)
         gotopage.go_to_page(self, path, query, domain)
 
+    def switch_to_window(self, window_name=None, title=None, url=None):
+        if window_name:
+            self._get_seleniums_driver_class().switch_to_window(self, window_name)
+            return
+
+        for window_handle in self.window_handles:
+            self._get_seleniums_driver_class().switch_to_window(self, window_handle)
+            if title and self.title == title:
+                return
+            if url and self.current_url == url:
+                return
+        raise Exception('Window (title=%s, url=%s) not found.' % (title, url))
+
+    def close_window(self, window_name=None, title=None, url=None):
+        main_window_handle = self.current_window_handle
+        self.switch_to_window(window_name, title, url)
+        self.close()
+        self.switch_to_window(main_window_handle)
+
+    def close_other_windows(self):
+        main_window_handle = self.current_window_handle
+        for window_handle in self.window_handles:
+            if window_handle == main_window_handle:
+                continue
+            self.switch_to_window(window_handle)
+            self.close()
+        self.switch_to_window(main_window_handle)
+
 
 class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
     def __new__(cls, webelement):

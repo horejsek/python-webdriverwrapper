@@ -192,3 +192,12 @@ class WebdriverTestCase(unittest.TestCase):
 
     def go_to(self, *args, **kwds):
         self.driver.go_to(*args, **kwds)
+
+    def switch_to_window(self, window_name=None, title=None, url=None):
+        self.driver.switch_to_window(window_name, title, url)
+
+    def close_window(self, window_name=None, title=None, url=None):
+        self.driver.close_window(window_name, title, url)
+
+    def close_other_windows(self):
+        self.driver.close_other_windows()

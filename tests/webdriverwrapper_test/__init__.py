@@ -12,7 +12,7 @@ class WebdriverWrapperBaseClassTest(testcase.WebdriverTestCase):
     instances_of_driver = testcase.ONE_INSTANCE_PER_TESTCASE
 
     def init(self):
-        self.path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..')
+        self.path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
 
     def _get_driver(self):
         return Chrome()
