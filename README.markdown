@@ -114,6 +114,24 @@ driver.go_to('search')  # See, I do not need to write again google.com.
 driver.go_to(query={'q': 'hello from cool webdriverwrapper'})
 ```
 
+#### `switch_to_window(window_name|title|url)`
+
+Switch to window by `window_name` (Selenium's classic way) or by `title` or by `url`.
+
+```python
+driver.click('some-link-which-opens-popup')
+driver.switch_to_window(title='New popup window')
+# make some work in popup
+```
+
+#### `close_window(window_name|title|url)`
+
+Close window and stay in current window. Params are same as in `switch_to_window`.
+
+#### `close_other_windows()`
+
+Close all windows except the current window.
+
 ### `WebElement` specific method
 
 #### `download_file()`
