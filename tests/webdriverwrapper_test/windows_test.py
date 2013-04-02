@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from webdriverwrapper_test import WebdriverWrapperBaseClassTest
+from webdriverwrapper.exceptions import NoSuchWindowException
 
 
 class WindowsTest(WebdriverWrapperBaseClassTest):
@@ -18,10 +19,12 @@ class WindowsTest(WebdriverWrapperBaseClassTest):
     def test_switch_to_window_by_url_args(self):
         try:
             self._test_swith_to_window(lambda: self.switch_to_window(url={'path': 'aa', 'domain': 'example.com'}))
+        except NoSuchWindowException, e:
+            self.assertTrue('http://example.com/aa' in e.msg)
         except Exception, e:
-            self.assertTrue('http://example.com/aa' in str(e))
+            self.fail('Wrong exception: %s' % str(e))
         else:
-            self.fail('No window found.')
+            self.fail('Window should be not found!')
 
     def _test_swith_to_window(self, callback):
         main_window_handle = self.driver.current_window_handle

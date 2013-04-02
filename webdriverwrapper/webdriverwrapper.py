@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
-from exceptions import _create_exception_msg
+from exceptions import NoSuchWindowException, _create_exception_msg
 import gotopage
 from downloadfile import DownloadFile
 
@@ -230,7 +230,7 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
                 return
             if url and self.current_url == url:
                 return
-        raise Exception('Window (title=%s, url=%s) not found.' % (title, url))
+        raise NoSuchWindowException('Window (title=%s, url=%s) not found.' % (title, url))
 
     def close_window(self, window_name=None, title=None, url=None):
         main_window_handle = self.current_window_handle
