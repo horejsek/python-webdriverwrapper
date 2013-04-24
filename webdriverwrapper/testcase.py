@@ -124,15 +124,15 @@ class WebdriverTestCase(unittest.TestCase):
         logging.info(msg)
 
     def check_errors(self):
-        self._check_errors()
+        self._check_errors(force_check=True)
 
-    def _check_errors(self):
+    def _check_errors(self, force_check=False):
         self._check_js_errors()
         #  Check for any error message only if there isn't decorator which
         #+ already checked it.
-        if not getattr(self._test_method, '__should_be_error_page__', False):
+        if force_check or not getattr(self._test_method, '__should_be_error_page__', False):
             self._check_error_page()
-        if not getattr(self._test_method, '__should_be_error__', False):
+        if force_check or not getattr(self._test_method, '__should_be_error__', False):
             self._check_error_messages()
 
     def _check_js_errors(self):

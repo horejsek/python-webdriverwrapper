@@ -239,7 +239,7 @@ By default `WebdriverTestCase` create instance of Firefox. You can overwrite thi
 
 #### `check_errors()`
 
-When your test need check of errors somewhere in the middle of the test, just call this method. It call same check as is called after each test.
+When your test need check of errors somewhere in the middle of the test, just call this method. It call same check as is called after each test with one difference that it not depends on decorator. It means that no error is allowed.
 
 #### `debug(msg)`
 
