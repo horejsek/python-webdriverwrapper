@@ -200,6 +200,14 @@ select.select_by_value('value')
 select.find_elements_by_text('Option text')
 ```
 
+### Exceptions
+
+You can import all Selenium's exceptions from webdriverwrapper:
+
+```
+import webdriver.exceptions
+```
+
 ### `WebdriverTestCase`
 
 `WebdriverTestCase` provides method aliases on driver and some other cool stuff. If you need driver instance, it's *hide* in `self.driver`.
@@ -277,6 +285,23 @@ You can override method `get_errors` which returns list of error messages on pag
 ```python
 class TestCase(WebdriverTestCase):
     @ShouldBeError('some-error')
+    def test(self):
+        # ...
+```
+
+##### `CanBeError`
+
+Same as `ShouldBeError`, but if test ends without error, it's ok as well as with error.
+
+##### `ShouldByErrorPage`
+
+Similar to `ShouldByError`, but it looks for error page, not error message. By error page I mean page with code 403, 404, 500 and so on. By default error page is decoded from `.error-page h1`.
+
+You can override method `get_error_page` which returns title of error page (for example 404 Not found).
+
+```python
+class TestCase(WebdriverTestCase):
+    @ShouldBeErrorPage(403)
     def test(self):
         # ...
 ```
