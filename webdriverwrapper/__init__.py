@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import decorators
-import exceptions
-import testcase
-from webdriverwrapper import *
+from webdriverwrapper import decorators
+from webdriverwrapper import exceptions
+from webdriverwrapper import testcase
+from webdriverwrapper.wrapper import *
