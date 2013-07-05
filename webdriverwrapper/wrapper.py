@@ -5,6 +5,7 @@ import six
 
 import selenium.common.exceptions as selenium_exc
 from selenium.webdriver import *
+from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select, WebDriverWait
@@ -192,7 +193,8 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
         self.quit()
 
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
-        """Same as WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...)),
+        """
+        Same as WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...)),
         but appends useful message if it's not provided.
         """
         if not message:
@@ -207,10 +209,10 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
         self.wait().until(lambda driver: len(driver.find_element_by_id('elm')) > 10)
         """
         return WebDriverWait(self, timeout)
-    #enddef
 
     def go_to(self, path=None, query=None, domain=None):
-        """Go to page. You can pass only `path`, because this
+        """
+        Go to page. You can pass only `path`, because this
         method can get domain from current_url from driver
         instance. But you can force your own domain by `domain`.
         `query` can be dictionary.
@@ -252,6 +254,10 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
             self.switch_to_window(window_handle)
             self.close()
         self.switch_to_window(main_window_handle)
+
+    def get_alert(self):
+        """Returns instance of selenium.webdriver.common.alert.Alert"""
+        return Alert(self)
 
 
 class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):

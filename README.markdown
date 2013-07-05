@@ -140,6 +140,15 @@ Close window and stay in current window. Params are same as in `switch_to_window
 
 Close all windows except the current window.
 
+#### `get_alert()`
+
+Returns instance of `selenium.webdriver.common.alert.Alert`. It's just alias, because it's hard to remember where that class is.
+
+```python
+driver.get_alert().accept()
+driver.get_alert().dismiss()
+```
+
 ### `WebElement` specific method
 
 #### `download_file()`
