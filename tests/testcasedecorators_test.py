@@ -24,3 +24,8 @@ class TestCaseDecoratorsTest(testcase.WebdriverTestCase):
     def test_should_be_error(self):
         path = os.path.dirname(os.path.realpath(__file__))
         self.go_to('file://%s/html/error_message.html' % path)
+
+    @ShouldBeInfo('some-info')
+    def test_should_be_info(self):
+        path = os.path.dirname(os.path.realpath(__file__))
+        self.go_to('file://%s/html/info_message.html' % path)
