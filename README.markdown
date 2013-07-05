@@ -1,5 +1,11 @@
 # Better interface for WebDriver in Python
 
+## Install
+
+`pip install webdriverwrapper`
+
+Support for Python 2.6 and higher (including Python 3).
+
 ## What this wrapper do
 
 * Adds messges into webdriver's exceptions (by default there is no information about which element is missing etc.).
@@ -84,7 +90,7 @@ driver.get_elm('someid').click(class_name='someclass')
 driver.click(class_name='someclass', parent_id='someid')
 ```
 
-### `WebDriver` specific method
+### `WebDriver` specific methods
 
 #### `wait_for_element(timeout=10, message='', id_|class_name|name|tag_name|xpath[, parent_id|parent_class_name|parent_name|parent_tag_name])`
 
@@ -149,7 +155,7 @@ driver.get_alert().accept()
 driver.get_alert().dismiss()
 ```
 
-### `WebElement` specific method
+### `WebElement` specific methods
 
 #### `download_file()`
 
