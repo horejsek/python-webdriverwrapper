@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
+
 import random
 from selenium.common.exceptions import WebDriverException, NoAlertPresentException
 
