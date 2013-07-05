@@ -272,13 +272,34 @@ class TestCase(WebdriverTestCase):
 
 By default `WebdriverTestCase` looks for error messages in elements with class `error`. If you want to test that some page have some error message, use this decorator.
 
-You can override method `get_errors` which returns list of error messages on page.
-
 ```python
 class TestCase(WebdriverTestCase):
     @ShouldBeError('some-error')
     def test(self):
         # ...
+```
+
+You can override method `get_error_messages` which returns list of error messages on page. Default implementation returns all texts from elements with class `error`. But text is bad for testing (it can be changed one day), so you can specify attribute `error`:
+
+```html
+<div class="error" error="username_is_mandatory">Username is mandatory</div>
+```
+
+##### `ShouldBeInfo`
+
+Same as `ShoulBeError`, just looks for info messages.
+
+```python
+class TestCase(WebdriverTestCase):
+    @ShouldBeInfo('some-info')
+    def test(self):
+        # ...
+```
+
+You can override method `get_info_messages` which returns list of info messages on page. Default implementation returns all texts from elements with class `info`. But text is bad for testing (it can be changed one day), so you can specify attribute `info`:
+
+```html
+<div class="info" info="successfully_saved">Your profile was successfully saved</div>
 ```
 
 #### TestCase options
