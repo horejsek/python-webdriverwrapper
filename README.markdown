@@ -353,3 +353,41 @@ class TestCase(WebdriverTestCase):
 #### Windows
 
 If you in your test switch to another window, you don't have to remeber that you have to switch back into main window. `WebdriverTestCase` ensure that every tests starts in main window.
+
+### `FuzzyTestCase`
+
+Trust me, it's good test web app by randomly clicking on links and buttons. It can find a lot of bugs, mostly JS (when you call some JS and some element doesn't exist and so on). For this webdriverwrapper provide `FuzzyTestCase`. It randomly click on clickable elements and looks for page error (code 500) and JS errors.
+
+Whole example is in examples/fuzzy.py.
+
+You can override several methods:
+
+#### `is_error_page()`
+
+By default calls `get_error_page` and returns `True` if curren page is error page. You shoul override it when you override method `get_error_page`.
+
+#### `reset_after_page_error()`
+
+When by randomly clicking occours error page, it's good to restart to some default state. By default is called `self.go_to('/')`. If you need something more, there is place where you should put that code.
+
+#### `get_clickable_elements()`
+
+Returns all clickable elememnts on current page. By default it returns all `a`, `submit` and `input[@type="submit"]` elements which doesn't have class `selenium_donotclick`.
+
+TIP: When you want to make some elements more important, just add more references for them. For example if you want click mostly on some elements in page and don't click very ofter to menu, you can write something like this:
+
+```python
+class FuzzyTest(FuzzyTestCase):
+    def get_clickable_elements(self):
+        elms_in_menu = self.get_elms(...)
+        other_elms = self.get_elms(...)
+        return elms_in_menu + other_elms * 5
+```
+
+TIP 2: Do not forget remove elements with class `selenium_donotclick`. Then you can add this class to elements which you want to test by fuzzy. Because it can for example delete something from database and destroy rest of test.
+
+#### Metaclass `FuzzyTestCaseType`
+
+You have to use this metaclass for your test. It create by default 50 tests (50 random clicks) which you can override by class variable `count_of_clicks`.
+
+If you overrided method `get_error_messages`, you should pass your class `CanBeError` to this class by class variable `can_be_error_decorator`. In fuzzy testing some error messages are ignored. If you don't want ignore error messages, pass `None`.
