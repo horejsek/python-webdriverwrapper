@@ -2,7 +2,7 @@
 
 from distutils.core import setup
 
-version = '0.11.2'
+version = '1.0.0'
 
 setup(
     name='webdriverwrapper',
@@ -22,8 +22,7 @@ setup(
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: Python Software Foundation License',
         'Operating System :: OS Independent',
-        'Development Status :: 4 - Beta',
-        #'Development Status :: 5 - Production/Stable',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development :: Testing',
