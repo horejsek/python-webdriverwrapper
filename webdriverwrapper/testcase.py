@@ -98,6 +98,8 @@ class WebdriverTestCase(unittest.TestCase):
         if not hasattr(WebdriverTestCase, 'driver'):
             WebdriverTestCase.driver = self._get_driver()
             WebdriverTestCase._main_window = WebdriverTestCase.driver.current_window_handle
+            if self.domain:
+                WebdriverTestCase.driver.go_to(self.domain)
 
         # Ensure that test starts in main window.
         if self.driver.current_window_handle != self._main_window:
