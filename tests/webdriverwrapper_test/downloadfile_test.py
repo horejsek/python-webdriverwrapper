@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
+
 from webdriverwrapper_test import WebdriverWrapperBaseClassTest
 
 
@@ -12,19 +17,32 @@ class DownloadFileTest(WebdriverWrapperBaseClassTest):
     def setUp(self):
         self.go_to('file://%s/html/download_file.html' % self.path)
 
-    def test_download_file_by_link(self):
+    def test_by_link(self):
         self._test_download_file('link', self.file_data)
 
-    def test_download_file_by_form_with_action(self):
+    def test_by_form_with_action(self):
         self._test_download_file('btn-action', self.file_data)
 
-    def test_download_file_by_form_by_get(self):
+    def test_by_form_by_get(self):
         self._test_download_file('btn-get', self.html_data)
 
-    def test_download_file_by_form_by_post(self):
+    def test_by_form_by_post(self):
         self._test_download_file('btn-post', self.html_data, 'post')
 
-    def _test_download_file(self, elm_id, file_data, method='get'):
+    def test_by_form_by_get_with_data(self):
+        f = self._test_download_file('btn-get-with-data')
+        self.assertEqual(f._request.get_full_url(), 'http://www.google.com/?q=search')
+
+    def test_by_form_by_post_with_data(self):
+        f = self._test_download_file('btn-post-with-data', self.html_data, 'post')
+        self.assertEqual(f._request.data, urlencode({
+            'btn': 'Method POST & data',
+            'key': 'val',
+        }))
+
+    def _test_download_file(self, elm_id, file_data=None, method='get'):
         f = self.get_elm(elm_id).download_file()
         self.assertEqual(f.method, method)
-        self.assertEqual(f.data, file_data)
+        if file_data is not None:
+            self.assertEqual(f.data, file_data)
+        return f

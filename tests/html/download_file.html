@@ -4,15 +4,27 @@
 </head>
 <body>
     <a href="../files/some_file.txt" id="link">link</a>
+
     <form action="../files/some_file.txt" method="get">
 	<input type="button" id="btn-action" value="With action" />
     </form>
+
     <form method="get">
 	<input type="button" id="btn-get" value="Method GET" />
     </form>
+
+    <form method="post">
+	<input type="button" id="btn-post" value="Method POST" />
+    </form>
+
+    <form method="get" action="http://www.google.com">
+	<input type="hidden" name="q" value="search" />
+	<input type="button" id="btn-get-with-data" value="Method GET & data" />
+    </form>
+
     <form method="post">
 	<input type="hidden" name="key" value="val" />
-	<input type="button" id="btn-post" value="Method POST" />
+	<input type="button" id="btn-post-with-data" name="btn" value="Method POST & data" />
     </form>
 </body>
 </html>

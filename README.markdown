@@ -154,7 +154,7 @@ f.headers  # Dictionary of all response headers.
 f.data
 ```
 
-This method support downloading from link (use attribute href) or from button in form (use action or current URL). If form has method POST, POST is used and for now is sending only button name and value, nothing more. If method is GET, it uses only URL without params.
+This method support downloading from link (use attribute href) or from button in form (use action or current URL). It looks for attribute method of form, so is used correctly GET or POST. Method collect all data from form and pass it to URL (in case of method GET) or to data request (in case of method POST).
 
 ### Forms
 

@@ -33,52 +33,63 @@ class DownloadFile(object):
 
     def _make_request(self):
         request = self._create_request()
+        self._request = request
         self._method = request.get_method().lower()
         self._result = urlopen(request)
         self._data = self._result.read()
 
     def _create_request(self):
-        url = self._get_url()
-        post_data = self._get_post_data()
-        request = Request(url, post_data)
+        url, data = self._get_url_and_data()
+        request = Request(url, data)
         for name, value in self._iter_cookies():
             request.add_header('cookie', '%s=%s' % (name, value))
         return request
 
-    def _get_url(self):
+    def _get_url_and_data(self):
         elm = self._elm
+        data = None
+        is_post = False
         url = elm.get_attribute('href')
         #  If not, element can by some form button. Then use attribute action
         #+ of that form.
         if not url:
-            try:
-                form_elm = elm.get_elm(xpath='.//ancestor::form')
-            except:
-                pass
-            else:
+            form_elm = self._get_form_elm()
+            if form_elm:
                 url = form_elm.get_attribute('action')
+                data = self._get_form_data()
+                is_post = form_elm.get_attribute('method') == 'post'
         #  If form has no action defined or it is not form, just use current url.
         if not url:
             url = elm.current_url
-        return url
 
-    def _get_post_data(self):
-        elm = self._elm
-        post_data = None
-
-        try:
-            form_elm = elm.get_elm(xpath='.//ancestor::form')
-        except:
-            pass
-        else:
-            if form_elm.get_attribute('method') == 'post':
-                post_data = {
-                    elm.get_attribute('name'): elm.get_attribute('value'),
+        if not is_post:
+            if data:
+                url = '%(url)s%(mark)s%(data)s' % {
+                    'url': url,
+                    'mark': '?' if '?' not in url else '&',
+                    'data': data,
                 }
+            data = None
 
-        if post_data:
-            post_data = urlencode(post_data)
-        return post_data
+        return url, data
+
+    def _get_form_data(self):
+        form_elm = self._get_form_elm()
+        if not form_elm:
+            return None
+
+        elms = form_elm.get_elms(xpath='.//*[@name]')
+        data = dict([(elm.get_attribute('name'), elm.get_attribute('value')) for elm in elms])
+        data = urlencode(data)
+        return data
+
+    def _get_form_elm(self):
+        try:
+            form_elm = self._elm.get_elm(xpath='.//ancestor::form')
+        except Exception:
+            return None
+        else:
+            return form_elm
 
     def _iter_cookies(self):
         all_cookies = self._elm._parent.get_cookies()
