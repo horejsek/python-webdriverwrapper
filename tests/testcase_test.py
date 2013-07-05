@@ -28,8 +28,8 @@ class TestCaseTest(testcase.WebdriverTestCase):
             self.check_errors()
         except ErrorsException:
             pass  # ok
-        except Exception, e:
-            self.fail('Wrong exception! %s' % str(e))
+        except Exception as exc:
+            self.fail('Wrong exception! %s' % str(exc))
         else:
             self.fail('Exception not raised!')
         self.go_to('file://%s/html/some_page.html' % self.path)

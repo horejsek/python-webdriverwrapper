@@ -5,9 +5,9 @@ logging.basicConfig(level=logging.INFO)
 import unittest
 import sys
 
-import exceptions
-from webdriverwrapper import Firefox
-from errors import get_error_page, get_error_messages
+import webdriverwrapper.exceptions as exceptions
+from webdriverwrapper.wrapper import Firefox
+from webdriverwrapper.errors import get_error_page, get_error_messages
 
 __all__ = (
     'WebdriverTestCase',
@@ -30,7 +30,7 @@ class WebdriverTestCase(unittest.TestCase):
     def __init__(self, *args, **kwds):
         super(WebdriverTestCase, self).__init__(*args, **kwds)
         self.__class__._number_of_test = 0
-        self.__class__._count_of_tests = len(filter(lambda m: m.startswith('test'), dir(self)))
+        self.__class__._count_of_tests = len([m for m in dir(self) if m.startswith('test')])
         self.init()
 
     def init(self):

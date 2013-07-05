@@ -22,5 +22,10 @@ class ContainsTextTest(WebdriverWrapperBaseClassTest):
         self.assertEqual(len(elms), 1)
 
     def test_unicode(self):
-        elms = self.find_elements_by_text(u'ěščřž')
+        # six.u is safe only with ASCII, so I need some hack.
+        text = 'ěščřž'
+        if hasattr(text, 'decode'):
+            text = text.decode('utf8')
+
+        elms = self.find_elements_by_text(text)
         self.assertEqual(len(elms), 1)

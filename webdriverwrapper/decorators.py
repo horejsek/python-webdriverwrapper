@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
-from errors import ShouldBeErrorPage, ShouldBeError, CanBeError
-from gotopage import GoToPage, ShouldBeOnPage
+from webdriverwrapper.errors import ShouldBeErrorPage, ShouldBeError, CanBeError
+from webdriverwrapper.gotopage import GoToPage, ShouldBeOnPage

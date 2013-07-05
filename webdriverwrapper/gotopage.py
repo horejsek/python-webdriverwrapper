@@ -2,7 +2,10 @@
 
 from functools import wraps
 import re
-import urlparse
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
 
 __all__ = ('GoToPage', 'ShouldBeOnPage')
 
@@ -74,7 +77,7 @@ def go_to_page(driver, path='', query='', domain=''):
 
 def _make_url(path='', query='', domain=''):
     # If in url is present netloc or scheme, in path is probably whole url.
-    if urlparse.urlparse(path).netloc or urlparse.urlparse(path).scheme:
+    if urlparse(path).netloc or urlparse(path).scheme:
         return path
 
     url = ''
@@ -86,7 +89,7 @@ def _make_url(path='', query='', domain=''):
     if query:
         url += '?'
         if isinstance(query, dict):
-            url += '&'.join('%s=%s' % (k, v) for k, v in query.iteritems())
+            url += '&'.join('%s=%s' % (k, v) for k, v in query.items())
         else:
             url += query
     return url
@@ -99,5 +102,5 @@ def _append_domain(url_kwds, testcase_instance):
 
 def _get_domain_from_driver(driver):
     url = driver.current_url
-    domain = urlparse.urlparse(url).netloc
+    domain = urlparse(url).netloc
     return domain

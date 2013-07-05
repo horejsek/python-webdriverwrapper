@@ -18,12 +18,12 @@ class WebdriverExceptionsTest(WebdriverWrapperBaseClassTest):
     def _test_exception(self, callback):
         try:
             callback()
-        except NoSuchElementException, e:
+        except NoSuchElementException as exc:
             self.assertTrue(
-                e.msg and 'some_non_exist_id' in e.msg and 'file://' in e.msg,
-                'Exception has bad message (%s)' % e.msg,
+                exc.msg and 'some_non_exist_id' in exc.msg and 'file://' in exc.msg,
+                'Exception has bad message (%s)' % exc.msg,
             )
-        except Exception, e:
-            self.fail('Excepted NoSuchElementException, but raised %s instead' % e.__class__)
+        except Exception as exc:
+            self.fail('Excepted NoSuchElementException, but raised %s instead' % exc.__class__)
         else:
             self.fail('NoSuchElementException not raised')

@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
 import functools
+import six
+
 import selenium.common.exceptions as selenium_exc
 from selenium.webdriver import *
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
-from exceptions import NoSuchWindowException, _create_exception_msg
-import gotopage
-from downloadfile import DownloadFile
+from webdriverwrapper.exceptions import NoSuchWindowException, _create_exception_msg
+import webdriverwrapper.gotopage as gotopage
+from webdriverwrapper.downloadfile import DownloadFile
 
 __all__ = (
     'Firefox',
@@ -49,7 +51,7 @@ class _ConvertToWebelementWrapper(object):
     def _convert_into_webelementwrapper(cls, webelement):
         try:
             if webelement.tag_name == 'form':
-                from forms import Form
+                from webdriverwrapper.forms import Form
                 wrapped = Form(webelement)
             elif webelement.tag_name == 'select':
                 wrapped = _SelectWrapper(webelement)
@@ -68,8 +70,12 @@ class _WebdriverBaseWrapper(object):
 
     def find_elements_by_text(self, text):
         """Find every element in page which contain `text`."""
-        if not isinstance(text, unicode):
-            text = unicode(str(text), 'utf-8')
+        if not isinstance(text, six.text_type):
+            # There can be anything. Number, Boolean, String, ...
+            text = str(text)
+            # If it's still isn't unicode (Python 2), decode it.
+            if hasattr(text, 'decode'):
+                text = text.decode('utf8')
         elms = self.find_elements_by_xpath(
             './/*[contains(text(), "%s") and not(ancestor-or-self::*[@data-selenium-not-search])]' % text
         )
@@ -109,7 +115,7 @@ class _WebdriverBaseWrapper(object):
         else:
             parent = self
 
-        if len(filter(lambda x: x is not None, (id_, class_name, tag_name, xpath))) > 1:
+        if len([x for x in (id_, class_name, tag_name, xpath) if x is not None]) > 1:
             raise Exception('You can find element only by one param.')
 
         if id_ is not None:
@@ -177,8 +183,8 @@ class _WebdriverBaseWrapper(object):
             selenium_exc.InvalidElementStateException,
             selenium_exc.ElementNotVisibleException,
             selenium_exc.ElementNotSelectableException,
-        ), e:
-            raise e.__class__(msg)
+        ) as exc:
+            raise exc.__class__(msg)
 
 
 class _WebdriverWrapper(_WebdriverBaseWrapper):

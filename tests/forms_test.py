@@ -32,6 +32,5 @@ class FormTest(testcase.WebdriverTestCase):
             self.get_elm('form').fill_out({
                 'nosuchelement': 'text',
             })
-        except NoSuchElementException, e:
-            self.assertTrue(e.msg and 'nosuchelement' in e.msg, 'Bad msg: "%s"' % e.msg)
-
+        except NoSuchElementException as exc:
+            self.assertTrue(exc.msg and 'nosuchelement' in exc.msg, 'Bad msg: "%s"' % exc.msg)

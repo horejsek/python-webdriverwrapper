@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from webdriverwrapper.webdriverwrapper import _WebElementWrapper
+from webdriverwrapper.wrapper import _WebElementWrapper
 
 from webdriverwrapper_test import WebdriverWrapperBaseClassTest
 

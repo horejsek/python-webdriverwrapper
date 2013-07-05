@@ -3,8 +3,8 @@
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 
-from webdriverwrapper import _WebElementWrapper
-from exceptions import _create_exception_msg
+from webdriverwrapper.wrapper import _WebElementWrapper
+from webdriverwrapper.exceptions import _create_exception_msg
 
 __all__ = ('Form',)
 
@@ -15,7 +15,7 @@ class Form(_WebElementWrapper):
         self.submit()
 
     def fill_out(self, data, prefix=''):
-        for elm_name, value in data.iteritems():
+        for elm_name, value in data.items():
             FormElement(self, prefix + elm_name).fill_out(value)
 
     def submit(self):

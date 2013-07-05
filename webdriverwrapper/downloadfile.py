@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import urllib
-import urllib2
+try:
+    from urllib import urlencode
+    from urllib2 import Request, urlopen
+except ImportError:
+    from urllib.parse import urlencode
+    from urllib.request import Request, urlopen
 
 __all__ = ('DownloadFile',)
 
@@ -30,13 +34,13 @@ class DownloadFile(object):
     def _make_request(self):
         request = self._create_request()
         self._method = request.get_method().lower()
-        self._result = urllib2.urlopen(request)
+        self._result = urlopen(request)
         self._data = self._result.read()
 
     def _create_request(self):
         url = self._get_url()
         post_data = self._get_post_data()
-        request = urllib2.Request(url, post_data)
+        request = Request(url, post_data)
         for name, value in self._iter_cookies():
             request.add_header('cookie', '%s=%s' % (name, value))
         return request
@@ -73,7 +77,7 @@ class DownloadFile(object):
                 }
 
         if post_data:
-            post_data = urllib.urlencode(post_data)
+            post_data = urlencode(post_data)
         return post_data
 
     def _iter_cookies(self):
