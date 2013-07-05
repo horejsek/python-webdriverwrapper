@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from mock import Mock, call
 import unittest
 
 from webdriverwrapper.exceptions import _create_exception_msg, _create_exception_msg_tag

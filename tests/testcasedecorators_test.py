@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from mock import Mock, call
 import os
 
 from webdriverwrapper import testcase, Chrome
