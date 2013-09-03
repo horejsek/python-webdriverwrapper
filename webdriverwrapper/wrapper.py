@@ -94,11 +94,13 @@ class _WebdriverBaseWrapper(object):
     def get_elm(
         self,
         id_=None, class_name=None, name=None, tag_name=None, xpath=None,
-        parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None
+        parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
+        css_selector=None
     ):
         elms = self.get_elms(
             id_, class_name, name, tag_name, xpath,
-            parent_id, parent_class_name, parent_name, parent_tag_name
+            parent_id, parent_class_name, parent_name, parent_tag_name,
+            css_selector
         )
         if not elms:
             raise selenium_exc.NoSuchElementException(_create_exception_msg(
@@ -111,7 +113,8 @@ class _WebdriverBaseWrapper(object):
     def get_elms(
         self,
         id_=None, class_name=None, name=None, tag_name=None, xpath=None,
-        parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None
+        parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
+        css_selector=None
     ):
         if parent_id or parent_class_name or parent_name or parent_tag_name:
             parent = self.get_elm(parent_id, parent_class_name, parent_name, parent_tag_name)
@@ -131,6 +134,8 @@ class _WebdriverBaseWrapper(object):
             return parent.find_elements_by_tag_name(tag_name)
         elif xpath is not None:
             return parent.find_elements_by_xpath(xpath)
+        elif css_selector is not None:
+            return parent.find_elements_by_css_selector(css_selector)
         else:
             raise Exception('You must specify id or name of element on which you want to click.')
 

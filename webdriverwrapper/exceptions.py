@@ -44,9 +44,9 @@ class JSErrorsException(WebdriverWrapperException):
 def _create_exception_msg(
     id_=None, class_name=None, name=None, tag_name=None, xpath=None,
     parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
-    url=None,
+    url=None, css_selector=None
 ):
-    elm_text = _create_exception_msg_tag(id_, class_name, name, tag_name, xpath)
+    elm_text = _create_exception_msg_tag(id_, class_name, name, tag_name, xpath, css_selector)
     parent_text = _create_exception_msg_tag(parent_id, parent_class_name, parent_name, parent_tag_name)
 
     msg = 'No element %s found' % elm_text
@@ -57,9 +57,11 @@ def _create_exception_msg(
     return msg
 
 
-def _create_exception_msg_tag(id_=None, class_name=None, name=None, tag_name=None, xpath=None):
+def _create_exception_msg_tag(id_=None, class_name=None, name=None, tag_name=None, xpath=None, css_selector=None):
     if xpath:
         return xpath
+    elif css_selector:
+        return css_selector
     elif id_ or class_name or tag_name or name:
         msg = '<%s' % (tag_name or '*')
         if id_:
