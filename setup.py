@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+from pip.req import parse_requirements
 
 version = '1.0.1'
 
@@ -9,7 +13,7 @@ setup(
     version=version,
     packages=['webdriverwrapper'],
 
-    install_requires=['selenium'],
+    install_requires=[str(ir.req) for ir in parse_requirements('requirements.txt')],
 
     url='https://github.com/horejsek/python-webdriverwrapper',
     author='Michal Horejsek',
