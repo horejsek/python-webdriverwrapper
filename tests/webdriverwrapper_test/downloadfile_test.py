@@ -8,6 +8,25 @@ except ImportError:
 from webdriverwrapper_test import WebdriverWrapperBaseClassTest
 
 
+class DownloadUrlTest(WebdriverWrapperBaseClassTest):
+    def init(self):
+        super(DownloadUrlTest, self).init()
+        self.file_data = open('/%s/files/some_file.txt' % self.path, 'rb').read()
+        self.html_data = open('/%s/html/download_file.html' % self.path, 'rb').read()
+
+    def test_by_url(self):
+        downloaded_data = self.driver.download_url('file://%s/html/download_file.html' % self.path)
+        self.assertEqual(self.html_data, downloaded_data.data)
+
+        downloaded_data2 = self.driver.download_url('file://%s/files/some_file.txt' % self.path)
+        self.assertEqual(self.file_data, downloaded_data2.data)
+
+    def test_by_current(self):
+        self.go_to('file://%s/html/download_file.html' % self.path)
+        downloaded_data = self.driver.download_url()
+        self.assertEqual(self.html_data, downloaded_data.data)
+
+
 class DownloadFileTest(WebdriverWrapperBaseClassTest):
     def init(self):
         super(DownloadFileTest, self).init()

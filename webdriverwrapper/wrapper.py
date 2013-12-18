@@ -14,7 +14,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from webdriverwrapper.exceptions import NoSuchWindowException, _create_exception_msg
 import webdriverwrapper.gotopage as gotopage
-from webdriverwrapper.downloadfile import DownloadFile
+from webdriverwrapper.download import DownloadUrl, DownloadFile
 
 __all__ = (
     'Firefox',
@@ -265,6 +265,9 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
     def get_alert(self):
         """Returns instance of selenium.webdriver.common.alert.Alert"""
         return Alert(self)
+
+    def download_url(self, url=None):
+        return DownloadUrl(self, url)
 
 
 class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):

@@ -7,13 +7,10 @@ except ImportError:
     from urllib.parse import urlencode
     from urllib.request import Request, urlopen
 
-__all__ = ('DownloadFile',)
+__all__ = ('DownloadUrl', 'DownloadFile')
 
 
-class DownloadFile(object):
-    def __init__(self, elm):
-        self._elm = elm
-        self._make_request()
+class _Download(object):
 
     @property
     def method(self):
@@ -44,6 +41,32 @@ class DownloadFile(object):
         for name, value in self._iter_cookies():
             request.add_header('cookie', '%s=%s' % (name, value))
         return request
+
+
+class DownloadUrl(_Download):
+
+    def __init__(self, driver, url):
+        self._driver = driver
+
+        if not url:
+            url = self._driver.current_url
+        self._url = url
+        self._make_request()
+
+    def _get_url_and_data(self):
+        return self._url, None
+
+    def _iter_cookies(self):
+        all_cookies = self._driver.get_cookies()
+        for cookie in all_cookies:
+            yield cookie['name'], cookie['value']
+
+
+class DownloadFile(_Download):
+
+    def __init__(self, elm):
+        self._elm = elm
+        self._make_request()
 
     def _get_url_and_data(self):
         elm = self._elm
