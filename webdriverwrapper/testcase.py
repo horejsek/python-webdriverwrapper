@@ -8,7 +8,7 @@ import unittest
 import sys
 
 import webdriverwrapper.exceptions as exceptions
-from webdriverwrapper.wrapper import Firefox
+from webdriverwrapper.wrapper import Firefox, Chrome, ChromeOptions
 from webdriverwrapper.errors import get_error_page, get_error_messages
 
 __all__ = (
@@ -98,7 +98,7 @@ class WebdriverTestCase(unittest.TestCase):
     def _set_up(self):
         self.__class__._number_of_test += 1
         if not hasattr(WebdriverTestCase, 'driver'):
-            WebdriverTestCase.driver = self._get_driver()
+            WebdriverTestCase.driver = self._get_driver_with_proxy()
             WebdriverTestCase._main_window = WebdriverTestCase.driver.current_window_handle
             if self.domain:
                 WebdriverTestCase.driver.go_to(self.domain)
@@ -109,6 +109,12 @@ class WebdriverTestCase(unittest.TestCase):
 
     def _get_driver(self):
         return Firefox()
+
+    def _get_driver_with_proxy(self):
+        opt = ChromeOptions()
+        opt.add_argument('--no-sandbox')
+        opt.add_argument('--proxy-auto-detect')
+        return Chrome(chrome_options=opt)
 
     def _tear_down(self):
         if self.wait_after_test:

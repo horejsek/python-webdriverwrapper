@@ -47,6 +47,9 @@ class DownloadUrl(_Download):
 
     def __init__(self, driver, url):
         self._driver = driver
+
+        if not url:
+            url = self._driver.current_url
         self._url = url
         self._make_request()
 

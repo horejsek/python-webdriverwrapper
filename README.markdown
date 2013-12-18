@@ -155,7 +155,7 @@ driver.get_alert().accept()
 driver.get_alert().dismiss()
 ```
 
-### `download_url()`
+### `download_url(url=None)`
 
 Downloads page from url or current url if not supplied. Works the same way as `download_file()`.
 

@@ -267,10 +267,9 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
         return Alert(self)
 
     def download_url(self, url=None):
-        if not url:
-            url = self.current_url
 
-        return DownloadUrl(self._parent, url)
+
+        return DownloadUrl(self, url)
 
 
 class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
