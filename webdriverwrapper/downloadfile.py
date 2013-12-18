@@ -10,10 +10,7 @@ except ImportError:
 __all__ = ('DownloadFile',)
 
 
-class DownloadFile(object):
-    def __init__(self, elm):
-        self._elm = elm
-        self._make_request()
+class _Download(object):
 
     @property
     def method(self):
@@ -44,6 +41,28 @@ class DownloadFile(object):
         for name, value in self._iter_cookies():
             request.add_header('cookie', '%s=%s' % (name, value))
         return request
+
+    def _iter_cookies(self):
+        all_cookies = self._elm._parent.get_cookies()
+        for cookie in all_cookies:
+            yield cookie['name'], cookie['value']
+
+
+class DownloadUrl(_Download):
+
+    def __init__(self, url):
+        self._url = url
+        self._make_request()
+
+    def _get_url_and_data(self):
+        return self._url, None
+
+
+class DownloadFile(_Download):
+
+    def __init__(self, elm):
+        self._elm = elm
+        self._make_request()
 
     def _get_url_and_data(self):
         elm = self._elm
@@ -90,8 +109,3 @@ class DownloadFile(object):
             return None
         else:
             return form_elm
-
-    def _iter_cookies(self):
-        all_cookies = self._elm._parent.get_cookies()
-        for cookie in all_cookies:
-            yield cookie['name'], cookie['value']
