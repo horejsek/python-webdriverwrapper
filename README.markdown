@@ -9,7 +9,7 @@ Support for Python 2.6 and higher (including Python 3).
 ## What this wrapper do
 
 * Adds messges into webdriver's exceptions (by default there is no information about which element is missing etc.).
-* Adds some usefull method to WebDriver and WebElement. Such as
+* Adds some usefull methods to WebDriver and WebElement. Such as
  * `find_element_by_text`,
  * `contains_text`,
  * `wait_for_element`,
@@ -112,7 +112,7 @@ driver.wait().until_not(lambda driver: len(driver.get_elms('id')) > 10)
 
 Go to page. It uses `driver.get` method.
 
-Domain is parsed from `current_url` if you don't specify any, so you can define domain only once. Query can be string or dictionary. `path` can be whole URL.
+When domain is not supplied, it is parsed from `current_url`, so you can define domain only once. Query can be string or dictionary. `path` can be whole URL.
 
 ```python
 driver.go_to(domain='google.com')
@@ -122,7 +122,7 @@ driver.go_to(query={'q': 'hello from cool webdriverwrapper'})
 
 #### `switch_to_window(window_name|title|url)`
 
-Switch to window by `window_name` (Selenium's classic way) or by `title` or by `url`.
+Switch to window with `window_name` (Selenium's classic way) or `title` or `url`.
 
 ```python
 driver.click('some-link-which-opens-popup')
@@ -130,7 +130,7 @@ driver.switch_to_window(title='New popup window')
 # make some work in popup
 ```
 
-Param `url` can be dictionary and this dictionary can have three keys: `path`, `query` and `domain`. It's same as for method `go_to`. If you don't specify `domain`, it will be recognized from current url.
+Param `url` can be dictionary and this dictionary can have three keys: `path`, `query` and `domain`. It's the same as for method `go_to`. If you don't specify `domain`, it will be recognized from current url.
 
 ```python
 driver.switch_to_window(url='http://www.example.com/path')
@@ -157,7 +157,7 @@ driver.get_alert().dismiss()
 
 ### `download_url(url=None)`
 
-Downloads page from url or current url if not supplied. Works the same way as `download_file()`.
+Downloads page from url or `current_url` if not supplied. Works the same way as `download_file()`.
 
 ```python
 f = driver.download_url('http://myurl.com')
@@ -171,7 +171,7 @@ f.data
 
 #### `download_file()`
 
-Download file by clicking on some link using Selenium is not good idea. With Chrome it's working thanks to no save dialog by default, but still you can't check status code, data, headers, etc. For that purpose there is special method `download_file`. You can call it will try download file using Python's `urllib2`. Method returns special object (not response or file data) which hold some useful information.
+It is not a good idea to download file by clicking on a link using Selenium. With Chrome it's working thanks to no save dialog by default, but still you can't check status code, data, headers, etc. For that purpose there is special method `download_file`. You can call it will try download file using Python's `urllib2`. Method returns special object (not response or file data) which hold some useful information.
 
 ```python
 f = driver.get_elm('some-link').download_file()
@@ -181,7 +181,7 @@ f.headers  # Dictionary of all response headers.
 f.data
 ```
 
-This method support downloading from link (use attribute href) or from button in form (use action or current URL). It looks for attribute method of form, so is used correctly GET or POST. Method collect all data from form and pass it to URL (in case of method GET) or to data request (in case of method POST).
+This method supports downloading from link (use attribute href) or from button in a form (use action or current URL). It looks for attribute method of a form, so is used correctly GET or POST. Method collects all data from form and pass it to URL (in case of method GET) or to data request (in case of method POST).
 
 ### Forms
 
@@ -218,7 +218,7 @@ Looks for element with id "`form id`_reset" and clicks on it.
 
 ### Select
 
-If some element is select, it returns Select instance inherited from selenium's Select and WebDriver wrapper. So you can use all method from WebDriver and Select.
+If some element is selected, it returns Select instance inherited from selenium's Select and WebDriver wrapper. So you can use all method from WebDriver and Select.
 
 ```python
 select = driver.get_elm(tag_name='select')
@@ -253,7 +253,7 @@ Tip: if you want to write something into `__init__`, write it into method `init`
 
 #### `_get_driver()`
 
-By default `WebdriverTestCase` create instance of Firefox. You can overwrite this method and create which instance of driver you want.
+By default `WebdriverTestCase` creates instance of Firefox. You can overwrite this method and create instance of driver you want.
 
 #### `_check_error_messages()`
 
@@ -274,7 +274,7 @@ By default `WebdriverTestCase` create instance of Firefox. You can overwrite thi
 
 #### `check_errors()`
 
-When your test need check of errors somewhere in the middle of the test, just call this method. It call same check as is called after each test with one difference that it not depends on decorator. It means that no error is allowed.
+When your test needs to check errors somewhere in the middle of the test, just call this method. It call same check as is called after each test with one difference that it not depends on decorator. It means that no error is allowed.
 
 #### `debug(msg)`
 
@@ -305,7 +305,7 @@ class TestCase(WebdriverTestCase):
 
 ##### `ShouldBeError`
 
-By default `WebdriverTestCase` looks for error messages in elements with class `error`. If you want to test that some page have some error message, use this decorator.
+By default `WebdriverTestCase` looks for error messages in elements with class `error`. If you want to test that some page has some error message, use this decorator.
 
 ```python
 class TestCase(WebdriverTestCase):
@@ -399,7 +399,7 @@ If you in your test switch to another window, you don't have to remeber that you
 
 ### `FuzzyTestCase`
 
-Trust me, it's good test web app by randomly clicking on links and buttons. It can find a lot of bugs, mostly JS (when you call some JS and some element doesn't exist and so on). For this webdriverwrapper provide `FuzzyTestCase`. It randomly click on clickable elements and looks for page error (code 500) and JS errors.
+Trust me, it's good to test web app by randomly clicking on links and buttons. It can find a lot of bugs, mostly JS (when you call some JS and some element doesn't exist and so on). For this webdriverwrapper provide `FuzzyTestCase`. It randomly click on clickable elements and looks for page error (code 500) and JS errors.
 
 Whole example is in examples/fuzzy.py.
 
@@ -411,7 +411,7 @@ By default calls `get_error_page` and returns `True` if curren page is error pag
 
 #### `reset_after_page_error()`
 
-When by randomly clicking occours error page, it's good to restart to some default state. By default is called `self.go_to('/')`. If you need something more, there is place where you should put that code.
+When error occurs by randomly clicking, it's good to restart to some default state. By default is called `self.go_to('/')`. If you need something more, there is place where you should put that code.
 
 #### `get_clickable_elements()`
 
