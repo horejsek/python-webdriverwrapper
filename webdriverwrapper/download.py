@@ -42,20 +42,21 @@ class _Download(object):
             request.add_header('cookie', '%s=%s' % (name, value))
         return request
 
-    def _iter_cookies(self):
-        all_cookies = self._elm._parent.get_cookies()
-        for cookie in all_cookies:
-            yield cookie['name'], cookie['value']
-
 
 class DownloadUrl(_Download):
 
-    def __init__(self, url):
+    def __init__(self, driver, url):
+        self._driver = driver
         self._url = url
         self._make_request()
 
     def _get_url_and_data(self):
         return self._url, None
+
+    def _iter_cookies(self):
+        all_cookies = self._driver.get_cookies()
+        for cookie in all_cookies:
+            yield cookie['name'], cookie['value']
 
 
 class DownloadFile(_Download):
@@ -109,3 +110,8 @@ class DownloadFile(_Download):
             return None
         else:
             return form_elm
+
+    def _iter_cookies(self):
+        all_cookies = self._elm._parent.get_cookies()
+        for cookie in all_cookies:
+            yield cookie['name'], cookie['value']

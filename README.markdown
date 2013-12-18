@@ -90,7 +90,7 @@ driver.get_elm('someid').click(class_name='someclass')
 driver.click(class_name='someclass', parent_id='someid')
 ```
 
-### `WebDriver` specific methods
+### `WebDriverWrapper` specific methods
 
 #### `wait_for_element(timeout=10, message='', id_|class_name|name|tag_name|xpath[, parent_id|parent_class_name|parent_name|parent_tag_name])`
 
@@ -153,6 +153,18 @@ Returns instance of `selenium.webdriver.common.alert.Alert`. It's just alias, be
 ```python
 driver.get_alert().accept()
 driver.get_alert().dismiss()
+```
+
+### `download_url()`
+
+Downloads page from url or current url if not supplied. Works the same way as `download_file()`.
+
+```python
+f = driver.download_url('http://myurl.com')
+f.method  # You can check if method was GET or POST (returns in lowercase).
+f.status_code
+f.headers  # Dictionary of all response headers.
+f.data
 ```
 
 ### `WebElement` specific methods
