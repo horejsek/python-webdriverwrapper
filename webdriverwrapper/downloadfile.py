@@ -7,7 +7,7 @@ except ImportError:
     from urllib.parse import urlencode
     from urllib.request import Request, urlopen
 
-__all__ = ('DownloadFile',)
+__all__ = ('DownloadUrl', 'DownloadFile')
 
 
 class _Download(object):
