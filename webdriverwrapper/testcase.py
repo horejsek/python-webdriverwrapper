@@ -98,7 +98,7 @@ class WebdriverTestCase(unittest.TestCase):
     def _set_up(self):
         self.__class__._number_of_test += 1
         if not hasattr(WebdriverTestCase, 'driver'):
-            WebdriverTestCase.driver = self._get_driver_with_proxy()
+            WebdriverTestCase.driver = self._get_driver()
             WebdriverTestCase._main_window = WebdriverTestCase.driver.current_window_handle
             if self.domain:
                 WebdriverTestCase.driver.go_to(self.domain)
@@ -112,7 +112,6 @@ class WebdriverTestCase(unittest.TestCase):
 
     def _get_driver_with_proxy(self):
         opt = ChromeOptions()
-        opt.add_argument('--no-sandbox')
         opt.add_argument('--proxy-auto-detect')
         return Chrome(chrome_options=opt)
 

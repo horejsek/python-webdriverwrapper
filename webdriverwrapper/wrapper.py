@@ -267,8 +267,6 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
         return Alert(self)
 
     def download_url(self, url=None):
-
-
         return DownloadUrl(self, url)
 
 
