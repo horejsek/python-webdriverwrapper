@@ -6,7 +6,7 @@ except ImportError:
     from distutils.core import setup
 from pip.req import parse_requirements
 
-version = '1.0.1'
+version = '1.1.0'
 
 setup(
     name='webdriverwrapper',
