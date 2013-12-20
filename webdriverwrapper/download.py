@@ -7,6 +7,8 @@ except ImportError:
     from urllib.parse import urlencode
     from urllib.request import Request, urlopen
 
+from gotopage import _get_domain_from_driver, _make_url
+
 __all__ = ('DownloadUrl', 'DownloadFile')
 
 
@@ -54,7 +56,9 @@ class DownloadUrl(_Download):
         self._make_request()
 
     def _get_url_and_data(self):
-        return self._url, None
+        domain = _get_domain_from_driver(self._driver)
+        url = _make_url(path=self._url, domain=domain)
+        return url, None
 
     def _iter_cookies(self):
         all_cookies = self._driver.get_cookies()
