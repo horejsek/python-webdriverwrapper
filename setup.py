@@ -4,7 +4,6 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
-from pip.req import parse_requirements
 
 version = '1.1.0'
 
@@ -13,7 +12,7 @@ setup(
     version=version,
     packages=['webdriverwrapper'],
 
-    install_requires=[str(ir.req) for ir in parse_requirements('requirements.txt')],
+    install_requires=[line.strip() for line in open('requirements.txt').readlines() if line],
 
     url='https://github.com/horejsek/python-webdriverwrapper',
     author='Michal Horejsek',
