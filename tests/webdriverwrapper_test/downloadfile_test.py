@@ -26,6 +26,20 @@ class DownloadUrlTest(WebdriverWrapperBaseClassTest):
         downloaded_data = self.driver.download_url()
         self.assertEqual(self.html_data, downloaded_data.data)
 
+    def test_google(self):
+        downloaded = self.driver.download_url('http://google.com')
+        self.assertEqual(downloaded.status_code, 200)
+
+    def test_google_current(self):
+        self.go_to('http://www.google.com')
+        downloaded = self.driver.download_url()
+        self.assertEqual(downloaded.status_code, 200)
+
+    def test_google_without_domain(self):
+        self.go_to('http://www.google.com')
+        downloaded = self.driver.download_url('#q=a')
+        self.assertEqual(downloaded.status_code, 200)
+
 
 class DownloadFileTest(WebdriverWrapperBaseClassTest):
     def init(self):
