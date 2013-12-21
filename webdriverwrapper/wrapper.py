@@ -267,6 +267,12 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
         return Alert(self)
 
     def download_url(self, url=None):
+        """
+        With Selenium you can't check staus code or headers. So this method will
+        download `url` or `self.current_url` by urllib and you can check status
+        code, headers and data as with `download_file`.
+        You could download it by yourself, but this handle also cookies.
+        """
         return DownloadUrl(self, url)
 
 
@@ -291,6 +297,13 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
             return current_url
 
     def download_file(self):
+        """
+        With Selenium you can't download file by browser. So this method will
+        download link's href or form's action by urllib and you can check
+        status code, headers and data.
+        You could download it by yourself, but this handle also cookies and
+        form's data.
+        """
         return DownloadFile(self)
 
 
