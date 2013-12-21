@@ -157,11 +157,10 @@ driver.get_alert().dismiss()
 
 ### `download_url(url=None)`
 
-Downloads page from url or `current_url` if not supplied. Works the same way as `download_file()`.
+Downloads page from `url` or `current_url` if not supplied. Works the same way as `download_file()`.
 
 ```python
 f = driver.download_url('http://myurl.com')
-f.method  # You can check if method was GET or POST (returns in lowercase).
 f.status_code
 f.headers  # Dictionary of all response headers.
 f.data
