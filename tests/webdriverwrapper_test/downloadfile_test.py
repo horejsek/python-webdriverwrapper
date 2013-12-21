@@ -73,6 +73,9 @@ class DownloadFileTest(WebdriverWrapperBaseClassTest):
             'key': 'val',
         }))
 
+    def test_unicode(self):
+        self._test_download_file('btn-unicode', self.html_data, 'post')
+
     def _test_download_file(self, elm_id, file_data=None, method='get'):
         f = self.get_elm(elm_id).download_file()
         self.assertEqual(f.method, method)
