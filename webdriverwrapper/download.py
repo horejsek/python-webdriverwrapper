@@ -111,7 +111,6 @@ class DownloadFile(_Download):
             force_text(elm.get_attribute('name')).encode('utf8'),
             force_text(elm.get_attribute('value')).encode('utf8'),
         ) for elm in elms)
-        print data, urlencode(data)
         data = urlencode(data)
         return data
 
