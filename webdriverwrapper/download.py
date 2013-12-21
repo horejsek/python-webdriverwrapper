@@ -7,6 +7,7 @@ except ImportError:
     from urllib.parse import urlencode
     from urllib.request import Request, urlopen
 
+from utils import force_text
 from gotopage import _get_domain_from_driver, _make_url
 
 __all__ = ('DownloadUrl', 'DownloadFile')
@@ -106,7 +107,11 @@ class DownloadFile(_Download):
             return None
 
         elms = form_elm.get_elms(xpath='.//*[@name]')
-        data = dict([(elm.get_attribute('name'), elm.get_attribute('value')) for elm in elms])
+        data = dict((
+            force_text(elm.get_attribute('name')).encode('utf8'),
+            force_text(elm.get_attribute('value')).encode('utf8'),
+        ) for elm in elms)
+        print data, urlencode(data)
         data = urlencode(data)
         return data
 

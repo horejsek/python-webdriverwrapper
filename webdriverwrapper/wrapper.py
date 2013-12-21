@@ -3,7 +3,6 @@
 from __future__ import absolute_import
 
 import functools
-import six
 
 import selenium.common.exceptions as selenium_exc
 from selenium.webdriver import *
@@ -12,6 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
+from webdriverwrapper.utils import force_text
 from webdriverwrapper.exceptions import NoSuchWindowException, _create_exception_msg
 import webdriverwrapper.gotopage as gotopage
 from webdriverwrapper.download import DownloadUrl, DownloadFile
@@ -73,12 +73,7 @@ class _WebdriverBaseWrapper(object):
 
     def find_elements_by_text(self, text):
         """Find every element in page which contain `text`."""
-        if not isinstance(text, six.text_type):
-            # There can be anything. Number, Boolean, String, ...
-            text = str(text)
-            # If it's still isn't unicode (Python 2), decode it.
-            if hasattr(text, 'decode'):
-                text = text.decode('utf8')
+        text = force_text(text)
         elms = self.find_elements_by_xpath(
             './/*[contains(text(), "%s") and not(ancestor-or-self::*[@data-selenium-not-search])]' % text
         )
