@@ -7,8 +7,8 @@ except ImportError:
     from urllib.parse import urlencode
     from urllib.request import Request, urlopen
 
-from utils import force_text
-from gotopage import _get_domain_from_driver, _make_url
+from webdriverwrapper.utils import force_text
+from webdriverwrapper.gotopage import _get_domain_from_driver, _make_url
 
 __all__ = ('DownloadUrl', 'DownloadFile')
 
