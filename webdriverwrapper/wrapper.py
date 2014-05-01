@@ -203,6 +203,10 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
             message = _create_exception_msg(*args, **kwds)
         self.wait(timeout).until(lambda driver: driver.get_elm(*args, **kwds), message=message)
 
+        # Also return that element for which is waiting.
+        elm = self.get_elm(*args, **kwds)
+        return elm
+
     def wait(self, timeout=10):
         """Alias for WebDriverWait(driver, timeout).
         Returns instance which has method until which takes function.

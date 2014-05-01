@@ -212,7 +212,7 @@ class WebdriverTestCase(unittest.TestCase):
         self.driver.click(*args, **kwds)
 
     def wait_for_element(self, *args, **kwds):
-        self.driver.wait_for_element(*args, **kwds)
+        return self.driver.wait_for_element(*args, **kwds)
 
     def wait(self, timeout=10):
         return self.driver.wait(timeout)
