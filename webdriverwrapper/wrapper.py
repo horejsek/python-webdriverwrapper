@@ -191,9 +191,6 @@ class _WebdriverBaseWrapper(object):
 
 
 class _WebdriverWrapper(_WebdriverBaseWrapper):
-    def __del__(self):
-        self.quit()
-
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
         """
         Same as WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...)),

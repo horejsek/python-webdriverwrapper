@@ -402,6 +402,17 @@ Options are:
  * `ONE_INSTANCE_PER_TESTCASE`
  * `ONE_INSTANCE_PER_TEST`
 
+Warning: If you use option `ONE_INSTANCE_FOR_ALL_TESTS` (which is default), you need to call by yourself class method `quit_driver` for example like this:
+
+```python
+from webdriverwrapper.testcase import WebdriverTestCase
+import nose
+
+ok = nose.run(...)
+
+WebdriverTestCase.quit_driver()
+```
+
 ##### `wait_after_test`
 
 When you have to do some debug page (for example with Firebug or with Chrome Developer tools), you can set `wait_after_test` and after each test it waits for input to continue.
