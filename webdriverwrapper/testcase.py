@@ -143,10 +143,11 @@ class WebdriverTestCase(unittest.TestCase):
         ):
             self.quit_driver()
 
-    @classmethod
-    def quit_driver(cls):
-        cls.driver.quit()
-        del cls.driver
+    @staticmethod
+    def quit_driver():
+        if hasattr(WebdriverTestCase, 'driver'):
+            WebdriverTestCase.driver.quit()
+            del WebdriverTestCase.driver
 
     def break_point(self):
         logging.info('Break point. Type enter to continue.')
