@@ -275,6 +275,25 @@ By default `WebdriverTestCase` creates instance of Firefox. You can overwrite th
 
 When your test needs to check errors somewhere in the middle of the test, just call this method. It call same check as is called after each test with one difference that it not depends on decorator. It means that no error is allowed.
 
+#### `make_screenshot([screenshot_name])`
+
+You can take screenshot of what is currently seen in browser window by this method. If you will not provide `screenshot_name`, name of test will be used.
+
+If you want to take screenshot of failed test, just provide class variable `screenshot_path`.
+
+```python
+class TestCase(WebdriverTestCase):
+    screenshot_path = '/tmp'
+
+    def test_fail(self):
+        self.go_to('http://google.com')
+        self.click('some-non-exist-element')  # Fail, so screenshot will be taken automatically.
+
+    def test_ok(self):
+        self.go_to('http://google.com')
+        self.make_screenshot('some-screenshot.png')  # Will not fail, but I can take screenshot manually.
+```
+
 #### `debug(msg)`
 
 Show message in console. (Uses module `logging`.)

@@ -33,3 +33,7 @@ class TestCaseTest(testcase.WebdriverTestCase):
         else:
             self.fail('Exception not raised!')
         self.go_to('file://%s/html/some_page.html' % self.path)
+
+    def test_make_screenshot(self):
+        self.go_to('file://%s/html/some_page.html' % self.path)
+        self.make_screenshot('/tmp/test-screenshot.png')

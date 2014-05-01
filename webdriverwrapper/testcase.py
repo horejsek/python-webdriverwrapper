@@ -28,6 +28,7 @@ class WebdriverTestCase(unittest.TestCase):
     domain = None
     instances_of_driver = ONE_INSTANCE_FOR_ALL_TESTS
     wait_after_test = False
+    screenshot_path = ''
 
     def __init__(self, *args, **kwds):
         super(WebdriverTestCase, self).__init__(*args, **kwds)
@@ -45,6 +46,7 @@ class WebdriverTestCase(unittest.TestCase):
         test_method = getattr(self, self._testMethodName)
         self._test_method = test_method
         try:
+            ok = False
             self._set_up()
 
             try:
@@ -62,11 +64,11 @@ class WebdriverTestCase(unittest.TestCase):
                     result.addError(self, sys.exc_info())
                 return
 
-            ok = False
             try:
                 test_method()
                 ok = True
             except self.failureException:
+                self.make_screenshot()
                 result.addFailure(self, sys.exc_info())
             except KeyboardInterrupt:
                 raise
@@ -90,10 +92,26 @@ class WebdriverTestCase(unittest.TestCase):
             if ok:
                 result.addSuccess(self)
         finally:
+            if not ok:
+                self.make_screenshot()
+
             result.stopTest(self)
             # Is nice to see at break point if test passed or not.
             # So this call have to be after stopTest which print result of test.
             self._tear_down()
+
+    def make_screenshot(self, screenshot_name=None):
+        """
+        Save screenshot to `self.screenshot_path` with given name `screenshot_name`.
+        If name is not given, then the name is name of current test (`self.id()`).
+        """
+        if not screenshot_name:
+            # Without name (and possibly path) we cannot make screenshot. Don't
+            # know where to store it.
+            if not self.screenshot_path:
+                return
+            screenshot_name = self.id()
+        self.driver.get_screenshot_as_file(self.screenshot_path + screenshot_name)
 
     def _set_up(self):
         self.__class__._number_of_test += 1
