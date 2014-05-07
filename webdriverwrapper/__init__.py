@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import
 
-VERSION = '1.3.0'
+VERSION = '1.3.1'
 
 from webdriverwrapper import decorators
 from webdriverwrapper import exceptions

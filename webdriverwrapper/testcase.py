@@ -73,6 +73,7 @@ class WebdriverTestCase(unittest.TestCase):
             except KeyboardInterrupt:
                 raise
             except:
+                self.make_screenshot()
                 result.addError(self, sys.exc_info())
 
             try:
@@ -111,7 +112,7 @@ class WebdriverTestCase(unittest.TestCase):
             if not self.screenshot_path:
                 return
             screenshot_name = self.id()
-        self.driver.get_screenshot_as_file(self.screenshot_path + screenshot_name)
+        self.driver.get_screenshot_as_file('%s/%s.png' % (self.screenshot_path, screenshot_name))
 
     def _set_up(self):
         self.__class__._number_of_test += 1
