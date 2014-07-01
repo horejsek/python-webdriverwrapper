@@ -12,13 +12,39 @@ __all__ = ('Form',)
 
 
 class Form(_WebElementWrapper):
-    def fill_out_and_submit(self, data, prefix=''):
-        self.fill_out(data, prefix)
+    def fill_out_and_submit(self, data, prefix='', turbo=False):
+        """
+        Fill out `data` as dictionary (key is name attribute of inputs).
+
+        By `prefix` you can specify prefix of all name attributes. For example
+        you can have inputs called `client.name` and `client.surname` - then you
+        will pass to `prefix` string "client." and in dictionary just "name".
+
+        Option `turbo` is for skipping some steps, so it can act faster. For
+        example for multiple selects it calls `deselect_all` first, but it need
+        to for every option check if it is selected and it is very slow for
+        really big multiple selects. If you know, that it is not filled, you can
+        skip it and safe in some cases up to one minute!
+        """
+        self.fill_out(data, prefix, turbo)
         self.submit()
 
-    def fill_out(self, data, prefix=''):
+    def fill_out(self, data, prefix='', turbo=False):
+        """
+        Fill out `data` as dictionary (key is name attribute of inputs).
+
+        By `prefix` you can specify prefix of all name attributes. For example
+        you can have inputs called `client.name` and `client.surname` - then you
+        will pass to `prefix` string "client." and in dictionary just "name".
+
+        Option `turbo` is for skipping some steps, so it can act faster. For
+        example for multiple selects it calls `deselect_all` first, but it need
+        to for every option check if it is selected and it is very slow for
+        really big multiple selects. If you know, that it is not filled, you can
+        skip it and safe in some cases up to one minute!
+        """
         for elm_name, value in data.items():
-            FormElement(self, prefix + elm_name).fill_out(value)
+            FormElement(self, prefix + elm_name).fill_out(value, turbo)
 
     def submit(self):
         elm_name = '%s_submit' % self.get_attribute('id')
@@ -53,10 +79,10 @@ class FormElement(object):
             value = ''
         return str(value)
 
-    def fill_out(self, value):
+    def fill_out(self, value, turbo):
         tag_name, elm_type = self.analyze_element()
         method_name = ('fill_%s_%s' % (tag_name, elm_type)).replace('-', '')
-        getattr(self, method_name, self.fill_common)(value)
+        getattr(self, method_name, self.fill_common)(value, turbo)
 
     def analyze_element(self):
         elms = self.form_elm.get_elms(name=self.elm_name)
@@ -67,17 +93,17 @@ class FormElement(object):
             return elm.tag_name, elm_type
         raise NoSuchElementException(_create_exception_msg(name=self.elm_name))
 
-    def fill_input_checkbox(self, value):
+    def fill_input_checkbox(self, value, turbo=False):
         if isinstance(value, (list, tuple)):
             self.fill_input_checkbox_multiple(value)
         self.fill_input_checkbox_single(value)
 
-    def fill_input_checkbox_single(self, value):
+    def fill_input_checkbox_single(self, value, turbo=False):
         elm = self.form_elm.get_elm(xpath='//input[@type="checkbox"][@name="%s"]' % self.elm_name)
         if bool(value) != elm.is_selected():
             elm.click()
 
-    def fill_input_checkbox_multiple(self, value):
+    def fill_input_checkbox_multiple(self, value, turbo=False):
         for item in value:
             elm = self.form_elm.get_elm(xpath='//input[@type="checkbox"][@name="%s"][@value="%s"]' %  (
                 self.elm_name,
@@ -85,33 +111,33 @@ class FormElement(object):
             ))
             elm.click()
 
-    def fill_input_radio(self, value):
+    def fill_input_radio(self, value, turbo=False):
         elm = self.form_elm.get_elm(xpath='//input[@type="radio"][@name="%s"][@value="%s"]' % (
             self.elm_name,
             self.convert_value(value),
         ))
         elm.click()
 
-    def fill_input_file(self, value):
+    def fill_input_file(self, value, turbo=False):
         elm = self.form_elm.get_elm(name=self.elm_name)
         elm.send_keys(self.convert_value(value))
 
-    def fill_select_selectone(self, value):
+    def fill_select_selectone(self, value, turbo=False):
         select = self.form_elm.get_elm(name=self.elm_name)
         select.select_by_value(self.convert_value(value))
 
-    def fill_select_selectmultiple(self, value):
+    def fill_select_selectmultiple(self, value, turbo=False):
         if not isinstance(value, (list, tuple)):
             value = [value]
 
         select = self.form_elm.get_elm(name=self.elm_name)
-        select.deselect_all()
+        if not turbo:
+            select.deselect_all()
         for item in self.convert_value(value):
             select.select_by_value(item)
 
-    def fill_common(self, value):
+    def fill_common(self, value, turbo=False):
         elm = self.form_elm.get_elm(name=self.elm_name)
         elm.clear()
         elm.send_keys(self.convert_value(value))
         elm.send_keys(Keys.TAB)  # Send TAB for losing focus. (Trigger change events.)
-
