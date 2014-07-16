@@ -258,6 +258,15 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
             self.close()
         self.switch_to_window(main_window_handle)
 
+    def close_alert(self, ignore_exception=False):
+        try:
+            alert = self.get_alert()
+        except selenium_exc.UnexpectedAlertPresentException:
+            if not ignore_exception:
+                raise
+        else:
+            alert.accept()
+
     def get_alert(self):
         """Returns instance of selenium.webdriver.common.alert.Alert"""
         return Alert(self)

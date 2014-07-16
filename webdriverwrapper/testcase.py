@@ -112,6 +112,10 @@ class WebdriverTestCase(unittest.TestCase):
             if not self.screenshot_path:
                 return
             screenshot_name = self.id()
+
+        # Close unexpected alerts (it's blocking and then tests fails completely).
+        self.driver.close_alert(ignore_exception=True)
+
         self.driver.get_screenshot_as_file('%s/%s.png' % (self.screenshot_path, screenshot_name))
 
     def _set_up(self):
@@ -161,6 +165,9 @@ class WebdriverTestCase(unittest.TestCase):
         self._check_errors(force_check=True)
 
     def _check_errors(self, force_check=False):
+        # Close unexpected alerts (it's blocking and then tests fails completely).
+        self.driver.close_alert(ignore_exception=True)
+
         self._check_js_errors()
         #  Check for any error message only if there isn't decorator which
         #+ already checked it.
