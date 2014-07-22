@@ -261,11 +261,10 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
     def close_alert(self, ignore_exception=False):
         try:
             alert = self.get_alert()
+            alert.accept()
         except:
             if not ignore_exception:
                 raise
-        else:
-            alert.accept()
 
     def get_alert(self):
         """Returns instance of selenium.webdriver.common.alert.Alert"""
