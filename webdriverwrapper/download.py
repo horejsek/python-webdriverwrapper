@@ -41,8 +41,10 @@ class _Download(object):
     def _create_request(self):
         url, data = self._get_url_and_data()
         request = Request(url, data)
-        for name, value in self._iter_cookies():
-            request.add_header('cookie', '%s=%s' % (name, value))
+
+        cookie = '; '.join('%s=%s' % (name, value) for name, value in self._iter_cookies())
+        request.add_header('cookie', cookie)
+
         return request
 
 
