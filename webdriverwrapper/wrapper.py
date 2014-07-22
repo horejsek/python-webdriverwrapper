@@ -261,7 +261,7 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
     def close_alert(self, ignore_exception=False):
         try:
             alert = self.get_alert()
-        except selenium_exc.NoAlertPresentException:
+        except:
             if not ignore_exception:
                 raise
         else:
