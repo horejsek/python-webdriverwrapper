@@ -5,12 +5,10 @@ try:
 except ImportError:
     from distutils.core import setup
 
-from webdriverwrapper import VERSION
-
 
 setup(
     name='webdriverwrapper',
-    version=VERSION,
+    version='1.4.6',  # Can't use VERSION because of imports during install before installing dependencies.
     packages=['webdriverwrapper'],
 
     install_requires=[line.strip() for line in open('requirements.txt').readlines() if line],
