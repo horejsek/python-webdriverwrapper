@@ -12,9 +12,9 @@ class TestCaseDecoratorsTest(testcase.WebdriverTestCase):
     def _get_driver(self):
         return Chrome()
 
-    @GoToPage('www.seznam.cz')
+    @GoToPage('https://www.seznam.cz')
     def test_go_to_page(self):
-        self.assertEquals(self.driver.current_url, 'http://www.seznam.cz/')
+        self.assertEquals(self.driver.current_url, 'https://www.seznam.cz/')
 
     @ShouldBeOnPage('http://www.youtube.com')
     def test_should_be_on_page(self):
