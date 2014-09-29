@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import
 
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 
 from webdriverwrapper.wrapper import _WebElementWrapper
@@ -101,7 +101,10 @@ class FormElement(object):
     def fill_input_checkbox_single(self, value, turbo=False):
         elm = self.form_elm.get_elm(xpath='//input[@type="checkbox"][@name="%s"]' % self.elm_name)
         if bool(value) != elm.is_selected():
-            elm.click()
+            try:
+                elm.click()
+            except WebDriverException:
+                elm.click(xpath='ancestor::label')
 
     def fill_input_checkbox_multiple(self, value, turbo=False):
         for item in value:

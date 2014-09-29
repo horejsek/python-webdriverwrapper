@@ -34,3 +34,11 @@ class FormTest(testcase.WebdriverTestCase):
             })
         except NoSuchElementException as exc:
             self.assertTrue(exc.msg and 'nosuchelement' in exc.msg, 'Bad msg: "%s"' % exc.msg)
+
+    def test_hidden_checkbox(self):
+        chbox = self.get_elm(name='hidden_checkbox_inside_label')
+        self.assertFalse(chbox.is_selected())
+        self.get_elm('form').fill_out({
+            'hidden_checkbox_inside_label': True,
+        })
+        self.assertTrue(chbox.is_selected())
