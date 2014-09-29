@@ -203,6 +203,8 @@ form.fill_out({
 
 Method will send key TAB if element is input of type text or textarea. Purpose of this is because of onchange event - JS function registred on that event will be called after losing of focus.
 
+If checkbox is hidden, then webdriverwrapper will click on ancestor label. It's a way how to make nice checkboxes in bootstrap and so.
+
 #### `fill_out_and_submit(data)`
 
 Same as `fill_out`, but after that calls `submit`.
