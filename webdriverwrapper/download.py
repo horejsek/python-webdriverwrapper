@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 
-try:
-    from urllib import urlencode
-    from urllib2 import Request, urlopen
-except ImportError:
-    from urllib.parse import urlencode
-    from urllib.request import Request, urlopen
+import requests
 
 from webdriverwrapper.utils import force_text
 from webdriverwrapper.gotopage import _get_domain_from_driver, _make_url
@@ -17,35 +12,36 @@ class _Download(object):
 
     @property
     def method(self):
-        return self._method
+        return self._response.request.method.lower()
 
     @property
     def status_code(self):
-        return self._result.code
+        return self._response.status_code
+
+    @property
+    def encoding(self):
+        return self._response.encoding
 
     @property
     def headers(self):
-        return dict(self._result.headers.items())
+        return self._response.headers
 
     @property
     def data(self):
-        return self._data
+        return self._response.text
 
     def _make_request(self):
-        request = self._create_request()
-        self._request = request
-        self._method = request.get_method().lower()
-        self._result = urlopen(request)
-        self._data = self._result.read()
+        is_post, url, data = self._get_url_and_data()
+        cookies = self._get_cookies()
 
-    def _create_request(self):
-        url, data = self._get_url_and_data()
-        request = Request(url, data)
+        if is_post:
+            self._response = requests.post(url, data=data, cookies=cookies)
+        else:
+            self._response = requests.get(url, params=data, cookies=cookies)
 
-        cookie = '; '.join('%s=%s' % (name, value) for name, value in self._iter_cookies())
-        request.add_header('cookie', cookie)
-
-        return request
+    def _get_cookies(self):
+        all_cookies = self._driver.get_cookies()
+        return dict((cookie['name'], cookie['value']) for cookie in all_cookies)
 
 
 class DownloadUrl(_Download):
@@ -60,48 +56,37 @@ class DownloadUrl(_Download):
 
     def _get_url_and_data(self):
         domain = _get_domain_from_driver(self._driver)
+        is_post = False
         url = _make_url(path=self._url, domain=domain)
-        return url, None
-
-    def _iter_cookies(self):
-        all_cookies = self._driver.get_cookies()
-        for cookie in all_cookies:
-            yield cookie['name'], cookie['value']
+        data = None
+        return is_post, url, data
 
 
 class DownloadFile(_Download):
 
     def __init__(self, elm):
         self._elm = elm
+        self._driver = elm._parent
         self._make_request()
 
     def _get_url_and_data(self):
-        elm = self._elm
-        data = None
         is_post = False
-        url = elm.get_attribute('href')
-        #  If not, element can by some form button. Then use attribute action
-        #+ of that form.
+        data = None
+
+        url = self._elm.get_attribute('href')
+        # If no href, element can be some form button. Then use attribute action
+        # of that form.
         if not url:
             form_elm = self._get_form_elm()
             if form_elm:
                 url = form_elm.get_attribute('action')
                 data = self._get_form_data()
                 is_post = form_elm.get_attribute('method') == 'post'
-        #  If form has no action defined or it is not form, just use current url.
+        # If form has no action defined or it is not form, just use current url.
         if not url:
-            url = elm.current_url
+            url = self._elm.current_url
 
-        if not is_post:
-            if data:
-                url = '%(url)s%(mark)s%(data)s' % {
-                    'url': url,
-                    'mark': '?' if '?' not in url else '&',
-                    'data': data,
-                }
-            data = None
-
-        return url, data
+        return is_post, url, data
 
     def _get_form_data(self):
         form_elm = self._get_form_elm()
@@ -113,7 +98,6 @@ class DownloadFile(_Download):
             force_text(elm.get_attribute('name')).encode('utf8'),
             force_text(elm.get_attribute('value')).encode('utf8'),
         ) for elm in elms)
-        data = urlencode(data)
         return data
 
     def _get_form_elm(self):
@@ -123,8 +107,3 @@ class DownloadFile(_Download):
             return None
         else:
             return form_elm
-
-    def _iter_cookies(self):
-        all_cookies = self._elm._parent.get_cookies()
-        for cookie in all_cookies:
-            yield cookie['name'], cookie['value']

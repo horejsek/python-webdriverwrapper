@@ -64,7 +64,7 @@ class DownloadFileTest(WebdriverWrapperBaseClassTest):
 
     def test_by_form_by_get_with_data(self):
         f = self._test_download_file('btn-get-with-data')
-        self.assertEqual(f._request.get_full_url(), 'http://www.google.com/?q=search')
+        self.assertEqual(f._response.request.url, 'http://www.google.com/?q=search')
 
     def test_by_form_by_post_with_data(self):
         f = self._test_download_file('btn-post-with-data', self.html_data, 'post')
