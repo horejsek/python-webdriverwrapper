@@ -75,9 +75,11 @@ class FormElement(object):
     def _convert_value_to_string(self, value):
         if isinstance(value, bool):
             value = int(value)
+        elif isinstance(value, str):
+            value = unicode(value, 'utf8')
         elif value is None:
             value = ''
-        return str(value)
+        return unicode(value)
 
     def fill_out(self, value, turbo):
         tag_name, elm_type = self.analyze_element()

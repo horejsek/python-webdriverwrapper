@@ -42,3 +42,13 @@ class FormTest(testcase.WebdriverTestCase):
             'hidden_checkbox_inside_label': True,
         })
         self.assertTrue(chbox.is_selected())
+
+    def test_str(self):
+        self.get_elm('form').fill_out({
+            'text': 'ěřžčřž',
+        })
+
+    def test_unicode(self):
+        self.get_elm('form').fill_out({
+            'text': u'ěřžčřž',
+        })
