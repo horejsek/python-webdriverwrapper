@@ -8,7 +8,7 @@ except ImportError:
 
 setup(
     name='webdriverwrapper',
-    version='1.5.0',  # Can't use VERSION because of imports during install before installing dependencies.
+    version='1.5.1',  # Can't use VERSION because of imports during install before installing dependencies.
     packages=['webdriverwrapper'],
 
     install_requires=[line.strip() for line in open('requirements.txt').readlines() if line],
