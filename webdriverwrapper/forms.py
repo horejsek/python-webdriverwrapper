@@ -103,10 +103,7 @@ class FormElement(object):
     def fill_input_checkbox_single(self, value, turbo=False):
         elm = self.form_elm.get_elm(xpath='//input[@type="checkbox"][@name="%s"]' % self.elm_name)
         if bool(value) != elm.is_selected():
-            try:
-                elm.click()
-            except WebDriverException:
-                elm.click(xpath='ancestor::label')
+            self._click_on_elm_or_his_ancestor(elm)
 
     def fill_input_checkbox_multiple(self, value, turbo=False):
         for item in value:
@@ -121,7 +118,7 @@ class FormElement(object):
             self.elm_name,
             self.convert_value(value),
         ))
-        elm.click()
+        self._click_on_elm_or_his_ancestor(elm)
 
     def fill_input_file(self, value, turbo=False):
         elm = self.form_elm.get_elm(name=self.elm_name)
@@ -146,3 +143,14 @@ class FormElement(object):
         elm.clear()
         elm.send_keys(self.convert_value(value))
         elm.send_keys(Keys.TAB)  # Send TAB for losing focus. (Trigger change events.)
+
+    @classmethod
+    def _click_on_elm_or_his_ancestor(self, elm):
+        """
+        For example Bootstrap wraps chboxes or radio button into label and hide
+        that element, so Selenium can't click on it.
+        """
+        try:
+            elm.click()
+        except WebDriverException:
+            elm.click(xpath='ancestor::label')
