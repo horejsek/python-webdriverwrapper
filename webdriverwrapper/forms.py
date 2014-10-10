@@ -111,7 +111,7 @@ class FormElement(object):
                 self.elm_name,
                 self.convert_value(item),
             ))
-            elm.click()
+            self._click_on_elm_or_his_ancestor(elm)
 
     def fill_input_radio(self, value, turbo=False):
         elm = self.form_elm.get_elm(xpath='//input[@type="radio"][@name="%s"][@value="%s"]' % (
