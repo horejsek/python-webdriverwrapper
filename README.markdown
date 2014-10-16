@@ -155,7 +155,7 @@ driver.get_alert().accept()
 driver.get_alert().dismiss()
 ```
 
-### `download_url(url=None)`
+#### `download_url(url=None)`
 
 Downloads page from `url` or `current_url` if not supplied. Works the same way as `download_file()`.
 
@@ -165,6 +165,11 @@ f.status_code
 f.headers  # Dictionary of all response headers.
 f.data
 ```
+
+#### `fill_out_and_submit(data, prefix='', turbo=False)`
+#### `fill_out(data, prefix='', turbo=False)`
+
+Shortcut for filling first `<form>` on page. For more info see section Forms.
 
 ### `WebElement` specific methods
 

@@ -279,6 +279,18 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
         """
         return DownloadUrl(self, url)
 
+    def fill_out_and_submit(self, data, prefix='', turbo=False):
+        """
+        Shortcut for filling first <form> on page.
+        """
+        return self.get_elm(tag_name='form').fill_out_and_submit(data, prefix, turbo)
+
+    def fill_out(self, data, prefix='', turbo=False):
+        """
+        Shortcut for filling first <form> on page.
+        """
+        return self.get_elm(tag_name='form').fill_out(data, prefix, turbo)
+
 
 class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
     def __new__(cls, webelement):
