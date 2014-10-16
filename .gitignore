@@ -5,3 +5,4 @@ dist/
 *.pyc
 MANIFEST
 chromedriver.log
+*egg-info
