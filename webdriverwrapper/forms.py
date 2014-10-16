@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 
 from webdriverwrapper.wrapper import _WebElementWrapper
 from webdriverwrapper.exceptions import _create_exception_msg
+from webdriverwrapper.utils import force_text
 
 __all__ = ('Form',)
 
@@ -75,11 +76,9 @@ class FormElement(object):
     def _convert_value_to_string(self, value):
         if isinstance(value, bool):
             value = int(value)
-        elif isinstance(value, str):
-            value = unicode(value, 'utf8')
         elif value is None:
             value = ''
-        return unicode(value)
+        return force_text(value)
 
     def fill_out(self, value, turbo):
         tag_name, elm_type = self.analyze_element()
