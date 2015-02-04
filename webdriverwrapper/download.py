@@ -3,13 +3,11 @@
 import requests
 
 from webdriverwrapper.utils import force_text
-from webdriverwrapper.gotopage import _get_domain_from_driver, _make_url
 
 __all__ = ('DownloadUrl', 'DownloadFile')
 
 
 class _Download(object):
-
     @property
     def method(self):
         return self._response.request.method.lower()
@@ -45,7 +43,6 @@ class _Download(object):
 
 
 class DownloadUrl(_Download):
-
     def __init__(self, driver, url):
         self._driver = driver
 
@@ -55,15 +52,13 @@ class DownloadUrl(_Download):
         self._make_request()
 
     def _get_url_and_data(self):
-        domain = _get_domain_from_driver(self._driver)
         is_post = False
-        url = _make_url(path=self._url, domain=domain)
+        url = self._driver.get_url(path=self._url)
         data = None
         return is_post, url, data
 
 
 class DownloadFile(_Download):
-
     def __init__(self, elm):
         self._elm = elm
         self._driver = elm._parent

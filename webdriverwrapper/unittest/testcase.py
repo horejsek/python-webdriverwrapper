@@ -9,7 +9,6 @@ import sys
 
 import webdriverwrapper.exceptions as exceptions
 from webdriverwrapper.wrapper import Firefox, Chrome, ChromeOptions
-from webdriverwrapper.errors import get_error_page, get_error_messages
 
 __all__ = (
     'WebdriverTestCase',
@@ -59,7 +58,8 @@ class WebdriverTestCase(unittest.TestCase):
                 #+ server error. It's good to know about it - it can say more
                 #+ than that some element couldn't be found.
                 try:
-                    self._check_errors()
+                    self.driver.check_expected_errors(test_method)
+                    self.driver.check_expected_infos(test_method)
                 except:
                     result.addError(self, sys.exc_info())
                 return
@@ -77,7 +77,8 @@ class WebdriverTestCase(unittest.TestCase):
                 result.addError(self, sys.exc_info())
 
             try:
-                self._check_errors()
+                self.driver.check_expected_errors(test_method)
+                self.driver.check_expected_infos(test_method)
             except:
                 ok = False
                 result.addError(self, sys.exc_info())
@@ -124,7 +125,7 @@ class WebdriverTestCase(unittest.TestCase):
             WebdriverTestCase.driver = self._get_driver()
             WebdriverTestCase._main_window = WebdriverTestCase.driver.current_window_handle
             if self.domain:
-                WebdriverTestCase.driver.go_to(self.domain)
+                WebdriverTestCase.driver.get(self.domain)
 
         # Ensure that test starts in main window.
         if self.driver.current_window_handle != self._main_window:
@@ -161,54 +162,10 @@ class WebdriverTestCase(unittest.TestCase):
     def debug(self, msg):
         logging.info(msg)
 
-    def check_errors(self):
-        self._check_errors(force_check=True)
-
-    def _check_errors(self, force_check=False):
-        # Close unexpected alerts (it's blocking and then tests fails completely).
-        self.driver.close_alert(ignore_exception=True)
-
-        self._check_js_errors()
-        #  Check for any error message only if there isn't decorator which
-        #+ already checked it.
-        if force_check or not getattr(self._test_method, '__should_be_error_page__', False):
-            self._check_error_page()
-        if force_check or not getattr(self._test_method, '__should_be_error__', False):
-            self._check_error_messages()
-
-    def _check_js_errors(self):
-        """Check for JS errors. This method is called after each test.
-        For that you have to add to your page this JavaScript:
-
-            <script type="text/javascript">
-                window.jsErrors = [];
-                window.onerror = function(errorMessage) {
-                    window.jsErrors[window.jsErrors.length] = errorMessage;
-                }
-            </script>
-        """
-        js_errors = self.driver.execute_script('return window.jsErrors')
-        if js_errors:
-            raise exceptions.JSErrorsException(self.driver.current_url, js_errors)
-
-    def _check_error_page(self):
-        """There should be tests for error page. This method is called after each
-        test. By default it looks for elements with class `error-page`.
-        """
-        error_page = get_error_page(self.driver)
-        if error_page:
-            raise exceptions.ErrorPageException(self.driver.current_url, error_page)
-
-    def _check_error_messages(self):
-        """There should be tests for error messages on page. This
-        method is called after each test.
-        By default it looks for elements with class `error`.
-        """
-        errors = get_error_messages(self.driver)
-        if errors:
-            raise exceptions.ErrorsException(self.driver.current_url, errors)
-
     ### Aliases to driver.
+
+    def check_errors(self, expected_error_page=None, allowed_error_pages=[], expected_error_messages=[], allowed_error_messages=[]):
+        self.driver.check_errors(expected_error_page, allowed_error_pages, expected_error_messages, allowed_error_messages)
 
     def find_elements_by_text(self, text):
         return self.driver.find_elements_by_text(text)

@@ -3,44 +3,6 @@
 from selenium.common.exceptions import *
 
 
-class WebdriverWrapperException(Exception):
-    def __init__(self, msg='', traceback=''):
-        self.msg = msg
-        self.traceback = traceback
-
-    def __str__(self):
-        if not self.traceback:
-            return self._to_string(self.msg)
-        return '%s\n\nTraceback:\n%s' % (
-            self._to_string(self.msg),
-            self._to_string(self.traceback),
-        )
-
-    def __repr__(self):
-        return self.__str__()
-
-    def _to_string(self, msg):
-        return msg.encode('utf-8') if isinstance(msg, unicode) else str(msg)
-
-
-class ErrorPageException(WebdriverWrapperException):
-    def __init__(self, url, error_page, traceback=''):
-        msg = 'Page %s has unexpected error page: %s' % (url, error_page)
-        super(ErrorPageException, self).__init__(msg, traceback)
-
-
-class ErrorsException(WebdriverWrapperException):
-    def __init__(self, url, errors=[]):
-        msg = 'Page %s has these unexpected errors: %s' % (url, errors)
-        super(ErrorsException, self).__init__(msg)
-
-
-class JSErrorsException(WebdriverWrapperException):
-    def __init__(self, url, errors=[]):
-        msg = 'Page %s has these unexpected JavaScript errors: %s' % (url, errors)
-        super(JSErrorsException, self).__init__(msg)
-
-
 def _create_exception_msg(
     id_=None, class_name=None, name=None, tag_name=None, xpath=None,
     parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
@@ -73,3 +35,53 @@ def _create_exception_msg_tag(id_=None, class_name=None, name=None, tag_name=Non
         msg += '>'
         return msg
     return ''
+
+
+class WebdriverWrapperException(Exception):
+    def __init__(self, url, msg):
+        self.url = url
+        self.msg = msg
+
+    def __str__(self):
+        return '{} [at {}]'.format(self.msg, self.url)
+
+    def __repr__(self):
+        return self.__str__()
+
+
+class ErrorPageException(WebdriverWrapperException):
+    def __init__(self, url, error_page, expected_error_page, allowed_error_pages, traceback=None):
+        if expected_error_page:
+            msg = 'Expected error page "{}", but found "{}" instead.'.format(expected_error_page, error_page)
+        else:
+            msg = 'Unexpected error page "{}".'.format(error_page)
+        if allowed_error_pages:
+            msg += ' Allowed error pages: "{}"'.format(allowed_error_pages)
+        if traceback:
+            msg += '\n\nTraceback:\n{}'.format(traceback)
+        super(ErrorPageException, self).__init__(url, msg)
+
+
+class ErrorMessagesException(WebdriverWrapperException):
+    def __init__(self, url, error_messages, expected_error_messages, allowed_error_messages):
+        if expected_error_messages:
+            msg = 'Expected error messages "{}", but found "{}" instead.'.format(expected_error_messages, error_messages)
+        else:
+            msg = 'Unexpected error messages "{}".'.format(error_messages)
+        if allowed_error_messages:
+            msg += ' Allowed error messages: "{}"'.format(allowed_error_messages)
+        super(ErrorMessagesException, self).__init__(url, msg)
+
+
+class JSErrorsException(WebdriverWrapperException):
+    def __init__(self, url, js_errors):
+        msg = 'Unexpected JavaScript errors "{}".'.format(js_errors)
+        super(JSErrorsException, self).__init__(url, msg)
+
+
+class InfoMessagesException(WebdriverWrapperException):
+    def __init__(self, url, info_messages, expected_info_messages, allowed_info_messages):
+        msg = 'Expected info messages "{}", but found "{}" instead.'.format(expected_info_messages, info_messages)
+        if allowed_info_messages:
+            msg += ' Allowed info messages: "{}"'.format(allowed_info_messages)
+        super(InfoMessagesException, self).__init__(url, msg)

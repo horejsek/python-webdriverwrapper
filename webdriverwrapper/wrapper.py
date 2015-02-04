@@ -3,6 +3,11 @@
 from __future__ import absolute_import
 
 import functools
+try:
+    from urlparse import urlparse, urlunparse
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlparse, urlunparse, urlencode
 
 import selenium.common.exceptions as selenium_exc
 from selenium.webdriver import *
@@ -11,10 +16,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
-from webdriverwrapper.utils import force_text
-from webdriverwrapper.exceptions import NoSuchWindowException, _create_exception_msg
-import webdriverwrapper.gotopage as gotopage
-from webdriverwrapper.download import DownloadUrl, DownloadFile
+from .download import DownloadUrl, DownloadFile
+from .errors import WebdriverWrapperErrorMixin
+from .exceptions import _create_exception_msg
+from .info import WebdriverWrapperInfoMixin
+from .utils import force_text
 
 __all__ = (
     'Firefox',
@@ -190,7 +196,7 @@ class _WebdriverBaseWrapper(object):
             raise exc.__class__(msg)
 
 
-class _WebdriverWrapper(_WebdriverBaseWrapper):
+class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _WebdriverBaseWrapper):
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
         """
         Same as WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...)),
@@ -213,16 +219,34 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
         """
         return WebDriverWait(self, timeout)
 
-    def go_to(self, path=None, query=None, domain=None):
+    def go_to(self, path=None, query=None):
         """
-        Go to page. You can pass only `path`, because this
-        method can get domain from current_url from driver
-        instance. But you can force your own domain by `domain`.
-        `query` can be dictionary.
+        Better option for ``get`` method. It uses ``get_url`` so you don't have
+        to pass whole URL, but just relative path and/or query.
         """
-        if not domain:
-            domain = gotopage._get_domain_from_driver(self)
-        gotopage.go_to_page(self, path, query, domain)
+        self.get(self.get_url(path, query))
+
+    def get_url(self, path=None, query=None):
+        """
+        Return new URL with passed ``path`` and/or ``query``. It adds scheme
+        and domain for you from ``current_url``. You can pass to ``query``
+        string or dictionary.
+        """
+        if isinstance(query, dict):
+            query = urlencode(query)
+
+        url_parts = urlparse(self.current_url)
+        new_url_parts = (
+            url_parts.scheme,
+            url_parts.netloc,
+            path or url_parts.path,
+            None,  # params
+            query,
+            None,  # fragment
+        )
+        url = urlunparse(new_url_parts)
+
+        return url
 
     def switch_to_window(self, window_name=None, title=None, url=None):
         if window_name:
@@ -230,10 +254,7 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
             return
 
         if url:
-            if not isinstance(url, dict):
-                url = {'path': url}
-            url.setdefault('domain', gotopage._get_domain_from_driver(self))
-            url = gotopage._make_url(**url)
+            url = self.get_url(path=url)
 
         for window_handle in self.window_handles:
             self._get_seleniums_driver_class().switch_to_window(self, window_handle)
@@ -241,7 +262,7 @@ class _WebdriverWrapper(_WebdriverBaseWrapper):
                 return
             if url and self.current_url == url:
                 return
-        raise NoSuchWindowException('Window (title=%s, url=%s) not found.' % (title, url))
+        raise selenium_exc.NoSuchWindowException('Window (title=%s, url=%s) not found.' % (title, url))
 
     def close_window(self, window_name=None, title=None, url=None):
         main_window_handle = self.current_window_handle

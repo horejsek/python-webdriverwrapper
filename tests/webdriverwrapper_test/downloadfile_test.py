@@ -22,21 +22,17 @@ class DownloadUrlTest(WebdriverWrapperBaseClassTest):
         self.assertEqual(self.file_data, downloaded_data2.data)
 
     def test_by_current(self):
-        self.go_to('file://%s/html/download_file.html' % self.path)
+        self.driver.get('file://%s/html/download_file.html' % self.path)
         downloaded_data = self.driver.download_url()
         self.assertEqual(self.html_data, downloaded_data.data)
 
-    def test_google(self):
-        downloaded = self.driver.download_url('http://google.com')
-        self.assertEqual(downloaded.status_code, 200)
-
     def test_google_current(self):
-        self.go_to('http://www.google.com')
+        self.driver.get('http://www.google.com')
         downloaded = self.driver.download_url()
         self.assertEqual(downloaded.status_code, 200)
 
     def test_google_without_domain(self):
-        self.go_to('http://www.google.com')
+        self.driver.get('http://www.google.com')
         downloaded = self.driver.download_url('#q=a')
         self.assertEqual(downloaded.status_code, 200)
 
@@ -48,7 +44,7 @@ class DownloadFileTest(WebdriverWrapperBaseClassTest):
         self.html_data = open('/%s/html/download_file.html' % self.path, 'rb').read()
 
     def setUp(self):
-        self.go_to('file://%s/html/download_file.html' % self.path)
+        self.driver.get('file://%s/html/download_file.html' % self.path)
 
     def test_by_link(self):
         self._test_download_file('link', self.file_data)

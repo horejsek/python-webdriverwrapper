@@ -5,11 +5,11 @@
 #  WebdriverTestCase is used because of creating of driver.
 
 import os
-from webdriverwrapper import testcase, Chrome
+from webdriverwrapper import unittest, Chrome
 
 
-class WebdriverWrapperBaseClassTest(testcase.WebdriverTestCase):
-    instances_of_driver = testcase.ONE_INSTANCE_PER_TESTCASE
+class WebdriverWrapperBaseClassTest(unittest.WebdriverTestCase):
+    instances_of_driver = unittest.ONE_INSTANCE_PER_TESTCASE
 
     def init(self):
         self.path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))

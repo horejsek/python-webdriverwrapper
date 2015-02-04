@@ -7,7 +7,7 @@ from webdriverwrapper_test import WebdriverWrapperBaseClassTest
 
 class WebdriverExceptionsTest(WebdriverWrapperBaseClassTest):
     def setUp(self):
-        self.go_to('file://%s/html/some_page.html' % self.path)
+        self.driver.get('file://%s/html/some_page.html' % self.path)
 
     def test_exception(self):
         self._test_exception(lambda: self.driver.get_elm('some_non_exist_id'))

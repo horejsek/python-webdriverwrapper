@@ -2,19 +2,19 @@
 
 import os
 
-from webdriverwrapper import testcase, Chrome
+from webdriverwrapper import unittest, Chrome
 from webdriverwrapper.exceptions import NoSuchElementException
 
 
-class FormTest(testcase.WebdriverTestCase):
-    instances_of_driver = testcase.ONE_INSTANCE_PER_TESTCASE
+class FormTest(unittest.WebdriverTestCase):
+    instances_of_driver = unittest.ONE_INSTANCE_PER_TESTCASE
 
     def _get_driver(self):
         return Chrome()
 
     def setUp(self):
         path = os.path.dirname(os.path.realpath(__file__))
-        self.go_to('file://%s/html/form.html' % path)
+        self.driver.get('file://%s/html/form.html' % path)
 
     def test_ok(self):
         self.get_elm('form').fill_out({

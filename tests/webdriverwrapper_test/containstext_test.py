@@ -5,7 +5,7 @@ from webdriverwrapper_test import WebdriverWrapperBaseClassTest
 
 class ContainsTextTest(WebdriverWrapperBaseClassTest):
     def setUp(self):
-        self.go_to('file://%s/html/find_elements.html' % self.path)
+        self.driver.get('file://%s/html/find_elements.html' % self.path)
 
     def test_selenium_not_search(self):
         #  Check that text there is only one element - other elements are ignored

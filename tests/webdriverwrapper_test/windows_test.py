@@ -6,7 +6,7 @@ from webdriverwrapper.exceptions import NoSuchWindowException
 
 class WindowsTest(WebdriverWrapperBaseClassTest):
     def setUp(self):
-        self.go_to('file://%s/html/windows.html' % self.path)
+        self.driver.get('file://%s/html/windows.html' % self.path)
         self.new_window_path = 'file://%s/html/new_window.html' % self.path
         self.close_other_windows()
 

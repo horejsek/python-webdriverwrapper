@@ -2,11 +2,11 @@
 
 from __future__ import absolute_import
 
-VERSION = '1.5.2'
+VERSION = '2.0.0dev'
 
 from webdriverwrapper import decorators
 from webdriverwrapper import exceptions
-from webdriverwrapper import testcase
+from webdriverwrapper import unittest
 from webdriverwrapper.wrapper import (
     Firefox,
     FirefoxProfile,

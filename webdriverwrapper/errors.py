@@ -1,109 +1,207 @@
 # -*- coding: utf-8 -*-
 
-from functools import wraps
+from __future__ import absolute_import
+
+from sets import ImmutableSet
+
 from selenium.common.exceptions import NoSuchElementException
 
-__all__ = ('ShouldBeError',)
+from .exceptions import ErrorPageException, ErrorMessagesException, JSErrorsException
+
+__all__ = ('expected_error_page', 'allowed_error_pages', 'expected_error_messages', 'allowed_error_messages', 'allowed_any_error_message')
+
+EXPECTED_ERROR_PAGE = '__expected_error_page__'
+ALLOWED_ERROR_PAGES = '__allowed_error_pages__'
+EXPECTED_ERROR_MESSAGES = '__expected_error_messages__'
+ALLOWED_ERROR_MESSAGES = '__allowed_error_messages__'
 
 
-class ShouldBeErrorPage(object):
-    """Decorator object for test method.
-
-    If test method has this decorator, it must end with error page with error
-    code passed in `expected_error_page`. It can raise some exception - exceptions
-    are ignored. `expected_error_page` can be - 403, 404, "Not Found" etc.
+def expected_error_page(error_page):
     """
-    def __init__(self, expected_error_page):
-        self.expected_error_page = str(expected_error_page)
-
-    def __call__(self, func):
-        self.func = func
-        return self.create_wrapper()
-
-    def create_wrapper(self):
-        self.func.__should_be_error_page__ = True
-        @wraps(self.func)
-        def f(self_of_wrapped_method):
-            try:
-                self.func(self_of_wrapped_method)
-            except:
-                pass
-            finally:
-                if not self.is_expected_error_page(self_of_wrapped_method.driver):
-                    self_of_wrapped_method.fail('Expected error page "%s", but isn\'t.' % self.expected_error_page)
-        return f
-
-    def is_expected_error_page(self, driver):
-        error_page = self.get_error_page(driver)
-        return bool(error_page and self.expected_error_page in error_page)
-
-    def get_error_page(self, driver):
-        return get_error_page(driver)
+    Decorator expecting defined error page at the end of test method. As param
+    use what `driver.get_error_page` returns.
+    """
+    def wrapper(func):
+        setattr(func, EXPECTED_ERROR_PAGE, error_page)
+        return func
+    return wrapper
 
 
-def get_error_page(driver):
-    try:
-        error_page = driver.get_elm(class_name='error-page')
-    except NoSuchElementException:
-        pass
-    else:
-        header = error_page.get_elm(tag_name='h1')
-        return header.text
+def allowed_error_pages(*error_pages):
+    """
+    Decorator ignoring defined error pages at the end of test method. As param
+    use what `driver.get_error_page` returns.
+    """
+    def wrapper(func):
+        setattr(func, ALLOWED_ERROR_PAGES, error_pages)
+        return func
+    return wrapper
 
 
-class ShouldBeError(object):
-    """Decorator object for test method.
-    If test method has this decorator, it must end with error message passed in
-    `expected_error`."""
-    def __init__(self, expected_error=None):
-        self.expected_error = expected_error
-
-    def __call__(self, func):
-        self.func = func
-        return self.create_wrapper()
-
-    def create_wrapper(self):
-        self.func.__should_be_error__ = True
-        @wraps(self.func)
-        def f(self_of_wrapped_method):
-            self.func(self_of_wrapped_method)
-
-            driver = self_of_wrapped_method.driver
-            if not self.is_expected_error(driver):
-                self_of_wrapped_method.fail('"%s" error expected, but found %s.' % (
-                    self.expected_error or '*',
-                    self.get_errors(driver),
-                ))
-        return f
-
-    def is_expected_error(self, driver):
-        errors = self.get_errors(driver)
-        if self.expected_error is None:
-            return bool(errors)
-        return self.expected_error in errors
-
-    def get_errors(self, driver):
-        return get_error_messages(driver)
+def expected_error_messages(*error_messages):
+    """
+    Decorator expecting defined error messages at the end of test method. As
+    param use what `driver.get_error_messages` returns.
+    """
+    def wrapper(func):
+        setattr(func, EXPECTED_ERROR_MESSAGES, error_messages)
+        return func
+    return wrapper
 
 
-class CanBeError(ShouldBeError):
-    """Same as ShouldBeError, but no error is OK."""
-    def is_expected_error(self, driver):
-        errors = self.get_errors(driver)
-        if not errors:
-            return True
-        return super(CanBeError, self).is_expected_error(driver)
+def allowed_error_messages(*error_messages):
+    """
+    Decorator ignoring defined error messages at the end of test method. As
+    param use what `driver.get_error_messages` returns.
+    """
+    def wrapper(func):
+        setattr(func, ALLOWED_ERROR_MESSAGES, error_messages)
+        return func
+    return wrapper
 
 
-def get_error_messages(driver):
-    try:
-        error_elms = driver.get_elms(class_name='error')
-    except NoSuchElementException:
-        return []
-    else:
+def allowed_any_error_message(func):
+    """
+    Decorator ignoring any error messages at the end of test method. If you want
+    allow only specific error message, use `allowed_error_messages` instead.
+    """
+    setattr(func, ALLOWED_ERROR_MESSAGES, ANY)
+    return func
+
+
+class ANY:
+    pass
+
+
+class WebdriverWrapperErrorMixin(object):
+    def check_expected_errors(self, test_method):
+        """
+        This method should be called after each test. It will read decorated
+        informations and check if there are expected errors.
+
+        You can set expected errors with decorator ``expected_error_page``,
+        ``allowed_error_pages``, ``expected_error_messages`` and
+        ``allowed_error_messages``.
+        """
+        f = lambda key, default=[]: getattr(test_method, key, default)
+        expected_error_page = f(EXPECTED_ERROR_PAGE, default=None)
+        allowed_error_pages = f(ALLOWED_ERROR_PAGES)
+        expected_error_messages = f(EXPECTED_ERROR_MESSAGES)
+        allowed_error_messages = f(ALLOWED_ERROR_MESSAGES)
+        self.check_errors(expected_error_page, allowed_error_pages, expected_error_messages, allowed_error_messages)
+
+    def check_errors(self, expected_error_page=None, allowed_error_pages=[], expected_error_messages=[], allowed_error_messages=[]):
+        """
+        This method should be called whenever you need to check if there is some
+        error. Normally you need only ``check_expected_errors`` called after each
+        test (which you specify only once), but it will check errors only at the
+        end of test. When you have big use case and you need to be sure that on
+        every step is not any error, use this.
+
+        To parameters you should pass same values like to decorators
+        ``expected_error_page``, ``allowed_error_pages``,
+        ``expected_error_messages`` and ``allowed_error_messages``.
+        """
+        # Close unexpected alerts (it's blocking).
+        self.close_alert(ignore_exception=True)
+
+        expected_error_pages = set([expected_error_page])
+        allowed_error_pages = set(allowed_error_pages)
+        error_page = self.get_error_page()
+        error_pages = set([error_page])
+        if (
+            error_pages & expected_error_pages != expected_error_pages
+            or
+            error_pages - (expected_error_pages | allowed_error_pages)
+        ):
+            traceback = self.get_error_traceback()
+            raise ErrorPageException(self.current_url, error_page, expected_error_page, allowed_error_pages, traceback)
+
+        error_messages = set(self.get_error_messages())
+        expected_error_messages = set(expected_error_messages)
+        allowed_error_messages = error_messages if isinstance(allowed_error_messages, ANY) else set(allowed_error_messages)
+        if (
+            error_messages & expected_error_messages != expected_error_messages
+            or
+            error_messages - (expected_error_messages | allowed_error_messages)
+        ):
+            raise ErrorPageException(self.current_url, error_messages, expected_error_messages, allowed_error_messages)
+
+        js_errors = self.get_js_errors()
+        if js_errors:
+            raise JSErrorsException(self.current_url, js_errors)
+
+    def get_error_page(self):
+        """
+        Method returning error page. Should return string.
+
+        By default it find element with class ``error-page`` and returns text
+        of ``h1`` header. You can change this method accordingly to your app.
+
+        Error page returned from this method is used in decorators
+        ``expected_error_page`` and ``allowed_error_pages``.
+        """
         try:
-            error_values = [error_elm.get_attribute('error') for error_elm in error_elms]
-        except Exception:
-            error_values = [error_elm.text for error_elm in error_elms]
-        finally:
-            return error_values
+            error_page = self.get_elm(class_name='error-page')
+        except NoSuchElementException:
+            pass
+        else:
+            header = error_page.get_elm(tag_name='h1')
+            return header.text
+
+    def get_error_traceback(self):
+        """
+        Method returning traceback of error page.
+
+        By default it find element with class ``error-page`` and returns text
+        of element with class ``traceback``. You can change this method
+        accordingly to your app.
+        """
+        try:
+            errPage = driver.get_elm(class_name='error-page')
+        except NoSuchElementException:
+            pass
+        else:
+            traceback = errPage.get_elm(class_name='traceback')
+            return traceback.text
+
+    def get_error_messages(self):
+        """
+        Method returning error messages. Should return list of messages.
+
+        By default it find element with class ``error`` and theirs value in
+        attribute ``error`` or text if that attribute is missing. You can change
+        this method accordingly to your app.
+
+        Error messages returned from this method are used in decorators
+        ``expected_error_messages`` and ``allowed_error_messages``.
+        """
+        try:
+            error_elms = self.get_elms(class_name='error')
+        except NoSuchElementException:
+            return []
+        else:
+            try:
+                error_values = [error_elm.get_attribute('error') for error_elm in error_elms]
+            except Exception:
+                error_values = [error_elm.text for error_elm in error_elms]
+            finally:
+                return error_values
+
+    def get_js_errors(self):
+        """
+        Method returning JS errors. Should return list of errors.
+
+        You have to include following JS snippet to your web app which will
+        record all JS errors and this method will automatically read them.
+
+        .. code-block:: html
+
+            <script type="text/javascript">
+                window.jsErrors = [];
+                window.onerror = function(errorMessage) {
+                    window.jsErrors[window.jsErrors.length] = errorMessage;
+                }
+            </script>
+        """
+        return self.execute_script('return window.jsErrors')
