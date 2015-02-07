@@ -2,7 +2,6 @@
 
 from webdriverwrapper import Chrome
 from webdriverwrapper.testcase import WebdriverTestCase
-from webdriverwrapper.decorators import GoToPage, ShouldBeOnPage
 
 
 class TestCase(WebdriverTestCase):
@@ -11,13 +10,10 @@ class TestCase(WebdriverTestCase):
     def _get_driver(self):
         return Chrome()
 
-    @GoToPage('')
-    @ShouldBeOnPage('doodles/finder/2013/All%20doodles')
     def testDoodle(self):
         self.click('gbqfsb')
-        self.contains_text('Doodles')
+        self.assertTrue(self.contains_text('Doodles'))
 
-    @GoToPage('')
     def testSearch(self):
         self.get_elm('gbqf').fill_out_and_submit({
             'q': 'hello',
