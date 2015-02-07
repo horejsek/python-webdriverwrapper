@@ -134,14 +134,21 @@ Error and info messages
 PyTest
 ------
 
+TODO
+
 .. automodule:: webdriverwrapper.pytest.conftest
     :members:
 
 UnitTest
 --------
 
+.. autoattribute:: webdriverwrapper.unittest.ONE_INSTANCE_FOR_ALL_TESTS
+.. autoattribute:: webdriverwrapper.unittest.ONE_INSTANCE_PER_TESTCASE
+.. autoattribute:: webdriverwrapper.unittest.ONE_INSTANCE_PER_TEST
+
 .. autoclass:: webdriverwrapper.unittest.WebdriverTestCase
     :members:
+    :private-members:
 
 Exceptions
 ==========
