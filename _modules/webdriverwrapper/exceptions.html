@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>webdriverwrapper.exceptions &mdash; WebDriver Wrapper  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="WebDriver Wrapper  documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">WebDriver Wrapper  documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for webdriverwrapper.exceptions</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">selenium.common.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="k">def</span> <span class="nf">_create_exception_msg</span><span class="p">(</span>
+    <span class="n">id_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xpath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">parent_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">css_selector</span><span class="o">=</span><span class="bp">None</span>
+<span class="p">):</span>
+    <span class="n">elm_text</span> <span class="o">=</span> <span class="n">_create_exception_msg_tag</span><span class="p">(</span><span class="n">id_</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">css_selector</span><span class="p">)</span>
+    <span class="n">parent_text</span> <span class="o">=</span> <span class="n">_create_exception_msg_tag</span><span class="p">(</span><span class="n">parent_id</span><span class="p">,</span> <span class="n">parent_class_name</span><span class="p">,</span> <span class="n">parent_name</span><span class="p">,</span> <span class="n">parent_tag_name</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;No element </span><span class="si">%s</span><span class="s"> found&#39;</span> <span class="o">%</span> <span class="n">elm_text</span>
+    <span class="k">if</span> <span class="n">parent_text</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; in parent element </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">parent_text</span>
+    <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; at </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">url</span>
+    <span class="k">return</span> <span class="n">msg</span>
+
+
+<span class="k">def</span> <span class="nf">_create_exception_msg_tag</span><span class="p">(</span><span class="n">id_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xpath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">css_selector</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">xpath</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">xpath</span>
+    <span class="k">elif</span> <span class="n">css_selector</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">css_selector</span>
+    <span class="k">elif</span> <span class="n">id_</span> <span class="ow">or</span> <span class="n">class_name</span> <span class="ow">or</span> <span class="n">tag_name</span> <span class="ow">or</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;&lt;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tag_name</span> <span class="ow">or</span> <span class="s">&#39;*&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">id_</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; id=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">id_</span>
+        <span class="k">if</span> <span class="n">class_name</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; class=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">class_name</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; name=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">name</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;&gt;&#39;</span>
+        <span class="k">return</span> <span class="n">msg</span>
+    <span class="k">return</span> <span class="s">&#39;&#39;</span>
+
+
+<div class="viewcode-block" id="WebdriverWrapperException"><a class="viewcode-back" href="../../index.html#webdriverwrapper.exceptions.WebdriverWrapperException">[docs]</a><span class="k">class</span> <span class="nc">WebdriverWrapperException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base exception of WebDriver Wrapper.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;{} [at {}]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__str__</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="ErrorPageException"><a class="viewcode-back" href="../../index.html#webdriverwrapper.exceptions.ErrorPageException">[docs]</a><span class="k">class</span> <span class="nc">ErrorPageException</span><span class="p">(</span><span class="n">WebdriverWrapperException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exception raised when there is some unexpected error page. Like page 404,</span>
+<span class="sd">    500 and so on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">error_page</span><span class="p">,</span> <span class="n">expected_error_page</span><span class="p">,</span> <span class="n">allowed_error_pages</span><span class="p">,</span> <span class="n">traceback</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">expected_error_page</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Expected error page &quot;{}&quot;, but found &quot;{}&quot; instead.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expected_error_page</span><span class="p">,</span> <span class="n">error_page</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unexpected error page &quot;{}&quot;.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">error_page</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">allowed_error_pages</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; Allowed error pages: &quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">allowed_error_pages</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">traceback</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">Traceback:</span><span class="se">\n</span><span class="s">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">traceback</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ErrorPageException</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ErrorMessagesException"><a class="viewcode-back" href="../../index.html#webdriverwrapper.exceptions.ErrorMessagesException">[docs]</a><span class="k">class</span> <span class="nc">ErrorMessagesException</span><span class="p">(</span><span class="n">WebdriverWrapperException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exception raised when there is some unexpected error message. Like &quot;some</span>
+<span class="sd">    field is mandatory&quot;, &quot;wrong e-mail&quot; and so on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">error_messages</span><span class="p">,</span> <span class="n">expected_error_messages</span><span class="p">,</span> <span class="n">allowed_error_messages</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">expected_error_messages</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Expected error messages &quot;{}&quot;, but found &quot;{}&quot; instead.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expected_error_messages</span><span class="p">,</span> <span class="n">error_messages</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unexpected error messages &quot;{}&quot;.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">error_messages</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">allowed_error_messages</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; Allowed error messages: &quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">allowed_error_messages</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ErrorMessagesException</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="JSErrorsException"><a class="viewcode-back" href="../../index.html#webdriverwrapper.exceptions.JSErrorsException">[docs]</a><span class="k">class</span> <span class="nc">JSErrorsException</span><span class="p">(</span><span class="n">WebdriverWrapperException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exception raised when there is some JS error.</span>
+
+<span class="sd">    See :py:meth:`webdriverwrapper.error.WebdriverWrapperErrorMixin.get_js_errors`</span>
+<span class="sd">    for more information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">js_errors</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unexpected JavaScript errors &quot;{}&quot;.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">js_errors</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">JSErrorsException</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="InfoMessagesException"><a class="viewcode-back" href="../../index.html#webdriverwrapper.exceptions.InfoMessagesException">[docs]</a><span class="k">class</span> <span class="nc">InfoMessagesException</span><span class="p">(</span><span class="n">WebdriverWrapperException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exception raised when there is missing some expected info message. Like</span>
+<span class="sd">    &quot;sucessfully saved&quot; and so on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">info_messages</span><span class="p">,</span> <span class="n">expected_info_messages</span><span class="p">,</span> <span class="n">allowed_info_messages</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Expected info messages &quot;{}&quot;, but found &quot;{}&quot; instead.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expected_info_messages</span><span class="p">,</span> <span class="n">info_messages</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">allowed_info_messages</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; Allowed info messages: &quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">allowed_info_messages</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">InfoMessagesException</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">WebDriver Wrapper  documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Michal Horejsek.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

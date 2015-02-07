@@ -1,0 +1,505 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>WebDriver Wrapper documentation &mdash; WebDriver Wrapper  documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="WebDriver Wrapper  documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">WebDriver Wrapper  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="webdriver-wrapper-documentation">
+<h1>WebDriver Wrapper documentation<a class="headerlink" href="#webdriver-wrapper-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="wrapper">
+<h2>Wrapper<a class="headerlink" href="#wrapper" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper">
+<em class="property">class </em><tt class="descclassname">webdriverwrapper.wrapper.</tt><tt class="descname">_WebdriverBaseWrapper</tt><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base wrapper wrapping both <a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver" title="(in Selenium v2.0)"><tt class="xref py py-class docutils literal"><span class="pre">selenium.webdriver.remote.webdriver.WebDriver</span></tt></a>
+and <a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webelement.html#selenium.webdriver.remote.webelement.WebElement" title="(in Selenium v2.0)"><tt class="xref py py-class docutils literal"><span class="pre">selenium.webdriver.remote.webelement.WebElement</span></tt></a>.</p>
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper.click">
+<tt class="descname">click</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.click" title="Permalink to this definition">¶</a></dt>
+<dd><p>When you not pass any argument, it clicks on current element. If you
+pass some arguments, it works as following snippet. For more info what
+you can pass check out method <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm"><tt class="xref py py-meth docutils literal"><span class="pre">get_elm()</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="s">&#39;someid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text">
+<tt class="descname">contains_text</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.contains_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does page or element contains <cite>text</cite>?</p>
+<p>Uses method <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text"><tt class="xref py py-meth docutils literal"><span class="pre">find_elements_by_text()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text">
+<tt class="descname">find_elements_by_text</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.find_elements_by_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all elements on page or in element containing <cite>text</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm">
+<tt class="descname">get_elm</tt><big>(</big><em>id_=None</em>, <em>class_name=None</em>, <em>name=None</em>, <em>tag_name=None</em>, <em>xpath=None</em>, <em>parent_id=None</em>, <em>parent_class_name=None</em>, <em>parent_name=None</em>, <em>parent_tag_name=None</em>, <em>css_selector=None</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.get_elm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns first found element. This method uses <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms"><tt class="xref py py-meth docutils literal"><span class="pre">get_elms()</span></tt></a>.
+Check it out for more information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms">
+<tt class="descname">get_elms</tt><big>(</big><em>id_=None</em>, <em>class_name=None</em>, <em>name=None</em>, <em>tag_name=None</em>, <em>xpath=None</em>, <em>parent_id=None</em>, <em>parent_class_name=None</em>, <em>parent_name=None</em>, <em>parent_tag_name=None</em>, <em>css_selector=None</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.get_elms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for <a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webelement.html#selenium.webdriver.remote.webelement.WebElement.find_element" title="(in Selenium v2.0)"><tt class="xref py py-meth docutils literal"><span class="pre">selenium.webdriver.remote.webelement.WebElement.find_element()</span></tt></a>
+methods. It&#8217;s shorter and you can quickly find element in element.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">elm</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">&#39;someid&#39;</span><span class="p">)</span>
+<span class="n">elm</span><span class="o">.</span><span class="n">find_elements_by_class_name</span><span class="p">(</span><span class="s">&#39;someclasss&#39;</span><span class="p">)</span>
+
+<span class="c"># vs.</span>
+
+<span class="n">elm</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">parent_id</span><span class="o">=</span><span class="s">&#39;someid&#39;</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="s">&#39;someclass&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper">
+<em class="property">class </em><tt class="descclassname">webdriverwrapper.wrapper.</tt><tt class="descname">_WebdriverWrapper</tt><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper wrapping <a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver" title="(in Selenium v2.0)"><tt class="xref py py-class docutils literal"><span class="pre">selenium.webdriver.remote.webdriver.WebDriver</span></tt></a>.</p>
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.close_alert">
+<tt class="descname">close_alert</tt><big>(</big><em>ignore_exception=False</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.close_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.close_alert" title="Permalink to this definition">¶</a></dt>
+<dd><p>JS alerts all blocking. This method closes it. If there is no alert,
+method raises exception. In tests is good to call this method with
+<tt class="docutils literal"><span class="pre">ignore_exception</span></tt> setted to <tt class="docutils literal"><span class="pre">True</span></tt> which will ignore any exception.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.close_other_windows">
+<tt class="descname">close_other_windows</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.close_other_windows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.close_other_windows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes all not current windows. Useful for tests - after each test you
+can automatically close all windows.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.close_window">
+<tt class="descname">close_window</tt><big>(</big><em>window_name=None</em>, <em>title=None</em>, <em>url=None</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.close_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.close_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>WebDriver implements only closing current window. If you want to close
+some window without having to switch to it, use this method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.download_url">
+<tt class="descname">download_url</tt><big>(</big><em>url=None</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.download_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.download_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>With WebDriver you can&#8217;t check status code or headers. For this you have
+to make classic request. But web pages needs cookies and by this it gets
+ugly. You can easily use this method.</p>
+<p>When you not pass <tt class="docutils literal"><span class="pre">url</span></tt>,
+<a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.current_url" title="(in Selenium v2.0)"><tt class="xref py py-attr docutils literal"><span class="pre">selenium.webdriver.remote.webdriver.WebDriver.current_url</span></tt></a>
+will be used.</p>
+<p>Returns <a class="reference internal" href="#webdriverwrapper.download._Download" title="webdriverwrapper.download._Download"><tt class="xref py py-obj docutils literal"><span class="pre">webdriverwrapper.download._Download</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.fill_out">
+<tt class="descname">fill_out</tt><big>(</big><em>data</em>, <em>prefix=''</em>, <em>turbo=False</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.fill_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.fill_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for filling out first <tt class="docutils literal"><span class="pre">&lt;form&gt;</span></tt> on page. See
+<a class="reference internal" href="#webdriverwrapper.forms.Form" title="webdriverwrapper.forms.Form"><tt class="xref py py-class docutils literal"><span class="pre">webdriverwrapper.forms.Form</span></tt></a> for more information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.fill_out_and_submit">
+<tt class="descname">fill_out_and_submit</tt><big>(</big><em>data</em>, <em>prefix=''</em>, <em>turbo=False</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.fill_out_and_submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.fill_out_and_submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for filling out first <tt class="docutils literal"><span class="pre">&lt;form&gt;</span></tt> on page. See
+<a class="reference internal" href="#webdriverwrapper.forms.Form" title="webdriverwrapper.forms.Form"><tt class="xref py py-class docutils literal"><span class="pre">webdriverwrapper.forms.Form</span></tt></a> for more information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.get_alert">
+<tt class="descname">get_alert</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.get_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.get_alert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns instance of <a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver/selenium.webdriver.common.alert.html#selenium.webdriver.common.alert.Alert" title="(in Selenium v2.0)"><tt class="xref py py-obj docutils literal"><span class="pre">selenium.webdriver.common.alert.Alert</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.get_url">
+<tt class="descname">get_url</tt><big>(</big><em>path=None</em>, <em>query=None</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.get_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.get_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>You have to pass absolute URL to method
+<a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.get" title="(in Selenium v2.0)"><tt class="xref py py-meth docutils literal"><span class="pre">selenium.webdriver.remote.webdriver.WebDriver.get()</span></tt></a>. This
+method help you to pass only relative <tt class="docutils literal"><span class="pre">path</span></tt> and/or <tt class="docutils literal"><span class="pre">query</span></tt>. Scheme
+and domains is append to URL from
+<a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.current_url" title="(in Selenium v2.0)"><tt class="xref py py-attr docutils literal"><span class="pre">selenium.webdriver.remote.webdriver.WebDriver.current_url</span></tt></a>.</p>
+<p><tt class="docutils literal"><span class="pre">query</span></tt> can be final string or dictionary. On dictionary it calls
+<a class="reference external" href="http://docs.python.org/2.7/library/urllib.html#urllib.urlencode" title="(in Python v2.7)"><tt class="xref py py-func docutils literal"><span class="pre">urllib.urlencode()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.go_to">
+<tt class="descname">go_to</tt><big>(</big><em>path=None</em>, <em>query=None</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.go_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.go_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>You have to pass absolute URL to method
+<a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.get" title="(in Selenium v2.0)"><tt class="xref py py-meth docutils literal"><span class="pre">selenium.webdriver.remote.webdriver.WebDriver.get()</span></tt></a>. This
+method help you to pass only relative <tt class="docutils literal"><span class="pre">path</span></tt> and/or <tt class="docutils literal"><span class="pre">query</span></tt>. See
+method <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.get_url" title="webdriverwrapper.wrapper._WebdriverWrapper.get_url"><tt class="xref py py-meth docutils literal"><span class="pre">get_url()</span></tt></a> for more information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window">
+<tt class="descname">switch_to_window</tt><big>(</big><em>window_name=None</em>, <em>title=None</em>, <em>url=None</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.switch_to_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>WebDriver implements switching to other window only by it&#8217;s name. With
+wrapper there is also option to switch by title of window or URL. URL
+can be also relative path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.wait">
+<tt class="descname">wait</tt><big>(</big><em>timeout=10</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls following snippet so you don&#8217;t have to remember what import. See
+<a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_support/selenium.webdriver.support.wait.html#selenium.webdriver.support.wait.WebDriverWait" title="(in Selenium v2.0)"><tt class="xref py py-obj docutils literal"><span class="pre">selenium.webdriver.support.wait.WebDriverWait</span></tt></a> for more
+information.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">selenium</span><span class="o">.</span><span class="n">webdriver</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">wait</span><span class="o">.</span><span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">driver</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">&#39;elm&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you need to wait for element, consider using
+<a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element" title="webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element"><tt class="xref py py-meth docutils literal"><span class="pre">wait_for_element()</span></tt></a> instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element">
+<tt class="descname">wait_for_element</tt><big>(</big><em>timeout=10</em>, <em>message=''</em>, <em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.wait_for_element"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for waiting for element. If it not ends with exception, it
+returns that element.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">selenium</span><span class="o">.</span><span class="n">webdriver</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">wait</span><span class="o">.</span><span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="webdriverwrapper.wrapper._WebElementWrapper">
+<em class="property">class </em><tt class="descclassname">webdriverwrapper.wrapper.</tt><tt class="descname">_WebElementWrapper</tt><big>(</big><em>webelement</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebElementWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebElementWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper wrapping <a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webelement.html#selenium.webdriver.remote.webelement.WebElement" title="(in Selenium v2.0)"><tt class="xref py py-class docutils literal"><span class="pre">selenium.webdriver.remote.webelement.WebElement</span></tt></a>.</p>
+<dl class="attribute">
+<dt id="webdriverwrapper.wrapper._WebElementWrapper.current_url">
+<tt class="descname">current_url</tt><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebElementWrapper.current_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebElementWrapper.current_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessing <a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.current_url" title="(in Selenium v2.0)"><tt class="xref py py-attr docutils literal"><span class="pre">selenium.webdriver.remote.webdriver.WebDriver.current_url</span></tt></a>
+also on elements.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebElementWrapper.download_file">
+<tt class="descname">download_file</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/wrapper.html#_WebElementWrapper.download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebElementWrapper.download_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>With WebDriver you can&#8217;t check status code or headers. For this you have
+to make classic request. But web pages needs cookies and data from forms
+and by this it gets pretty ugly. You can easily use this method.</p>
+<p>It can handle downloading of page/file by link or any type of form.</p>
+<p>Returns <a class="reference internal" href="#webdriverwrapper.download._Download" title="webdriverwrapper.download._Download"><tt class="xref py py-obj docutils literal"><span class="pre">webdriverwrapper.download._Download</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="forms">
+<h2>Forms<a class="headerlink" href="#forms" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="webdriverwrapper.forms.Form">
+<em class="property">class </em><tt class="descclassname">webdriverwrapper.forms.</tt><tt class="descname">Form</tt><big>(</big><em>webelement</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/forms.html#Form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.forms.Form" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="webdriverwrapper.forms.Form.fill_out">
+<tt class="descname">fill_out</tt><big>(</big><em>data</em>, <em>prefix=''</em>, <em>turbo=False</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/forms.html#Form.fill_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.forms.Form.fill_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill out <tt class="docutils literal"><span class="pre">data</span></tt> by dictionary (key is name attribute of inputs). You
+can pass normal Pythonic data and don&#8217;t have to care about how to use
+API of WebDriver.</p>
+<p>By <tt class="docutils literal"><span class="pre">prefix</span></tt> you can specify prefix of all name attributes. For example
+you can have inputs called <tt class="docutils literal"><span class="pre">client.name</span></tt> and <tt class="docutils literal"><span class="pre">client.surname</span></tt> -
+then you will pass to <tt class="docutils literal"><span class="pre">prefix</span></tt> string <tt class="docutils literal"><span class="pre">&quot;client.&quot;</span></tt> and in dictionary
+just <tt class="docutils literal"><span class="pre">&quot;name&quot;</span></tt>.</p>
+<p>Option <tt class="docutils literal"><span class="pre">turbo</span></tt> is for skipping some steps, so it can act faster. For
+example for multiple selects it calls <tt class="docutils literal"><span class="pre">deselect_all</span></tt> first, but it need
+to for every option check if it is selected and it is very slow for
+really big multiple selects. If you know, that it is not filled, you can
+skip it and safe in some cases up to one minute!</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="s">&#39;formid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fill_out</span><span class="p">({</span>
+    <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Michael&#39;</span><span class="p">,</span>
+    <span class="s">&#39;surname&#39;</span><span class="p">:</span> <span class="s">&#39;Horejsek&#39;</span><span class="p">,</span>
+    <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
+    <span class="s">&#39;enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;multibox&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;value1&#39;</span><span class="p">,</span> <span class="s">&#39;value2&#39;</span><span class="p">]</span>
+<span class="p">},</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;user_&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.forms.Form.fill_out_and_submit">
+<tt class="descname">fill_out_and_submit</tt><big>(</big><em>data</em>, <em>prefix=''</em>, <em>turbo=False</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/forms.html#Form.fill_out_and_submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.forms.Form.fill_out_and_submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls <a class="reference internal" href="#webdriverwrapper.forms.Form.fill_out" title="webdriverwrapper.forms.Form.fill_out"><tt class="xref py py-meth docutils literal"><span class="pre">fill_out()</span></tt></a> and then <a class="reference internal" href="#webdriverwrapper.forms.Form.submit" title="webdriverwrapper.forms.Form.submit"><tt class="xref py py-meth docutils literal"><span class="pre">submit()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.forms.Form.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/forms.html#Form.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.forms.Form.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to find element with ID &#8220;[FORM_ID]_reset&#8221; and click on it.</p>
+<p>You should use it for forms where you have cleaning/reseting of data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.forms.Form.submit">
+<tt class="descname">submit</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/forms.html#Form.submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.forms.Form.submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to find element with ID &#8220;[FORM_ID]_submit&#8221; and click on it. If no
+element doesn&#8217;t exists it will call default behaviour - submiting of
+form by pressing enter.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="downloading">
+<h2>Downloading<a class="headerlink" href="#downloading" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="webdriverwrapper.download._Download">
+<em class="property">class </em><tt class="descclassname">webdriverwrapper.download.</tt><tt class="descname">_Download</tt><a class="reference internal" href="_modules/webdriverwrapper/download.html#_Download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object returned by calling
+<a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.download_url" title="webdriverwrapper.wrapper._WebdriverWrapper.download_url"><tt class="xref py py-meth docutils literal"><span class="pre">webdriverwrapper.wrapper._WebdriverWrapper.download_url()</span></tt></a> or
+<a class="reference internal" href="#webdriverwrapper.wrapper._WebElementWrapper.download_file" title="webdriverwrapper.wrapper._WebElementWrapper.download_file"><tt class="xref py py-meth docutils literal"><span class="pre">webdriverwrapper.wrapper._WebElementWrapper.download_file()</span></tt></a>.</p>
+<dl class="attribute">
+<dt id="webdriverwrapper.download._Download.data">
+<tt class="descname">data</tt><a class="reference internal" href="_modules/webdriverwrapper/download.html#_Download.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>RAW data of response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="webdriverwrapper.download._Download.encoding">
+<tt class="descname">encoding</tt><a class="reference internal" href="_modules/webdriverwrapper/download.html#_Download.encoding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download.encoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encoding of reponse.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="webdriverwrapper.download._Download.headers">
+<tt class="descname">headers</tt><a class="reference internal" href="_modules/webdriverwrapper/download.html#_Download.headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Headers of response.</p>
+<p>See <a class="reference external" href="http://docs.python-requests.org/en/latest/api/#requests.Response.headers" title="(in Requests v2.5.1)"><tt class="xref py py-attr docutils literal"><span class="pre">requests.Response.headers</span></tt></a> for more information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="webdriverwrapper.download._Download.method">
+<tt class="descname">method</tt><a class="reference internal" href="_modules/webdriverwrapper/download.html#_Download.method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used method of request. <tt class="docutils literal"><span class="pre">GET</span></tt> or <tt class="docutils literal"><span class="pre">POST</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="webdriverwrapper.download._Download.status_code">
+<tt class="descname">status_code</tt><a class="reference internal" href="_modules/webdriverwrapper/download.html#_Download.status_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download.status_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Status code of response.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-webdriverwrapper.errors">
+<span id="errors-and-info-messages"></span><h2>Errors and info messages<a class="headerlink" href="#module-webdriverwrapper.errors" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="webdriverwrapper.errors.expected_error_page">
+<tt class="descclassname">webdriverwrapper.errors.</tt><tt class="descname">expected_error_page</tt><big>(</big><em>error_page</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/errors.html#expected_error_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.errors.expected_error_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator expecting defined error page at the end of test method. As param
+use what <cite>driver.get_error_page</cite> returns.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="webdriverwrapper.errors.allowed_error_pages">
+<tt class="descclassname">webdriverwrapper.errors.</tt><tt class="descname">allowed_error_pages</tt><big>(</big><em>*error_pages</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/errors.html#allowed_error_pages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.errors.allowed_error_pages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator ignoring defined error pages at the end of test method. As param
+use what <cite>driver.get_error_page</cite> returns.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="webdriverwrapper.errors.expected_error_messages">
+<tt class="descclassname">webdriverwrapper.errors.</tt><tt class="descname">expected_error_messages</tt><big>(</big><em>*error_messages</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/errors.html#expected_error_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.errors.expected_error_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator expecting defined error messages at the end of test method. As
+param use what <cite>driver.get_error_messages</cite> returns.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="webdriverwrapper.errors.allowed_error_messages">
+<tt class="descclassname">webdriverwrapper.errors.</tt><tt class="descname">allowed_error_messages</tt><big>(</big><em>*error_messages</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/errors.html#allowed_error_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.errors.allowed_error_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator ignoring defined error messages at the end of test method. As
+param use what <cite>driver.get_error_messages</cite> returns.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="webdriverwrapper.errors.allowed_any_error_message">
+<tt class="descclassname">webdriverwrapper.errors.</tt><tt class="descname">allowed_any_error_message</tt><big>(</big><em>func</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/errors.html#allowed_any_error_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.errors.allowed_any_error_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator ignoring any error messages at the end of test method. If you want
+allow only specific error message, use <cite>allowed_error_messages</cite> instead.</p>
+</dd></dl>
+
+<span class="target" id="module-webdriverwrapper.info"></span><dl class="function">
+<dt id="webdriverwrapper.info.expected_info_messages">
+<tt class="descclassname">webdriverwrapper.info.</tt><tt class="descname">expected_info_messages</tt><big>(</big><em>*info_messages</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/info.html#expected_info_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.info.expected_info_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator expecting defined info messages at the end of test method. As
+param use what <cite>driver.get_info_messages</cite> returns.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="webdriverwrapper.info.allowed_info_messages">
+<tt class="descclassname">webdriverwrapper.info.</tt><tt class="descname">allowed_info_messages</tt><big>(</big><em>*info_messages</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/info.html#allowed_info_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.info.allowed_info_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator ignoring defined info messages at the end of test method. As
+param use what <cite>driver.get_info_messages</cite> returns.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-webdriverwrapper.exceptions">
+<span id="exceptions"></span><h2>Exceptions<a class="headerlink" href="#module-webdriverwrapper.exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="webdriverwrapper.exceptions.ErrorMessagesException">
+<em class="property">exception </em><tt class="descclassname">webdriverwrapper.exceptions.</tt><tt class="descname">ErrorMessagesException</tt><big>(</big><em>url</em>, <em>error_messages</em>, <em>expected_error_messages</em>, <em>allowed_error_messages</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/exceptions.html#ErrorMessagesException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.exceptions.ErrorMessagesException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised when there is some unexpected error message. Like &#8220;some
+field is mandatory&#8221;, &#8220;wrong e-mail&#8221; and so on.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="webdriverwrapper.exceptions.ErrorPageException">
+<em class="property">exception </em><tt class="descclassname">webdriverwrapper.exceptions.</tt><tt class="descname">ErrorPageException</tt><big>(</big><em>url</em>, <em>error_page</em>, <em>expected_error_page</em>, <em>allowed_error_pages</em>, <em>traceback=None</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/exceptions.html#ErrorPageException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.exceptions.ErrorPageException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised when there is some unexpected error page. Like page 404,
+500 and so on.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="webdriverwrapper.exceptions.InfoMessagesException">
+<em class="property">exception </em><tt class="descclassname">webdriverwrapper.exceptions.</tt><tt class="descname">InfoMessagesException</tt><big>(</big><em>url</em>, <em>info_messages</em>, <em>expected_info_messages</em>, <em>allowed_info_messages</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/exceptions.html#InfoMessagesException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.exceptions.InfoMessagesException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised when there is missing some expected info message. Like
+&#8220;sucessfully saved&#8221; and so on.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="webdriverwrapper.exceptions.JSErrorsException">
+<em class="property">exception </em><tt class="descclassname">webdriverwrapper.exceptions.</tt><tt class="descname">JSErrorsException</tt><big>(</big><em>url</em>, <em>js_errors</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/exceptions.html#JSErrorsException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.exceptions.JSErrorsException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised when there is some JS error.</p>
+<p>See <tt class="xref py py-meth docutils literal"><span class="pre">webdriverwrapper.error.WebdriverWrapperErrorMixin.get_js_errors()</span></tt>
+for more information.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="webdriverwrapper.exceptions.WebdriverWrapperException">
+<em class="property">exception </em><tt class="descclassname">webdriverwrapper.exceptions.</tt><tt class="descname">WebdriverWrapperException</tt><big>(</big><em>url</em>, <em>msg</em><big>)</big><a class="reference internal" href="_modules/webdriverwrapper/exceptions.html#WebdriverWrapperException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.exceptions.WebdriverWrapperException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base exception of WebDriver Wrapper.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-webdriverwrapper.decorators">
+<span id="testing"></span><h2>Testing<a class="headerlink" href="#module-webdriverwrapper.decorators" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-webdriverwrapper.pytest.conftest">
+<span id="pytest"></span><h3>PyTest<a class="headerlink" href="#module-webdriverwrapper.pytest.conftest" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-webdriverwrapper.unittest.testcase">
+<span id="unittest"></span><h3>UnitTest<a class="headerlink" href="#module-webdriverwrapper.unittest.testcase" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">WebDriver Wrapper documentation</a><ul>
+<li><a class="reference internal" href="#wrapper">Wrapper</a></li>
+<li><a class="reference internal" href="#forms">Forms</a></li>
+<li><a class="reference internal" href="#downloading">Downloading</a></li>
+<li><a class="reference internal" href="#module-webdriverwrapper.errors">Errors and info messages</a></li>
+<li><a class="reference internal" href="#module-webdriverwrapper.exceptions">Exceptions</a></li>
+<li><a class="reference internal" href="#module-webdriverwrapper.decorators">Testing</a><ul>
+<li><a class="reference internal" href="#module-webdriverwrapper.pytest.conftest">PyTest</a></li>
+<li><a class="reference internal" href="#module-webdriverwrapper.unittest.testcase">UnitTest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">WebDriver Wrapper  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Michal Horejsek.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

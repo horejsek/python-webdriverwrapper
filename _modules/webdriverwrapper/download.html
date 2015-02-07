@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>webdriverwrapper.download &mdash; WebDriver Wrapper  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="WebDriver Wrapper  documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">WebDriver Wrapper  documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for webdriverwrapper.download</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">webdriverwrapper.utils</span> <span class="kn">import</span> <span class="n">force_text</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;DownloadUrl&#39;</span><span class="p">,</span> <span class="s">&#39;DownloadFile&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="_Download"><a class="viewcode-back" href="../../index.html#webdriverwrapper.download._Download">[docs]</a><span class="k">class</span> <span class="nc">_Download</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object returned by calling</span>
+<span class="sd">    :py:meth:`webdriverwrapper.wrapper._WebdriverWrapper.download_url` or</span>
+<span class="sd">    :py:meth:`webdriverwrapper.wrapper._WebElementWrapper.download_file`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="_Download.method"><a class="viewcode-back" href="../../index.html#webdriverwrapper.download._Download.method">[docs]</a>    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Used method of request. ``GET`` or ``POST``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="_Download.status_code"><a class="viewcode-back" href="../../index.html#webdriverwrapper.download._Download.status_code">[docs]</a>    <span class="k">def</span> <span class="nf">status_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Status code of response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response</span><span class="o">.</span><span class="n">status_code</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="_Download.encoding"><a class="viewcode-back" href="../../index.html#webdriverwrapper.download._Download.encoding">[docs]</a>    <span class="k">def</span> <span class="nf">encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Encoding of reponse.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response</span><span class="o">.</span><span class="n">encoding</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="_Download.headers"><a class="viewcode-back" href="../../index.html#webdriverwrapper.download._Download.headers">[docs]</a>    <span class="k">def</span> <span class="nf">headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Headers of response.</span>
+
+<span class="sd">        See :py:attr:`requests.Response.headers` for more information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response</span><span class="o">.</span><span class="n">headers</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="_Download.data"><a class="viewcode-back" href="../../index.html#webdriverwrapper.download._Download.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        RAW data of response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response</span><span class="o">.</span><span class="n">text</span>
+</div>
+    <span class="k">def</span> <span class="nf">_make_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">is_post</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_url_and_data</span><span class="p">()</span>
+        <span class="n">cookies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cookies</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">is_post</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="n">cookies</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="n">cookies</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">all_cookies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">get_cookies</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">cookie</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span> <span class="n">cookie</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">cookie</span> <span class="ow">in</span> <span class="n">all_cookies</span><span class="p">)</span>
+
+</div>
+<span class="k">class</span> <span class="nc">DownloadUrl</span><span class="p">(</span><span class="n">_Download</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span> <span class="o">=</span> <span class="n">driver</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">current_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_request</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_url_and_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">is_post</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="n">is_post</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span>
+
+
+<span class="k">class</span> <span class="nc">DownloadFile</span><span class="p">(</span><span class="n">_Download</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elm</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_elm</span> <span class="o">=</span> <span class="n">elm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span> <span class="o">=</span> <span class="n">elm</span><span class="o">.</span><span class="n">_parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_request</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_url_and_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">is_post</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elm</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&#39;href&#39;</span><span class="p">)</span>
+        <span class="c"># If no href, element can be some form button. Then use attribute action</span>
+        <span class="c"># of that form.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+            <span class="n">form_elm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_form_elm</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">form_elm</span><span class="p">:</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="n">form_elm</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_form_data</span><span class="p">()</span>
+                <span class="n">is_post</span> <span class="o">=</span> <span class="n">form_elm</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&#39;method&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;post&#39;</span>
+        <span class="c"># If form has no action defined or it is not form, just use current url.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elm</span><span class="o">.</span><span class="n">current_url</span>
+
+        <span class="k">return</span> <span class="n">is_post</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">_get_form_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">form_elm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_form_elm</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">form_elm</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="n">elms</span> <span class="o">=</span> <span class="n">form_elm</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;.//*[@name]&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span>
+            <span class="n">force_text</span><span class="p">(</span><span class="n">elm</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">),</span>
+            <span class="n">force_text</span><span class="p">(</span><span class="n">elm</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">),</span>
+        <span class="p">)</span> <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">elms</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">_get_form_elm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">form_elm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elm</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;.//ancestor::form&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">form_elm</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">WebDriver Wrapper  documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Michal Horejsek.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
