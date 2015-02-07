@@ -105,10 +105,10 @@ class WebdriverWrapperErrorMixin(object):
         # Close unexpected alerts (it's blocking).
         self.close_alert(ignore_exception=True)
 
-        expected_error_pages = set([expected_error_page])
+        expected_error_pages = set([expected_error_page]) if expected_error_page else set()
         allowed_error_pages = set(allowed_error_pages)
         error_page = self.get_error_page()
-        error_pages = set([error_page])
+        error_pages = set([error_page]) if error_page else set()
         if (
             error_pages & expected_error_pages != expected_error_pages
             or
@@ -119,13 +119,13 @@ class WebdriverWrapperErrorMixin(object):
 
         error_messages = set(self.get_error_messages())
         expected_error_messages = set(expected_error_messages)
-        allowed_error_messages = error_messages if isinstance(allowed_error_messages, ANY) else set(allowed_error_messages)
+        allowed_error_messages = error_messages if allowed_error_messages is ANY else set(allowed_error_messages)
         if (
             error_messages & expected_error_messages != expected_error_messages
             or
             error_messages - (expected_error_messages | allowed_error_messages)
         ):
-            raise ErrorPageException(self.current_url, error_messages, expected_error_messages, allowed_error_messages)
+            raise ErrorMessagesException(self.current_url, error_messages, expected_error_messages, allowed_error_messages)
 
         js_errors = self.get_js_errors()
         if js_errors:
@@ -158,11 +158,11 @@ class WebdriverWrapperErrorMixin(object):
         accordingly to your app.
         """
         try:
-            errPage = driver.get_elm(class_name='error-page')
+            error_page = self.get_elm(class_name='error-page')
+            traceback = error_page.get_elm(class_name='traceback')
         except NoSuchElementException:
             pass
         else:
-            traceback = errPage.get_elm(class_name='traceback')
             return traceback.text
 
     def get_error_messages(self):

@@ -4,7 +4,7 @@ import os
 
 from webdriverwrapper import unittest, Chrome
 from webdriverwrapper.decorators import *
-from webdriverwrapper.exceptions import ErrorPageException
+from webdriverwrapper.exceptions import ErrorMessagesException
 
 
 class TestCaseTest(unittest.WebdriverTestCase):
@@ -18,15 +18,15 @@ class TestCaseTest(unittest.WebdriverTestCase):
 
     # This test will be OK. Error in the middle Selenium do not see.
     def test_not_check_errors_in_middle_of_test(self):
-        self.driver.get('file://%s/html/error_message.html' % self.path)
+        self.driver.get('file://%s/html/error_messages.html' % self.path)
         self.driver.get('file://%s/html/some_page.html' % self.path)
 
     # There is explicit call of check_errors, therefor this test fails.
     def test_check_errors_in_middle_of_test(self):
-        self.driver.get('file://%s/html/error_message.html' % self.path)
+        self.driver.get('file://%s/html/error_messages.html' % self.path)
         try:
             self.check_errors()
-        except ErrorPageException:
+        except ErrorMessagesException:
             pass  # ok
         except Exception as exc:
             self.fail('Wrong exception! %s' % str(exc))

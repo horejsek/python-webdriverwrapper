@@ -4,8 +4,9 @@ PYTHON3=`which python3`
 
 
 test:
-	cd tests; $(PYTHON) alltests.py
-	cd tests; $(PYTHON3) alltests.py
+	cd tests; py.test `find -iname "*.py"`
+test-lastfail:
+	cd tests; py.test --lf `find -iname "*.py"`
 
 source:
 	$(PYTHON) setup.py sdist
@@ -14,7 +15,9 @@ upload:
 	$(PYTHON) setup.py register sdist upload
 
 install:
+	@echo "Instaling for Python 2..."
 	$(PYTHON) setup.py install
+	@echo "Instaling for Python 3..."
 	$(PYTHON3) setup.py install
 
 clean:

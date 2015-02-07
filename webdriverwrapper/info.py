@@ -67,7 +67,7 @@ class WebdriverWrapperInfoMixin(object):
         if (
             info_messages & expected_info_messages != expected_info_messages
             or
-            info_messages - (expected_info_messages | allowed_info_messages)
+            (expected_info_messages and info_messages - (expected_info_messages | allowed_info_messages))
         ):
             raise InfoMessagesException(self.current_url, info_messages, expected_info_messages, allowed_info_messages)
 

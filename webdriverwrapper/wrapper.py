@@ -232,6 +232,9 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         and domain for you from ``current_url``. You can pass to ``query``
         string or dictionary.
         """
+        if urlparse(path).netloc:
+            return path
+
         if isinstance(query, dict):
             query = urlencode(query)
 
