@@ -65,72 +65,83 @@
 <span class="n">ALLOWED_ERROR_MESSAGES</span> <span class="o">=</span> <span class="s">&#39;__allowed_error_messages__&#39;</span>
 
 
-<div class="viewcode-block" id="expected_error_page"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.expected_error_page">[docs]</a><span class="k">def</span> <span class="nf">expected_error_page</span><span class="p">(</span><span class="n">error_page</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">expected_error_page</span><span class="p">(</span><span class="n">error_page</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator expecting defined error page at the end of test method. As param</span>
-<span class="sd">    use what `driver.get_error_page` returns.</span>
+<span class="sd">    use what :py:meth:`get_error_page &lt;.WebdriverWrapperErrorMixin.get_error_page&gt;`</span>
+<span class="sd">    returns.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">EXPECTED_ERROR_PAGE</span><span class="p">,</span> <span class="n">error_page</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span>
     <span class="k">return</span> <span class="n">wrapper</span>
 
-</div>
-<div class="viewcode-block" id="allowed_error_pages"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.allowed_error_pages">[docs]</a><span class="k">def</span> <span class="nf">allowed_error_pages</span><span class="p">(</span><span class="o">*</span><span class="n">error_pages</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">allowed_error_pages</span><span class="p">(</span><span class="o">*</span><span class="n">error_pages</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator ignoring defined error pages at the end of test method. As param</span>
-<span class="sd">    use what `driver.get_error_page` returns.</span>
+<span class="sd">    use what :py:meth:`get_error_page &lt;.WebdriverWrapperErrorMixin.get_error_page&gt;`</span>
+<span class="sd">    returns.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ALLOWED_ERROR_PAGES</span><span class="p">,</span> <span class="n">error_pages</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span>
     <span class="k">return</span> <span class="n">wrapper</span>
 
-</div>
-<div class="viewcode-block" id="expected_error_messages"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.expected_error_messages">[docs]</a><span class="k">def</span> <span class="nf">expected_error_messages</span><span class="p">(</span><span class="o">*</span><span class="n">error_messages</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">expected_error_messages</span><span class="p">(</span><span class="o">*</span><span class="n">error_messages</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator expecting defined error messages at the end of test method. As</span>
-<span class="sd">    param use what `driver.get_error_messages` returns.</span>
+<span class="sd">    param use what</span>
+<span class="sd">    :py:meth:`get_error_messages &lt;.WebdriverWrapperErrorMixin.get_error_messages&gt;`</span>
+<span class="sd">    returns.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">EXPECTED_ERROR_MESSAGES</span><span class="p">,</span> <span class="n">error_messages</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span>
     <span class="k">return</span> <span class="n">wrapper</span>
 
-</div>
-<div class="viewcode-block" id="allowed_error_messages"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.allowed_error_messages">[docs]</a><span class="k">def</span> <span class="nf">allowed_error_messages</span><span class="p">(</span><span class="o">*</span><span class="n">error_messages</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">allowed_error_messages</span><span class="p">(</span><span class="o">*</span><span class="n">error_messages</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator ignoring defined error messages at the end of test method. As</span>
-<span class="sd">    param use what `driver.get_error_messages` returns.</span>
+<span class="sd">    param use what</span>
+<span class="sd">    :py:meth:`get_error_messages &lt;.WebdriverWrapperErrorMixin.get_error_messages&gt;`</span>
+<span class="sd">    returns.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ALLOWED_ERROR_MESSAGES</span><span class="p">,</span> <span class="n">error_messages</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span>
     <span class="k">return</span> <span class="n">wrapper</span>
 
-</div>
-<div class="viewcode-block" id="allowed_any_error_message"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.allowed_any_error_message">[docs]</a><span class="k">def</span> <span class="nf">allowed_any_error_message</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">allowed_any_error_message</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator ignoring any error messages at the end of test method. If you want</span>
-<span class="sd">    allow only specific error message, use `allowed_error_messages` instead.</span>
+<span class="sd">    allow only specific error message, use :py:func:`.allowed_error_messages`</span>
+<span class="sd">    instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ALLOWED_ERROR_MESSAGES</span><span class="p">,</span> <span class="n">ANY</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">func</span>
 
-</div>
+
 <span class="k">class</span> <span class="nc">ANY</span><span class="p">:</span>
     <span class="k">pass</span>
 
 
-<span class="k">class</span> <span class="nc">WebdriverWrapperErrorMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">check_expected_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_method</span><span class="p">):</span>
+<div class="viewcode-block" id="WebdriverWrapperErrorMixin"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.WebdriverWrapperErrorMixin">[docs]</a><span class="k">class</span> <span class="nc">WebdriverWrapperErrorMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mixin used in :py:obj:`_WebdriverWrapper &lt;webdriverwrapper.wrapper._WebdriverWrapper&gt;`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="WebdriverWrapperErrorMixin.check_expected_errors"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_expected_errors">[docs]</a>    <span class="k">def</span> <span class="nf">check_expected_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_method</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This method should be called after each test. It will read decorated</span>
+<span class="sd">        This method is called after each test. It will read decorated</span>
 <span class="sd">        informations and check if there are expected errors.</span>
 
-<span class="sd">        You can set expected errors with decorator ``expected_error_page``,</span>
-<span class="sd">        ``allowed_error_pages``, ``expected_error_messages`` and</span>
-<span class="sd">        ``allowed_error_messages``.</span>
+<span class="sd">        You can set expected errors by decorators :py:func:`.expected_error_page`,</span>
+<span class="sd">        :py:func:`.allowed_error_pages`, :py:func:`.expected_error_messages`,</span>
+<span class="sd">        :py:func:`.allowed_error_messages` and :py:func:`.allowed_any_error_message`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[]:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">test_method</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
         <span class="n">expected_error_page</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">EXPECTED_ERROR_PAGE</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
@@ -138,8 +149,8 @@
         <span class="n">expected_error_messages</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">EXPECTED_ERROR_MESSAGES</span><span class="p">)</span>
         <span class="n">allowed_error_messages</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">ALLOWED_ERROR_MESSAGES</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_errors</span><span class="p">(</span><span class="n">expected_error_page</span><span class="p">,</span> <span class="n">allowed_error_pages</span><span class="p">,</span> <span class="n">expected_error_messages</span><span class="p">,</span> <span class="n">allowed_error_messages</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">check_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected_error_page</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">allowed_error_pages</span><span class="o">=</span><span class="p">[],</span> <span class="n">expected_error_messages</span><span class="o">=</span><span class="p">[],</span> <span class="n">allowed_error_messages</span><span class="o">=</span><span class="p">[]):</span>
+</div>
+<div class="viewcode-block" id="WebdriverWrapperErrorMixin.check_errors"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors">[docs]</a>    <span class="k">def</span> <span class="nf">check_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected_error_page</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">allowed_error_pages</span><span class="o">=</span><span class="p">[],</span> <span class="n">expected_error_messages</span><span class="o">=</span><span class="p">[],</span> <span class="n">allowed_error_messages</span><span class="o">=</span><span class="p">[]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method should be called whenever you need to check if there is some</span>
 <span class="sd">        error. Normally you need only ``check_expected_errors`` called after each</span>
@@ -148,8 +159,8 @@
 <span class="sd">        every step is not any error, use this.</span>
 
 <span class="sd">        To parameters you should pass same values like to decorators</span>
-<span class="sd">        ``expected_error_page``, ``allowed_error_pages``,</span>
-<span class="sd">        ``expected_error_messages`` and ``allowed_error_messages``.</span>
+<span class="sd">        :py:func:`.expected_error_page`, :py:func:`.allowed_error_pages`,</span>
+<span class="sd">        :py:func:`.expected_error_messages` and :py:func:`.allowed_error_messages`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># Close unexpected alerts (it&#39;s blocking).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close_alert</span><span class="p">(</span><span class="n">ignore_exception</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -179,8 +190,8 @@
         <span class="n">js_errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_js_errors</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">js_errors</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">JSErrorsException</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span> <span class="n">js_errors</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">get_error_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="WebdriverWrapperErrorMixin.get_error_page"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_page">[docs]</a>    <span class="k">def</span> <span class="nf">get_error_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method returning error page. Should return string.</span>
 
@@ -188,7 +199,7 @@
 <span class="sd">        of ``h1`` header. You can change this method accordingly to your app.</span>
 
 <span class="sd">        Error page returned from this method is used in decorators</span>
-<span class="sd">        ``expected_error_page`` and ``allowed_error_pages``.</span>
+<span class="sd">        :py:func:`.expected_error_page` and :py:func:`.allowed_error_pages`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">error_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="s">&#39;error-page&#39;</span><span class="p">)</span>
@@ -197,8 +208,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">header</span> <span class="o">=</span> <span class="n">error_page</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">tag_name</span><span class="o">=</span><span class="s">&#39;h1&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">header</span><span class="o">.</span><span class="n">text</span>
-
-    <span class="k">def</span> <span class="nf">get_error_traceback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="WebdriverWrapperErrorMixin.get_error_traceback"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_traceback">[docs]</a>    <span class="k">def</span> <span class="nf">get_error_traceback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method returning traceback of error page.</span>
 
@@ -213,8 +224,8 @@
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">traceback</span><span class="o">.</span><span class="n">text</span>
-
-    <span class="k">def</span> <span class="nf">get_error_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="WebdriverWrapperErrorMixin.get_error_messages"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_messages">[docs]</a>    <span class="k">def</span> <span class="nf">get_error_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method returning error messages. Should return list of messages.</span>
 
@@ -223,7 +234,7 @@
 <span class="sd">        this method accordingly to your app.</span>
 
 <span class="sd">        Error messages returned from this method are used in decorators</span>
-<span class="sd">        ``expected_error_messages`` and ``allowed_error_messages``.</span>
+<span class="sd">        :py:func:`.expected_error_messages` and :py:func:`.allowed_error_messages`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">error_elms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="s">&#39;error&#39;</span><span class="p">)</span>
@@ -236,8 +247,8 @@
                 <span class="n">error_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">error_elm</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">error_elm</span> <span class="ow">in</span> <span class="n">error_elms</span><span class="p">]</span>
             <span class="k">finally</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">error_values</span>
-
-    <span class="k">def</span> <span class="nf">get_js_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="WebdriverWrapperErrorMixin.get_js_errors"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_js_errors">[docs]</a>    <span class="k">def</span> <span class="nf">get_js_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method returning JS errors. Should return list of errors.</span>
 
@@ -253,7 +264,7 @@
 <span class="sd">                }</span>
 <span class="sd">            &lt;/script&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s">&#39;return window.jsErrors&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s">&#39;return window.jsErrors&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
