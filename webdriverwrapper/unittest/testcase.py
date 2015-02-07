@@ -24,10 +24,42 @@ ONE_INSTANCE_PER_TEST = 2
 
 
 class WebdriverTestCase(unittest.TestCase):
+    """
+    TODO
+    """
+
     domain = None
+    """
+    If you want working relative :py:meth:`go_to <webdriverwrapper.wrapper._WebdriverWrapper.go_to>`
+    without having to call for first time
+    :py:meth:`get <selenium.webdriver.remote.webdriver.WebDriver.get>` (because
+    before that you can't use relative path), set this attribute.
+    """
+
     instances_of_driver = ONE_INSTANCE_FOR_ALL_TESTS
+    """
+    Specify when you want to create *fresh* driver. By default there is one
+    driver for all tests (:py:attr:`.ONE_INSTANCE_FOR_ALL_TESTS`) and you have
+    to close it by yourself by calling :py:meth:`.quit_driver`.
+
+    If you need clear cookies, local storage and everything, then consider to use
+    new driver for every ``TestCase`` or even every test method.
+    """
+
     wait_after_test = False
+    """
+    For debug only. When you set to ``True``, it will wait for pressing enter
+    after each test before moving to next test. Ideal when you need to check
+    out for example Chrome console.
+
+    But maybe better debuging is with :py:meth:`.break_point`.
+    """
+
     screenshot_path = ''
+    """
+    When you set this path, it will make automatically screenshots of failed
+    tests and saved them to this path.
+    """
 
     def __init__(self, *args, **kwds):
         super(WebdriverTestCase, self).__init__(*args, **kwds)
@@ -104,8 +136,9 @@ class WebdriverTestCase(unittest.TestCase):
 
     def make_screenshot(self, screenshot_name=None):
         """
-        Save screenshot to `self.screenshot_path` with given name `screenshot_name`.
-        If name is not given, then the name is name of current test (`self.id()`).
+        Save screenshot to :py:attr:`.screenshot_path` with given name
+        ``screenshot_name``. If name is not given, then the name is name of
+        current test (``self.id()``).
         """
         if not screenshot_name:
             # Without name (and possibly path) we cannot make screenshot. Don't
@@ -132,12 +165,10 @@ class WebdriverTestCase(unittest.TestCase):
             self.driver.switch_to_window(self._main_window)
 
     def _get_driver(self):
+        """
+        Create driver. By default it creates Firefox. Change it to your needs.
+        """
         return Firefox()
-
-    def _get_driver_with_proxy(self):
-        opt = ChromeOptions()
-        opt.add_argument('--proxy-auto-detect')
-        return Chrome(chrome_options=opt)
 
     def _tear_down(self):
         if self.wait_after_test:
@@ -151,11 +182,20 @@ class WebdriverTestCase(unittest.TestCase):
 
     @staticmethod
     def quit_driver():
+        """
+        When you set :py:attr:`.instances_of_driver` to
+        :py:attr:`.ONE_INSTANCE_FOR_ALL_TESTS` (which is default), then you
+        have to quit driver by yourself by this method.
+        """
         if hasattr(WebdriverTestCase, 'driver'):
             WebdriverTestCase.driver.quit()
             del WebdriverTestCase.driver
 
     def break_point(self):
+        """
+        Break point when it stops tests and wait for pressing enter to continue.
+        Ideal for debuging - checking Chrome console and so on.
+        """
         logging.info('Break point. Type enter to continue.')
         raw_input()
 
@@ -165,37 +205,73 @@ class WebdriverTestCase(unittest.TestCase):
     ### Aliases to driver.
 
     def check_errors(self, expected_error_page=None, allowed_error_pages=[], expected_error_messages=[], allowed_error_messages=[]):
+        """
+        Alias for :py:meth:`check_errors <webdriverwrapper.wrapper._WebdriverWrapper.check_errors>`.
+        """
         self.driver.check_errors(expected_error_page, allowed_error_pages, expected_error_messages, allowed_error_messages)
 
     def find_elements_by_text(self, text):
+        """
+        Alias for :py:meth:`find_elements_by_text <webdriverwrapper.wrapper._WebElementWrapper.find_elements_by_text>`.
+        """
         return self.driver.find_elements_by_text(text)
 
     def contains_text(self, text):
+        """
+        Alias for :py:meth:`contains_text <webdriverwrapper.wrapper._WebElementWrapper.contains_text>`.
+        """
         return self.driver.contains_text(text)
 
     def get_elm(self, *args, **kwds):
+        """
+        Alias for :py:meth:`get_elm <webdriverwrapper.wrapper._WebElementWrapper.get_elm>`.
+        """
         return self.driver.get_elm(*args, **kwds)
 
     def get_elms(self, *args, **kwds):
+        """
+        Alias for :py:meth:`get_elms <webdriverwrapper.wrapper._WebElementWrapper.get_elms>`.
+        """
         return self.driver.get_elms(*args, **kwds)
 
     def click(self, *args, **kwds):
+        """
+        Alias for :py:meth:`click <webdriverwrapper.wrapper._WebElementWrapper.click>`.
+        """
         self.driver.click(*args, **kwds)
 
     def wait_for_element(self, *args, **kwds):
+        """
+        Alias for :py:meth:`wait_for_element <webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element>`.
+        """
         return self.driver.wait_for_element(*args, **kwds)
 
     def wait(self, timeout=10):
+        """
+        Alias for :py:meth:`wait <webdriverwrapper.wrapper._WebdriverWrapper.wait>`.
+        """
         return self.driver.wait(timeout)
 
     def go_to(self, *args, **kwds):
+        """
+        Alias for :py:meth:`go_to <webdriverwrapper.wrapper._WebdriverWrapper.go_to>`.
+        """
         self.driver.go_to(*args, **kwds)
 
     def switch_to_window(self, window_name=None, title=None, url=None):
+        """
+        Alias for :py:meth:`switch_to_window <webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window>`.
+        """
         self.driver.switch_to_window(window_name, title, url)
 
     def close_window(self, window_name=None, title=None, url=None):
+        """
+        Alias for :py:meth:`close_window <webdriverwrapper.wrapper._WebdriverWrapper.close_window>`.
+        """
         self.driver.close_window(window_name, title, url)
 
     def close_other_windows(self):
+        """
+        Alias for :py:meth:`close_other_windows <webdriverwrapper.wrapper._WebdriverWrapper.close_other_windows>`.
+        """
         self.driver.close_other_windows()

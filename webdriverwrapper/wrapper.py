@@ -74,7 +74,7 @@ class _ConvertToWebelementWrapper(object):
 
 class _WebdriverBaseWrapper(object):
     """
-    Base wrapper wrapping both
+    Class wrapping both
     :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`
     and :py:class:`selenium.WebElement <selenium.webdriver.remote.webelement.WebElement>`.
     """
@@ -236,7 +236,7 @@ class _WebdriverBaseWrapper(object):
 
 class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _WebdriverBaseWrapper):
     """
-    Wrapper wrapping :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`.
+    Class wrapping :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`.
     """
 
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
@@ -410,7 +410,7 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
 
 class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
     """
-    Wrapper wrapping :py:class:`selenium.WebElement <selenium.webdriver.remote.webelement.WebElement>`.
+    Class wrapping :py:class:`selenium.WebElement <selenium.webdriver.remote.webelement.WebElement>`.
     """
 
     def __new__(cls, webelement):
