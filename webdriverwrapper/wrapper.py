@@ -74,8 +74,9 @@ class _ConvertToWebelementWrapper(object):
 
 class _WebdriverBaseWrapper(object):
     """
-    Base wrapper wrapping both :py:class:`selenium.webdriver.remote.webdriver.WebDriver`
-    and :py:class:`selenium.webdriver.remote.webelement.WebElement`.
+    Base wrapper wrapping both
+    :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`
+    and :py:class:`selenium.WebElement <selenium.webdriver.remote.webelement.WebElement>`.
     """
 
     def contains_text(self, text):
@@ -142,7 +143,7 @@ class _WebdriverBaseWrapper(object):
         css_selector=None
     ):
         """
-        Shortcut for :py:meth:`selenium.webdriver.remote.webelement.WebElement.find_element`
+        Shortcut for :py:meth:`find_element* <selenium.webdriver.remote.webelement.WebElement.find_element>`
         methods. It's shorter and you can quickly find element in element.
 
         .. code-block:: python
@@ -235,7 +236,7 @@ class _WebdriverBaseWrapper(object):
 
 class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _WebdriverBaseWrapper):
     """
-    Wrapper wrapping :py:class:`selenium.webdriver.remote.webdriver.WebDriver`.
+    Wrapper wrapping :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`.
     """
 
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
@@ -258,7 +259,7 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
     def wait(self, timeout=10):
         """
         Calls following snippet so you don't have to remember what import. See
-        :py:obj:`selenium.webdriver.support.wait.WebDriverWait` for more
+        :py:obj:`WebDriverWait <selenium.webdriver.support.wait.WebDriverWait>` for more
         information.
 
         .. code-block:: python
@@ -279,7 +280,7 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
     def go_to(self, path=None, query=None):
         """
         You have to pass absolute URL to method
-        :py:meth:`selenium.webdriver.remote.webdriver.WebDriver.get`. This
+        :py:meth:`get <selenium.webdriver.remote.webdriver.WebDriver.get>`. This
         method help you to pass only relative ``path`` and/or ``query``. See
         method :py:meth:`.get_url` for more information.
         """
@@ -288,10 +289,10 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
     def get_url(self, path=None, query=None):
         """
         You have to pass absolute URL to method
-        :py:meth:`selenium.webdriver.remote.webdriver.WebDriver.get`. This
+        :py:meth:`get <selenium.webdriver.remote.webdriver.WebDriver.get>`. This
         method help you to pass only relative ``path`` and/or ``query``. Scheme
         and domains is append to URL from
-        :py:attr:`selenium.webdriver.remote.webdriver.WebDriver.current_url`.
+        :py:attr:`current_url <selenium.webdriver.remote.webdriver.WebDriver.current_url>`.
 
         ``query`` can be final string or dictionary. On dictionary it calls
         :py:func:`urllib.urlencode`.
@@ -374,7 +375,7 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
 
     def get_alert(self):
         """
-        Returns instance of :py:obj:`selenium.webdriver.common.alert.Alert`.
+        Returns instance of :py:obj:`Alert <selenium.webdriver.common.alert.Alert>`.
         """
         return Alert(self)
 
@@ -385,31 +386,31 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         ugly. You can easily use this method.
 
         When you not pass ``url``,
-        :py:attr:`selenium.webdriver.remote.webdriver.WebDriver.current_url`
+        :py:attr:`current_url <selenium.webdriver.remote.webdriver.WebDriver.current_url>`
         will be used.
 
-        Returns :py:obj:`webdriverwrapper.download._Download`.
+        Returns :py:obj:`_Download <webdriverwrapper.download._Download>` instance.
         """
         return DownloadUrl(self, url)
 
     def fill_out_and_submit(self, data, prefix='', turbo=False):
         """
         Shortcut for filling out first ``<form>`` on page. See
-        :py:class:`webdriverwrapper.forms.Form` for more information.
+        :py:class:`Form <webdriverwrapper.forms.Form>` for more information.
         """
         return self.get_elm(tag_name='form').fill_out_and_submit(data, prefix, turbo)
 
     def fill_out(self, data, prefix='', turbo=False):
         """
         Shortcut for filling out first ``<form>`` on page. See
-        :py:class:`webdriverwrapper.forms.Form` for more information.
+        :py:class:`Form <webdriverwrapper.forms.Form>` for more information.
         """
         return self.get_elm(tag_name='form').fill_out(data, prefix, turbo)
 
 
 class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
     """
-    Wrapper wrapping :py:class:`selenium.webdriver.remote.webelement.WebElement`.
+    Wrapper wrapping :py:class:`selenium.WebElement <selenium.webdriver.remote.webelement.WebElement>`.
     """
 
     def __new__(cls, webelement):
@@ -425,7 +426,7 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
     @property
     def current_url(self):
         """
-        Accessing :py:attr:`selenium.webdriver.remote.webdriver.WebDriver.current_url`
+        Accessing :py:attr:`current_url <selenium.webdriver.remote.webdriver.WebDriver.current_url>`
         also on elements.
         """
         try:
@@ -443,7 +444,7 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
 
         It can handle downloading of page/file by link or any type of form.
 
-        Returns :py:obj:`webdriverwrapper.download._Download`.
+        Returns :py:obj:`_Download <webdriverwrapper.download._Download>` instance.
         """
         return DownloadFile(self)
 

@@ -19,7 +19,8 @@ ALLOWED_ERROR_MESSAGES = '__allowed_error_messages__'
 def expected_error_page(error_page):
     """
     Decorator expecting defined error page at the end of test method. As param
-    use what `driver.get_error_page` returns.
+    use what :py:meth:`get_error_page <.WebdriverWrapperErrorMixin.get_error_page>`
+    returns.
     """
     def wrapper(func):
         setattr(func, EXPECTED_ERROR_PAGE, error_page)
@@ -30,7 +31,8 @@ def expected_error_page(error_page):
 def allowed_error_pages(*error_pages):
     """
     Decorator ignoring defined error pages at the end of test method. As param
-    use what `driver.get_error_page` returns.
+    use what :py:meth:`get_error_page <.WebdriverWrapperErrorMixin.get_error_page>`
+    returns.
     """
     def wrapper(func):
         setattr(func, ALLOWED_ERROR_PAGES, error_pages)
@@ -41,7 +43,9 @@ def allowed_error_pages(*error_pages):
 def expected_error_messages(*error_messages):
     """
     Decorator expecting defined error messages at the end of test method. As
-    param use what `driver.get_error_messages` returns.
+    param use what
+    :py:meth:`get_error_messages <.WebdriverWrapperErrorMixin.get_error_messages>`
+    returns.
     """
     def wrapper(func):
         setattr(func, EXPECTED_ERROR_MESSAGES, error_messages)
@@ -52,7 +56,9 @@ def expected_error_messages(*error_messages):
 def allowed_error_messages(*error_messages):
     """
     Decorator ignoring defined error messages at the end of test method. As
-    param use what `driver.get_error_messages` returns.
+    param use what
+    :py:meth:`get_error_messages <.WebdriverWrapperErrorMixin.get_error_messages>`
+    returns.
     """
     def wrapper(func):
         setattr(func, ALLOWED_ERROR_MESSAGES, error_messages)
@@ -63,7 +69,8 @@ def allowed_error_messages(*error_messages):
 def allowed_any_error_message(func):
     """
     Decorator ignoring any error messages at the end of test method. If you want
-    allow only specific error message, use `allowed_error_messages` instead.
+    allow only specific error message, use :py:func:`.allowed_error_messages`
+    instead.
     """
     setattr(func, ALLOWED_ERROR_MESSAGES, ANY)
     return func
@@ -74,14 +81,18 @@ class ANY:
 
 
 class WebdriverWrapperErrorMixin(object):
+    """
+    Mixin used in :py:obj:`_WebdriverWrapper <webdriverwrapper.wrapper._WebdriverWrapper>`.
+    """
+
     def check_expected_errors(self, test_method):
         """
-        This method should be called after each test. It will read decorated
+        This method is called after each test. It will read decorated
         informations and check if there are expected errors.
 
-        You can set expected errors with decorator ``expected_error_page``,
-        ``allowed_error_pages``, ``expected_error_messages`` and
-        ``allowed_error_messages``.
+        You can set expected errors by decorators :py:func:`.expected_error_page`,
+        :py:func:`.allowed_error_pages`, :py:func:`.expected_error_messages`,
+        :py:func:`.allowed_error_messages` and :py:func:`.allowed_any_error_message`.
         """
         f = lambda key, default=[]: getattr(test_method, key, default)
         expected_error_page = f(EXPECTED_ERROR_PAGE, default=None)
@@ -99,8 +110,8 @@ class WebdriverWrapperErrorMixin(object):
         every step is not any error, use this.
 
         To parameters you should pass same values like to decorators
-        ``expected_error_page``, ``allowed_error_pages``,
-        ``expected_error_messages`` and ``allowed_error_messages``.
+        :py:func:`.expected_error_page`, :py:func:`.allowed_error_pages`,
+        :py:func:`.expected_error_messages` and :py:func:`.allowed_error_messages`.
         """
         # Close unexpected alerts (it's blocking).
         self.close_alert(ignore_exception=True)
@@ -139,7 +150,7 @@ class WebdriverWrapperErrorMixin(object):
         of ``h1`` header. You can change this method accordingly to your app.
 
         Error page returned from this method is used in decorators
-        ``expected_error_page`` and ``allowed_error_pages``.
+        :py:func:`.expected_error_page` and :py:func:`.allowed_error_pages`.
         """
         try:
             error_page = self.get_elm(class_name='error-page')
@@ -174,7 +185,7 @@ class WebdriverWrapperErrorMixin(object):
         this method accordingly to your app.
 
         Error messages returned from this method are used in decorators
-        ``expected_error_messages`` and ``allowed_error_messages``.
+        :py:func:`.expected_error_messages` and :py:func:`.allowed_error_messages`.
         """
         try:
             error_elms = self.get_elms(class_name='error')

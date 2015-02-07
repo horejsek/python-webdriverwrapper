@@ -91,7 +91,7 @@ class JSErrorsException(WebdriverWrapperException):
     """
     Exception raised when there is some JS error.
 
-    See :py:meth:`webdriverwrapper.error.WebdriverWrapperErrorMixin.get_js_errors`
+    See :py:meth:`get_js_errors <webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_js_errors>`
     for more information.
     """
 

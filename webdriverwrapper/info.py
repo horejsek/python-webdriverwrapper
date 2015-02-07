@@ -15,7 +15,9 @@ ALLOWED_INFO_MESSAGES = '__allowed_info_messages__'
 def expected_info_messages(*info_messages):
     """
     Decorator expecting defined info messages at the end of test method. As
-    param use what `driver.get_info_messages` returns.
+    param use what
+    :py:meth:`get_info_messages <.WebdriverWrapperInfoMixin.get_info_messages>`
+    returns.
     """
     def wrapper(func):
         setattr(func, EXPECTED_INFO_MESSAGES, info_messages)
@@ -26,7 +28,9 @@ def expected_info_messages(*info_messages):
 def allowed_info_messages(*info_messages):
     """
     Decorator ignoring defined info messages at the end of test method. As
-    param use what `driver.get_info_messages` returns.
+    param use what
+    :py:meth:`get_info_messages <.WebdriverWrapperInfoMixin.get_info_messages>`
+    returns.
     """
     def wrapper(func):
         setattr(func, ALLOWED_INFO_MESSAGES, info_messages)
@@ -35,12 +39,17 @@ def allowed_info_messages(*info_messages):
 
 
 class WebdriverWrapperInfoMixin(object):
+    """
+    Mixin used in :py:obj:`_WebdriverWrapper <webdriverwrapper.wrapper._WebdriverWrapper>`.
+    """
+
     def check_expected_infos(self, test_method):
         """
-        This method should be called after each test. It will read decorated
+        This method is called after each test. It will read decorated
         informations and check if there are expected infos.
 
-        You can set expected infos with decorator ``expected_info_messages``.
+        You can set expected infos by decorators :py:func:`.expected_info_messages`
+        and :py:func:`.allowed_info_messages`.
         """
         f = lambda key, default=[]: getattr(test_method, key, default)
         expected_info_messages = f(EXPECTED_INFO_MESSAGES)
@@ -55,8 +64,8 @@ class WebdriverWrapperInfoMixin(object):
         end of test. When you have big use case and you need to check messages
         on every step, use this.
 
-        To parameters you should pass same values like to decorator
-        ``expected_info_messages``.
+        To parameters you should pass same values like to decorators
+        :py:func:`.expected_info_messages` and :py:func:`.allowed_info_messages`.
         """
         # Close unexpected alerts (it's blocking).
         self.close_alert(ignore_exception=True)
@@ -79,8 +88,8 @@ class WebdriverWrapperInfoMixin(object):
         attribute ``info`` or text if that attribute is missing. You can change
         this method accordingly to your app.
 
-        Info messages returned from this method are used in decorator
-        ``expected_info_messages``.
+        Info messages returned from this method are used in decorators
+        :py:func:`.expected_info_messages` and :py:func:`.allowed_info_messages`.
         """
         try:
             info_elms = self.get_elms(class_name='info')
