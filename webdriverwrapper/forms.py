@@ -15,39 +15,49 @@ __all__ = ('Form',)
 class Form(_WebElementWrapper):
     def fill_out_and_submit(self, data, prefix='', turbo=False):
         """
-        Fill out `data` as dictionary (key is name attribute of inputs).
-
-        By `prefix` you can specify prefix of all name attributes. For example
-        you can have inputs called `client.name` and `client.surname` - then you
-        will pass to `prefix` string "client." and in dictionary just "name".
-
-        Option `turbo` is for skipping some steps, so it can act faster. For
-        example for multiple selects it calls `deselect_all` first, but it need
-        to for every option check if it is selected and it is very slow for
-        really big multiple selects. If you know, that it is not filled, you can
-        skip it and safe in some cases up to one minute!
+        Calls :py:meth:`.fill_out` and then :py:meth:`.submit`.
         """
         self.fill_out(data, prefix, turbo)
         self.submit()
 
     def fill_out(self, data, prefix='', turbo=False):
         """
-        Fill out `data` as dictionary (key is name attribute of inputs).
+        Fill out ``data`` by dictionary (key is name attribute of inputs). You
+        can pass normal Pythonic data and don't have to care about how to use
+        API of WebDriver.
 
-        By `prefix` you can specify prefix of all name attributes. For example
-        you can have inputs called `client.name` and `client.surname` - then you
-        will pass to `prefix` string "client." and in dictionary just "name".
+        By ``prefix`` you can specify prefix of all name attributes. For example
+        you can have inputs called ``client.name`` and ``client.surname`` -
+        then you will pass to ``prefix`` string ``"client."`` and in dictionary
+        just ``"name"``.
 
-        Option `turbo` is for skipping some steps, so it can act faster. For
-        example for multiple selects it calls `deselect_all` first, but it need
+        Option ``turbo`` is for skipping some steps, so it can act faster. For
+        example for multiple selects it calls ``deselect_all`` first, but it need
         to for every option check if it is selected and it is very slow for
         really big multiple selects. If you know, that it is not filled, you can
         skip it and safe in some cases up to one minute!
+
+        Example:
+
+        .. code-block:: python
+
+            driver.get_elm('formid').fill_out({
+                'name': 'Michael',
+                'surname': 'Horejsek',
+                'age': 24,
+                'enabled': True,
+                'multibox': ['value1', 'value2']
+            }, prefix='user_')
         """
         for elm_name, value in data.items():
             FormElement(self, prefix + elm_name).fill_out(value, turbo)
 
     def submit(self):
+        """
+        Try to find element with ID "[FORM_ID]_submit" and click on it. If no
+        element doesn't exists it will call default behaviour - submiting of
+        form by pressing enter.
+        """
         elm_name = '%s_submit' % self.get_attribute('id')
         try:
             self.click(elm_name)
@@ -55,6 +65,11 @@ class Form(_WebElementWrapper):
             super(Form, self).submit()
 
     def reset(self):
+        """
+        Try to find element with ID "[FORM_ID]_reset" and click on it.
+
+        You should use it for forms where you have cleaning/reseting of data.
+        """
         elm_name = '%s_reset' % self.get_attribute('id')
         self.click(elm_name)
 

@@ -8,24 +8,47 @@ __all__ = ('DownloadUrl', 'DownloadFile')
 
 
 class _Download(object):
+    """
+    Object returned by calling
+    :py:meth:`webdriverwrapper.wrapper._WebdriverWrapper.download_url` or
+    :py:meth:`webdriverwrapper.wrapper._WebElementWrapper.download_file`.
+    """
+
     @property
     def method(self):
+        """
+        Used method of request. ``GET`` or ``POST``.
+        """
         return self._response.request.method.lower()
 
     @property
     def status_code(self):
+        """
+        Status code of response.
+        """
         return self._response.status_code
 
     @property
     def encoding(self):
+        """
+        Encoding of reponse.
+        """
         return self._response.encoding
 
     @property
     def headers(self):
+        """
+        Headers of response.
+
+        See :py:attr:`requests.Response.headers` for more information.
+        """
         return self._response.headers
 
     @property
     def data(self):
+        """
+        RAW data of response.
+        """
         return self._response.text
 
     def _make_request(self):

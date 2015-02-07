@@ -8,6 +8,9 @@ test:
 test-lastfail:
 	cd tests; py.test --lf `find -iname "*.py"`
 
+doc:
+	cd docs; make html
+
 source:
 	$(PYTHON) setup.py sdist
 

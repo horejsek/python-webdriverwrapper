@@ -38,6 +38,10 @@ def _create_exception_msg_tag(id_=None, class_name=None, name=None, tag_name=Non
 
 
 class WebdriverWrapperException(Exception):
+    """
+    Base exception of WebDriver Wrapper.
+    """
+
     def __init__(self, url, msg):
         self.url = url
         self.msg = msg
@@ -50,6 +54,11 @@ class WebdriverWrapperException(Exception):
 
 
 class ErrorPageException(WebdriverWrapperException):
+    """
+    Exception raised when there is some unexpected error page. Like page 404,
+    500 and so on.
+    """
+
     def __init__(self, url, error_page, expected_error_page, allowed_error_pages, traceback=None):
         if expected_error_page:
             msg = 'Expected error page "{}", but found "{}" instead.'.format(expected_error_page, error_page)
@@ -63,6 +72,11 @@ class ErrorPageException(WebdriverWrapperException):
 
 
 class ErrorMessagesException(WebdriverWrapperException):
+    """
+    Exception raised when there is some unexpected error message. Like "some
+    field is mandatory", "wrong e-mail" and so on.
+    """
+
     def __init__(self, url, error_messages, expected_error_messages, allowed_error_messages):
         if expected_error_messages:
             msg = 'Expected error messages "{}", but found "{}" instead.'.format(expected_error_messages, error_messages)
@@ -74,12 +88,24 @@ class ErrorMessagesException(WebdriverWrapperException):
 
 
 class JSErrorsException(WebdriverWrapperException):
+    """
+    Exception raised when there is some JS error.
+
+    See :py:meth:`webdriverwrapper.error.WebdriverWrapperErrorMixin.get_js_errors`
+    for more information.
+    """
+
     def __init__(self, url, js_errors):
         msg = 'Unexpected JavaScript errors "{}".'.format(js_errors)
         super(JSErrorsException, self).__init__(url, msg)
 
 
 class InfoMessagesException(WebdriverWrapperException):
+    """
+    Exception raised when there is missing some expected info message. Like
+    "sucessfully saved" and so on.
+    """
+
     def __init__(self, url, info_messages, expected_info_messages, allowed_info_messages):
         msg = 'Expected info messages "{}", but found "{}" instead.'.format(expected_info_messages, info_messages)
         if allowed_info_messages:
