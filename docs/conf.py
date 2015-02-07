@@ -3,6 +3,7 @@
 import sys
 import os
 
+sys.path.insert(0, '.')
 sys.path.insert(0, '..')
 
 # -- General configuration ------------------------------------------------
@@ -17,6 +18,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
+    'sphinxtogithub',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
