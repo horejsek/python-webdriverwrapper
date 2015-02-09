@@ -18,7 +18,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from .download import DownloadUrl, DownloadFile
 from .errors import WebdriverWrapperErrorMixin
-from .exceptions import _create_exception_msg
+from .exceptions import _create_exception_msg, _create_exception_msg_tag
 from .info import WebdriverWrapperInfoMixin
 from .utils import force_text
 
@@ -242,7 +242,7 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
         """
         Shortcut for waiting for element. If it not ends with exception, it
-        returns that element.
+        returns that element. Same as following:
 
         .. code-block:: python
 
@@ -255,6 +255,18 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         # Also return that element for which is waiting.
         elm = self.get_elm(*args, **kwds)
         return elm
+
+    def wait_for_element_hide(self, timeout=10, message='', *args, **kwds):
+        """
+        Shortcut for waiting for hiding of element. Same as following:
+
+        .. code-block:: python
+
+            selenium.webdriver.support.wait.WebDriverWait(driver, timeout).until(lambda driver: not driver.get_elm(...))
+        """
+        if not message:
+            message = 'Element {} still visible.'.format(_create_exception_msg_tag(*args, **kwds))
+        self.wait(timeout).until(lambda driver: not driver.get_elm(*args, **kwds) or not driver.get_elm(*args, **kwds).is_displayed(), message=message)
 
     def wait(self, timeout=10):
         """
