@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-__all__ = ('pytest_report_header', 'pytest_runtest_makereport', 'make_screenshot_of_failed_tests', 'driver')
+__all__ = ('pytest_report_header', 'pytest_runtest_makereport', 'set_driver_to_test_for_failed_screenshot', 'driver')
 
 
 def pytest_report_header(config):
@@ -34,20 +34,25 @@ def pytest_runtest_makereport(item, call, __multicall__):
     # execute all other hooks to obtain the report object
     report = __multicall__.execute()
 
-    # set an report attribute for each phase of a call, which can
-    # be "setup", "call", "teardown"
-    setattr(item, 'report_' + report.when, report)
+    if report.when in ('call', 'teardown') and report.failed:
+        make_screenshot_of_failed_tests(item.obj.driver, item.config, item.nodeid)
+
     return report
 
 
-@pytest.yield_fixture(scope='function', autouse=True)
-def make_screenshot_of_failed_tests(request, driver):
-    yield
-    screenshot_path = getattr(request.config, 'webdriverwrapper_screenshot_path', None)
-    if screenshot_path and request.node.report_call.failed:
-        driver.close_alert(ignore_exception=True)
-        name = request.node.nodeid.replace('/', '.').replace(':', '.')
-        driver.get_screenshot_as_file(os.path.join(screenshot_path, '{}.png'.format(name)))
+@pytest.fixture(scope='function', autouse=True)
+def set_driver_to_test_for_failed_screenshot(request, driver):
+    request.node.obj.driver = driver
+
+
+def make_screenshot_of_failed_tests(driver, config, nodeid):
+    screenshot_path = getattr(config, 'webdriverwrapper_screenshot_path', None)
+    if not screenshot_path:
+        return
+
+    driver.close_alert(ignore_exception=True)
+    name = nodeid.replace('/', '.').replace(':', '.')
+    driver.get_screenshot_as_file(os.path.join(screenshot_path, '{}.png'.format(name)))
 
 
 @pytest.yield_fixture(scope='function')
