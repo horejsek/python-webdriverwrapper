@@ -244,8 +244,17 @@ information.</p>
 <dt id="webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element">
 <tt class="descname">wait_for_element</tt><big>(</big><em>timeout=10</em>, <em>message=''</em>, <em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.wait_for_element"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut for waiting for element. If it not ends with exception, it
-returns that element.</p>
+returns that element. Same as following:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">selenium</span><span class="o">.</span><span class="n">webdriver</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">wait</span><span class="o">.</span><span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element_hide">
+<tt class="descname">wait_for_element_hide</tt><big>(</big><em>timeout=10</em>, <em>message=''</em>, <em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.wait_for_element_hide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element_hide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for waiting for hiding of element. Same as following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">selenium</span><span class="o">.</span><span class="n">webdriver</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">wait</span><span class="o">.</span><span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="ow">not</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
