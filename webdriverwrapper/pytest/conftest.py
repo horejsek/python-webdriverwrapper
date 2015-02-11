@@ -31,18 +31,26 @@ def pytest_report_header(config):
 
 @pytest.mark.tryfirst
 def pytest_runtest_makereport(item, call, __multicall__):
-    # execute all other hooks to obtain the report object
+    # Execute all other hooks to obtain the report object.
     report = __multicall__.execute()
 
     if report.when in ('call', 'teardown') and report.failed:
-        make_screenshot_of_failed_tests(item.obj.driver, item.config, item.nodeid)
+        test_func = _get_test_func(item.obj)
+        make_screenshot_of_failed_tests(test_func.driver, item.config, item.nodeid)
 
     return report
 
 
 @pytest.fixture(scope='function', autouse=True)
 def set_driver_to_test_for_failed_screenshot(request, driver):
-    request.node.obj.driver = driver
+    _get_test_func(request.node.obj).driver = driver
+
+
+def _get_test_func(obj):
+    # Test function may be method. But attributes can be set only to functions.
+    if hasattr(obj, 'im_func'):
+        return obj.im_func
+    return obj
 
 
 def make_screenshot_of_failed_tests(driver, config, nodeid):
