@@ -34,6 +34,20 @@ Installation
 
     pip install webdriverwrapper
 
+Hello World!
+============
+
+.. code-block:: python
+
+    driver = Chrome()
+    driver.get('http://www.google.com')
+    form_elm = driver.get_elm('gbqf')
+    form_elm.fill_out_and_submit({
+        'q': 'Hello World!',
+    })
+    driver.wait_for_element(id_='search')
+    driver.quit()
+
 Documentation
 *************
 
@@ -122,6 +136,17 @@ Decorators
 .. autofunction:: webdriverwrapper.decorators.expected_info_messages
 .. autofunction:: webdriverwrapper.decorators.allowed_info_messages
 
+Example
+^^^^^^^
+
+.. code-block:: python
+
+    @expected_info_messages('Your information was updated.')
+    def test_save(driver):
+        driver.fill_out_and_submit({
+            'name': 'Michael',
+        })
+
 Error and info messages
 -----------------------
 
@@ -134,7 +159,43 @@ Error and info messages
 PyTest
 ------
 
-TODO
+Import whole module in your main ``conftest.py`` and define fixture ``_driver``:
+
+.. code-block:: python
+
+    import pytest
+    from webdriverwrapper import Chrome
+    from webdriverwrapper.pytest import *
+
+
+    # Create browser once for all tests.
+    @pytest.yield_fixture(scope='session')
+    def session_driver():
+        driver = Chrome()
+        yield driver
+        driver.quit()
+
+
+    # Before every test go to homepage.
+    @pytest.fixture(scope='function')
+    def _driver(session_driver):
+        session_driver.get('http://www.google.com')
+        return session_driver
+
+Then you can write tests really simply:
+
+.. code-block:: python
+
+    def test_doodle(driver):
+        driver.click('gbqfsb')
+        assert driver.contains_text('Doodles')
+
+
+    def test_search(driver):
+        driver.get_elm('gbqf').fill_out_and_submit({
+            'q': 'hello',
+        })
+        driver.wait_for_element(id_='resultStats')
 
 .. automodule:: webdriverwrapper.pytest.conftest
     :members:

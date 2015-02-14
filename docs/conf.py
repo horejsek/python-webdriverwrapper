@@ -325,4 +325,5 @@ intersphinx_mapping = {
     'python': ('http://docs.python.org/2.7', None),
     'selenium': ('http://selenium.googlecode.com/svn/trunk/docs/api/py/', None),
     'request': ('http://docs.python-requests.org/en/latest/', None),
+    'pytest': ('http://pytest.org/latest/', None),
 }
