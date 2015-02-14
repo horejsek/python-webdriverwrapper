@@ -65,7 +65,7 @@
 <div class="viewcode-block" id="Form"><a class="viewcode-back" href="../../index.html#webdriverwrapper.forms.Form">[docs]</a><span class="k">class</span> <span class="nc">Form</span><span class="p">(</span><span class="n">_WebElementWrapper</span><span class="p">):</span>
 <div class="viewcode-block" id="Form.fill_out_and_submit"><a class="viewcode-back" href="../../index.html#webdriverwrapper.forms.Form.fill_out_and_submit">[docs]</a>    <span class="k">def</span> <span class="nf">fill_out_and_submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calls :py:meth:`.fill_out` and then :py:meth:`.submit`.</span>
+<span class="sd">        Calls :py:meth:`~.Form.fill_out` and then :py:meth:`.submit`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_out</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">turbo</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>
@@ -81,10 +81,10 @@
 <span class="sd">        then you will pass to ``prefix`` string ``&quot;client.&quot;`` and in dictionary</span>
 <span class="sd">        just ``&quot;name&quot;``.</span>
 
-<span class="sd">        Option ``turbo`` is for skipping some steps, so it can act faster. For</span>
+<span class="sd">        Option ``turbo`` is for skipping some steps, so it can go faster. For</span>
 <span class="sd">        example for multiple selects it calls ``deselect_all`` first, but it need</span>
 <span class="sd">        to for every option check if it is selected and it is very slow for</span>
-<span class="sd">        really big multiple selects. If you know, that it is not filled, you can</span>
+<span class="sd">        really big multiple selects. If you know that it is not filled, you can</span>
 <span class="sd">        skip it and safe in some cases up to one minute!</span>
 
 <span class="sd">        Example:</span>

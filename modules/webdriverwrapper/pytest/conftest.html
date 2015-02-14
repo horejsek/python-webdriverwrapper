@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>webdriverwrapper.pytest.conftest &mdash; WebDriver Wrapper  documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <link rel="top" title="WebDriver Wrapper  documentation" href="../../../index.html" />
+    <link rel="up" title="webdriverwrapper" href="../../webdriverwrapper.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">WebDriver Wrapper  documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../webdriverwrapper.html" accesskey="U">webdriverwrapper</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for webdriverwrapper.pytest.conftest</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;pytest_report_header&#39;</span><span class="p">,</span> <span class="s">&#39;pytest_runtest_makereport&#39;</span><span class="p">,</span> <span class="s">&#39;set_driver_to_test_for_failed_screenshot&#39;</span><span class="p">,</span> <span class="s">&#39;driver&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="pytest_report_header"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.pytest.conftest.pytest_report_header">[docs]</a><span class="k">def</span> <span class="nf">pytest_report_header</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pytest hook, see :py:func:`_pytest.hookspec.pytest_report_header` (:ref:`pytest:plugins`).</span>
+
+<span class="sd">    It&#39;s important to see which URL is testing with which user and where are</span>
+<span class="sd">    stored screenshots. It will be displayed before run of tests if you set</span>
+<span class="sd">    some config values like that:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        def pytest_configure(config):</span>
+<span class="sd">            config.webdriverwrapper_screenshot_path = os.path.join(&#39;/&#39;, &#39;tmp&#39;, &#39;testresults&#39;)</span>
+<span class="sd">            config.webdriverwrapper_testing_url = &#39;http://example.com&#39;</span>
+<span class="sd">            config.webdriverwrapper_testing_username = &#39;testing_username&#39;</span>
+
+<span class="sd">    If your web app does not need any user, just don&#39;t set it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">screenshot_path</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&#39;webdriverwrapper_screenshot_path&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">testing_url</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&#39;webdriverwrapper_testing_url&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">testing_username</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&#39;webdriverwrapper_testing_username&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">screenshot_path</span><span class="p">:</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;| Screenshot path: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">screenshot_path</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">testing_url</span><span class="p">:</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;| Testing URL: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">testing_url</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">testing_username</span><span class="p">:</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;| Testing username: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">testing_username</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">wrap_line</span> <span class="o">=</span> <span class="s">&#39;+&#39;</span> <span class="o">+</span> <span class="s">&#39;-&#39;</span> <span class="o">*</span> <span class="mi">75</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">wrap_line</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrap_line</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lines</span>
+
+</div>
+<span class="nd">@pytest.mark.tryfirst</span>
+<div class="viewcode-block" id="pytest_runtest_makereport"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.pytest.conftest.pytest_runtest_makereport">[docs]</a><span class="k">def</span> <span class="nf">pytest_runtest_makereport</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">__multicall__</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pytest hook, see :py:func:`_pytest.hookspec.pytest_runtest_makereport`.</span>
+
+<span class="sd">    After each failed test will be generated screenshot if you specify where to</span>
+<span class="sd">    save these screenshots.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        def pytest_configure(config):</span>
+<span class="sd">            config.webdriverwrapper_screenshot_path = os.path.join(&#39;/&#39;, &#39;tmp&#39;, &#39;testresults&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Execute all other hooks to obtain the report object.</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">__multicall__</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">report</span><span class="o">.</span><span class="n">when</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;call&#39;</span><span class="p">,</span> <span class="s">&#39;teardown&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">report</span><span class="o">.</span><span class="n">failed</span><span class="p">:</span>
+        <span class="n">test_func</span> <span class="o">=</span> <span class="n">_get_test_func</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+        <span class="n">make_screenshot_of_failed_tests</span><span class="p">(</span><span class="n">test_func</span><span class="o">.</span><span class="n">driver</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">nodeid</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">report</span>
+
+</div>
+<span class="nd">@pytest.fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">&#39;function&#39;</span><span class="p">,</span> <span class="n">autouse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_driver_to_test_for_failed_screenshot</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">driver</span><span class="p">):</span>
+    <span class="n">_get_test_func</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span>
+
+
+<span class="k">def</span> <span class="nf">_get_test_func</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="c"># Test function may be method. But attributes can be set only to functions.</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&#39;im_func&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">im_func</span>
+    <span class="k">return</span> <span class="n">obj</span>
+
+
+<span class="k">def</span> <span class="nf">make_screenshot_of_failed_tests</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">nodeid</span><span class="p">):</span>
+    <span class="n">screenshot_path</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&#39;webdriverwrapper_screenshot_path&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">screenshot_path</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">close_alert</span><span class="p">(</span><span class="n">ignore_exception</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">nodeid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="s">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">,</span> <span class="s">&#39;.&#39;</span><span class="p">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">get_screenshot_as_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">screenshot_path</span><span class="p">,</span> <span class="s">&#39;{}.png&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)))</span>
+
+
+<span class="nd">@pytest.yield_fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">&#39;function&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="driver"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.pytest.conftest.driver">[docs]</a><span class="k">def</span> <span class="nf">driver</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">_driver</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fixture for testing. This fixture just take your driver by fixture called</span>
+<span class="sd">    ``_driver`` and after each test call</span>
+<span class="sd">    :py:meth:`~webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_expected_errors`</span>
+<span class="sd">    and :py:meth:`~webdriverwrapper.info.WebdriverWrapperInfoMixin.check_expected_infos`.</span>
+<span class="sd">    You have to just implement creating of your browser.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        @pytest.yield_fixture(scope=&#39;session&#39;)</span>
+<span class="sd">        def _driver():</span>
+<span class="sd">            driver = Chrome()</span>
+<span class="sd">            yield driver</span>
+<span class="sd">            driver.quit()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_driver</span><span class="o">.</span><span class="n">close_other_windows</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">_driver</span>
+    <span class="n">_driver</span><span class="o">.</span><span class="n">check_expected_errors</span><span class="p">(</span><span class="n">test_method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">function</span><span class="p">)</span>
+    <span class="n">_driver</span><span class="o">.</span><span class="n">check_expected_infos</span><span class="p">(</span><span class="n">test_method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">function</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">WebDriver Wrapper  documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../webdriverwrapper.html" >webdriverwrapper</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Michal Horejsek.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

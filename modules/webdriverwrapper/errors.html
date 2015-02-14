@@ -69,8 +69,11 @@
 <span class="k">def</span> <span class="nf">expected_error_page</span><span class="p">(</span><span class="n">error_page</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator expecting defined error page at the end of test method. As param</span>
-<span class="sd">    use what :py:meth:`get_error_page &lt;.WebdriverWrapperErrorMixin.get_error_page&gt;`</span>
+<span class="sd">    use what :py:meth:`~.WebdriverWrapperErrorMixin.get_error_page`</span>
 <span class="sd">    returns.</span>
+
+<span class="sd">    .. versionadded:: 2.0</span>
+<span class="sd">        Before this decorator was called ``ShouldBeErrorPage``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">EXPECTED_ERROR_PAGE</span><span class="p">,</span> <span class="n">error_page</span><span class="p">)</span>
@@ -81,8 +84,10 @@
 <span class="k">def</span> <span class="nf">allowed_error_pages</span><span class="p">(</span><span class="o">*</span><span class="n">error_pages</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator ignoring defined error pages at the end of test method. As param</span>
-<span class="sd">    use what :py:meth:`get_error_page &lt;.WebdriverWrapperErrorMixin.get_error_page&gt;`</span>
+<span class="sd">    use what :py:meth:`~.WebdriverWrapperErrorMixin.get_error_page`</span>
 <span class="sd">    returns.</span>
+
+<span class="sd">    .. versionadded:: 2.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ALLOWED_ERROR_PAGES</span><span class="p">,</span> <span class="n">error_pages</span><span class="p">)</span>
@@ -94,8 +99,11 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator expecting defined error messages at the end of test method. As</span>
 <span class="sd">    param use what</span>
-<span class="sd">    :py:meth:`get_error_messages &lt;.WebdriverWrapperErrorMixin.get_error_messages&gt;`</span>
+<span class="sd">    :py:meth:`~.WebdriverWrapperErrorMixin.get_error_messages`</span>
 <span class="sd">    returns.</span>
+
+<span class="sd">    .. versionadded:: 2.0</span>
+<span class="sd">        Before this decorator was called ``ShouldBeError``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">EXPECTED_ERROR_MESSAGES</span><span class="p">,</span> <span class="n">error_messages</span><span class="p">)</span>
@@ -107,8 +115,11 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator ignoring defined error messages at the end of test method. As</span>
 <span class="sd">    param use what</span>
-<span class="sd">    :py:meth:`get_error_messages &lt;.WebdriverWrapperErrorMixin.get_error_messages&gt;`</span>
+<span class="sd">    :py:meth:`~.WebdriverWrapperErrorMixin.get_error_messages`</span>
 <span class="sd">    returns.</span>
+
+<span class="sd">    .. versionadded:: 2.0</span>
+<span class="sd">        Before this decorator was called ``CanBeError``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ALLOWED_ERROR_MESSAGES</span><span class="p">,</span> <span class="n">error_messages</span><span class="p">)</span>
@@ -121,6 +132,8 @@
 <span class="sd">    Decorator ignoring any error messages at the end of test method. If you want</span>
 <span class="sd">    allow only specific error message, use :py:func:`.allowed_error_messages`</span>
 <span class="sd">    instead.</span>
+
+<span class="sd">    .. versionadded:: 2.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ALLOWED_ERROR_MESSAGES</span><span class="p">,</span> <span class="n">ANY</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">func</span>
@@ -132,7 +145,13 @@
 
 <div class="viewcode-block" id="WebdriverWrapperErrorMixin"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.WebdriverWrapperErrorMixin">[docs]</a><span class="k">class</span> <span class="nc">WebdriverWrapperErrorMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Mixin used in :py:obj:`_WebdriverWrapper &lt;webdriverwrapper.wrapper._WebdriverWrapper&gt;`.</span>
+<span class="sd">    Mixin used in :py:obj:`~webdriverwrapper.wrapper._WebdriverWrapper`.</span>
+
+<span class="sd">    .. versionadded:: 2.0</span>
+<span class="sd">        Before you had to change decorators ``ShouldByError``, ``CanBeError``</span>
+<span class="sd">        and ``ShouldBeErrorPage`` which are gone. Now you can use original</span>
+<span class="sd">        decorators and just change one of these methods. For more information</span>
+<span class="sd">        check out section testing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="WebdriverWrapperErrorMixin.check_expected_errors"><a class="viewcode-back" href="../../index.html#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_expected_errors">[docs]</a>    <span class="k">def</span> <span class="nf">check_expected_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_method</span><span class="p">):</span>

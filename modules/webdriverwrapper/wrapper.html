@@ -133,17 +133,33 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Does page or element contains `text`?</span>
 
-<span class="sd">        Uses method :py:meth:`.find_elements_by_text`.</span>
+<span class="sd">        Uses method :py:meth:`~._WebdriverBaseWrapper.find_elements_by_text`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
 </div>
+<div class="viewcode-block" id="_WebdriverBaseWrapper.find_element_by_text"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text">[docs]</a>    <span class="k">def</span> <span class="nf">find_element_by_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns first element on page or in element containing ``text``.</span>
+
+<span class="sd">        .. versionadded:: 2.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">elms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">elms</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">selenium_exc</span><span class="o">.</span><span class="n">NoSuchElementException</span><span class="p">(</span><span class="s">u&#39;No element containing text &quot;{}&quot; at {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">force_text</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">elms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</div>
 <div class="viewcode-block" id="_WebdriverBaseWrapper.find_elements_by_text"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text">[docs]</a>    <span class="k">def</span> <span class="nf">find_elements_by_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns all elements on page or in element containing `text`.</span>
+<span class="sd">        Returns all elements on page or in element containing ``text``.</span>
+
+<span class="sd">        .. versionchanged:: 2.0</span>
+<span class="sd">            Searching in all text nodes. Before it wouldn&#39;t find string &quot;text&quot;</span>
+<span class="sd">            in HTML like ``&lt;div&gt;some&lt;br /&gt;text in another text node&lt;/div&gt;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">force_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="c"># XPATH have to be byte string.</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">force_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
         <span class="n">elms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span>
-            <span class="s">&#39;.//*[contains(text(), &quot;</span><span class="si">%s</span><span class="s">&quot;) and not(ancestor-or-self::*[@data-selenium-not-search])]&#39;</span> <span class="o">%</span> <span class="n">text</span>
+            <span class="s">&#39;.//*/text()[contains(., &quot;{}&quot;) and not(ancestor-or-self::*[@data-selenium-not-search])]/..&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">elms</span>
 </div>
@@ -151,7 +167,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        When you not pass any argument, it clicks on current element. If you</span>
 <span class="sd">        pass some arguments, it works as following snippet. For more info what</span>
-<span class="sd">        you can pass check out method :py:meth:`.get_elm`.</span>
+<span class="sd">        you can pass check out method :py:meth:`~._WebdriverBaseWrapper.get_elm`.</span>
 
 <span class="sd">        .. code-block:: python</span>
 
@@ -170,8 +186,8 @@
         <span class="n">css_selector</span><span class="o">=</span><span class="bp">None</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns first found element. This method uses :py:meth:`.get_elms`.</span>
-<span class="sd">        Check it out for more information.</span>
+<span class="sd">        Returns first found element. This method uses</span>
+<span class="sd">        :py:meth:`~._WebdriverBaseWrapper.get_elms`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">elms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span>
             <span class="n">id_</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span>
@@ -180,9 +196,9 @@
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">elms</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">selenium_exc</span><span class="o">.</span><span class="n">NoSuchElementException</span><span class="p">(</span><span class="n">_create_exception_msg</span><span class="p">(</span>
-                <span class="n">id_</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span>
+                <span class="n">id_</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span>
                 <span class="n">parent_id</span><span class="p">,</span> <span class="n">parent_class_name</span><span class="p">,</span> <span class="n">parent_name</span><span class="p">,</span> <span class="n">parent_tag_name</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span>
+                <span class="n">xpath</span><span class="p">,</span> <span class="n">css_selector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span>
             <span class="p">))</span>
         <span class="k">return</span> <span class="n">elms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </div>
@@ -313,10 +329,12 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            selenium.webdriver.support.wait.WebDriverWait(driver, timeout).until(lambda driver: not driver.get_elm(...))</span>
+
+<span class="sd">        .. versionadded:: 2.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;Element {} still visible.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_create_exception_msg_tag</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="ow">not</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span><span class="o">.</span><span class="n">is_displayed</span><span class="p">(),</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="ow">not</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span><span class="o">.</span><span class="n">is_displayed</span><span class="p">(),</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="_WebdriverWrapper.wait"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.wait">[docs]</a>    <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -335,29 +353,35 @@
 <span class="sd">            driver.wait().until(lambda driver: len(driver.find_element_by_id(&#39;elm&#39;)) &gt; 10)</span>
 
 <span class="sd">        If you need to wait for element, consider using</span>
-<span class="sd">        :py:meth:`.wait_for_element` instead.</span>
+<span class="sd">        :py:meth:`~._WebdriverWrapper.wait_for_element` instead.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">WebDriverWait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="_WebdriverWrapper.go_to"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.go_to">[docs]</a>    <span class="k">def</span> <span class="nf">go_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        You have to pass absolute URL to method</span>
-<span class="sd">        :py:meth:`get &lt;selenium.webdriver.remote.webdriver.WebDriver.get&gt;`. This</span>
+<span class="sd">        :py:meth:`~selenium.webdriver.remote.webdriver.WebDriver.get`. This</span>
 <span class="sd">        method help you to pass only relative ``path`` and/or ``query``. See</span>
 <span class="sd">        method :py:meth:`.get_url` for more information.</span>
+
+<span class="sd">        .. versionchanged:: 2.0</span>
+<span class="sd">            Removed parameter ``domain``. If you want to go to completely</span>
+<span class="sd">            another web app, use absolute address.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="_WebdriverWrapper.get_url"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.get_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        You have to pass absolute URL to method</span>
-<span class="sd">        :py:meth:`get &lt;selenium.webdriver.remote.webdriver.WebDriver.get&gt;`. This</span>
+<span class="sd">        :py:meth:`~selenium.webdriver.remote.webdriver.WebDriver.get`. This</span>
 <span class="sd">        method help you to pass only relative ``path`` and/or ``query``. Scheme</span>
 <span class="sd">        and domains is append to URL from</span>
-<span class="sd">        :py:attr:`current_url &lt;selenium.webdriver.remote.webdriver.WebDriver.current_url&gt;`.</span>
+<span class="sd">        :py:attr:`~selenium.webdriver.remote.webdriver.WebDriver.current_url`.</span>
 
 <span class="sd">        ``query`` can be final string or dictionary. On dictionary it calls</span>
 <span class="sd">        :py:func:`urllib.urlencode`.</span>
+
+<span class="sd">        .. versionadded:: 2.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">path</span>
@@ -437,7 +461,7 @@
 </div>
 <div class="viewcode-block" id="_WebdriverWrapper.get_alert"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.get_alert">[docs]</a>    <span class="k">def</span> <span class="nf">get_alert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns instance of :py:obj:`Alert &lt;selenium.webdriver.common.alert.Alert&gt;`.</span>
+<span class="sd">        Returns instance of :py:obj:`~selenium.webdriver.common.alert.Alert`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Alert</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </div>
@@ -448,24 +472,28 @@
 <span class="sd">        ugly. You can easily use this method.</span>
 
 <span class="sd">        When you not pass ``url``,</span>
-<span class="sd">        :py:attr:`current_url &lt;selenium.webdriver.remote.webdriver.WebDriver.current_url&gt;`</span>
+<span class="sd">        :py:attr:`~selenium.webdriver.remote.webdriver.WebDriver.current_url`</span>
 <span class="sd">        will be used.</span>
 
-<span class="sd">        Returns :py:obj:`_Download &lt;webdriverwrapper.download._Download&gt;` instance.</span>
+<span class="sd">        Returns :py:obj:`~webdriverwrapper.download._Download` instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">DownloadUrl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="_WebdriverWrapper.fill_out_and_submit"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.fill_out_and_submit">[docs]</a>    <span class="k">def</span> <span class="nf">fill_out_and_submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shortcut for filling out first ``&lt;form&gt;`` on page. See</span>
-<span class="sd">        :py:class:`Form &lt;webdriverwrapper.forms.Form&gt;` for more information.</span>
+<span class="sd">        :py:class:`~webdriverwrapper.forms.Form` for more information.</span>
+
+<span class="sd">        .. versionadded:: 2.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">tag_name</span><span class="o">=</span><span class="s">&#39;form&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fill_out_and_submit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">turbo</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="_WebdriverWrapper.fill_out"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.fill_out">[docs]</a>    <span class="k">def</span> <span class="nf">fill_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shortcut for filling out first ``&lt;form&gt;`` on page. See</span>
-<span class="sd">        :py:class:`Form &lt;webdriverwrapper.forms.Form&gt;` for more information.</span>
+<span class="sd">        :py:class:`~webdriverwrapper.forms.Form` for more information.</span>
+
+<span class="sd">        .. versionadded:: 2.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">tag_name</span><span class="o">=</span><span class="s">&#39;form&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fill_out</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">turbo</span><span class="p">)</span>
 
@@ -488,7 +516,7 @@
     <span class="nd">@property</span>
 <div class="viewcode-block" id="_WebElementWrapper.current_url"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebElementWrapper.current_url">[docs]</a>    <span class="k">def</span> <span class="nf">current_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Accessing :py:attr:`current_url &lt;selenium.webdriver.remote.webdriver.WebDriver.current_url&gt;`</span>
+<span class="sd">        Accessing :py:attr:`~selenium.webdriver.remote.webdriver.WebDriver.current_url`</span>
 <span class="sd">        also on elements.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -506,7 +534,7 @@
 
 <span class="sd">        It can handle downloading of page/file by link or any type of form.</span>
 
-<span class="sd">        Returns :py:obj:`_Download &lt;webdriverwrapper.download._Download&gt;` instance.</span>
+<span class="sd">        Returns :py:obj:`~webdriverwrapper.download._Download` instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">DownloadFile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 

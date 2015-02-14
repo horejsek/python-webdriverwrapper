@@ -77,6 +77,19 @@ and <a class="reference external" href="http://selenium.googlecode.com/svn/trunk
 <div class="highlight-bash"><div class="highlight"><pre>pip install webdriverwrapper
 </pre></div>
 </div>
+<div class="section" id="hello-world">
+<h3>Hello World!<a class="headerlink" href="#hello-world" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">driver</span> <span class="o">=</span> <span class="n">Chrome</span><span class="p">()</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;http://www.google.com&#39;</span><span class="p">)</span>
+<span class="n">form_elm</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="s">&#39;gbqf&#39;</span><span class="p">)</span>
+<span class="n">form_elm</span><span class="o">.</span><span class="n">fill_out_and_submit</span><span class="p">({</span>
+    <span class="s">&#39;q&#39;</span><span class="p">:</span> <span class="s">&#39;Hello World!&#39;</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">wait_for_element</span><span class="p">(</span><span class="n">id_</span><span class="o">=</span><span class="s">&#39;search&#39;</span><span class="p">)</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
@@ -93,7 +106,7 @@ and <a class="reference external" href="http://selenium.googlecode.com/svn/trunk
 <tt class="descname">click</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.click" title="Permalink to this definition">¶</a></dt>
 <dd><p>When you not pass any argument, it clicks on current element. If you
 pass some arguments, it works as following snippet. For more info what
-you can pass check out method <a class="reference internal" href="#webdriverwrapper.unittest.WebdriverTestCase.get_elm" title="webdriverwrapper.unittest.WebdriverTestCase.get_elm"><tt class="xref py py-meth docutils literal"><span class="pre">get_elm()</span></tt></a>.</p>
+you can pass check out method <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm"><tt class="xref py py-meth docutils literal"><span class="pre">get_elm()</span></tt></a>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="s">&#39;someid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -107,16 +120,29 @@ you can pass check out method <a class="reference internal" href="#webdriverwrap
 </dd></dl>
 
 <dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text">
+<tt class="descname">find_element_by_text</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.find_element_by_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns first element on page or in element containing <tt class="docutils literal"><span class="pre">text</span></tt>.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text">
 <tt class="descname">find_elements_by_text</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.find_elements_by_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns all elements on page or in element containing <cite>text</cite>.</p>
+<dd><p>Returns all elements on page or in element containing <tt class="docutils literal"><span class="pre">text</span></tt>.</p>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 2.0: </span>Searching in all text nodes. Before it wouldn&#8217;t find string &#8220;text&#8221;
+in HTML like <tt class="docutils literal"><span class="pre">&lt;div&gt;some&lt;br</span> <span class="pre">/&gt;text</span> <span class="pre">in</span> <span class="pre">another</span> <span class="pre">text</span> <span class="pre">node&lt;/div&gt;</span></tt>.</p>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm">
 <tt class="descname">get_elm</tt><big>(</big><em>id_=None</em>, <em>class_name=None</em>, <em>name=None</em>, <em>tag_name=None</em>, <em>xpath=None</em>, <em>parent_id=None</em>, <em>parent_class_name=None</em>, <em>parent_name=None</em>, <em>parent_tag_name=None</em>, <em>css_selector=None</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.get_elm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns first found element. This method uses <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms"><tt class="xref py py-meth docutils literal"><span class="pre">get_elms()</span></tt></a>.
-Check it out for more information.</p>
+<dd><p>Returns first found element. This method uses
+<a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms"><tt class="xref py py-meth docutils literal"><span class="pre">get_elms()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -179,6 +205,9 @@ will be used.</p>
 <tt class="descname">fill_out</tt><big>(</big><em>data</em>, <em>prefix=''</em>, <em>turbo=False</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.fill_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.fill_out" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut for filling out first <tt class="docutils literal"><span class="pre">&lt;form&gt;</span></tt> on page. See
 <a class="reference internal" href="#webdriverwrapper.forms.Form" title="webdriverwrapper.forms.Form"><tt class="xref py py-class docutils literal"><span class="pre">Form</span></tt></a> for more information.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -186,6 +215,9 @@ will be used.</p>
 <tt class="descname">fill_out_and_submit</tt><big>(</big><em>data</em>, <em>prefix=''</em>, <em>turbo=False</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.fill_out_and_submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.fill_out_and_submit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut for filling out first <tt class="docutils literal"><span class="pre">&lt;form&gt;</span></tt> on page. See
 <a class="reference internal" href="#webdriverwrapper.forms.Form" title="webdriverwrapper.forms.Form"><tt class="xref py py-class docutils literal"><span class="pre">Form</span></tt></a> for more information.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -198,21 +230,28 @@ will be used.</p>
 <dt id="webdriverwrapper.wrapper._WebdriverWrapper.get_url">
 <tt class="descname">get_url</tt><big>(</big><em>path=None</em>, <em>query=None</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.get_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.get_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>You have to pass absolute URL to method
-<a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.get" title="(in Selenium v2.0)"><tt class="xref py py-meth docutils literal"><span class="pre">get</span></tt></a>. This
+<a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.get" title="(in Selenium v2.0)"><tt class="xref py py-meth docutils literal"><span class="pre">get()</span></tt></a>. This
 method help you to pass only relative <tt class="docutils literal"><span class="pre">path</span></tt> and/or <tt class="docutils literal"><span class="pre">query</span></tt>. Scheme
 and domains is append to URL from
 <a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.current_url" title="(in Selenium v2.0)"><tt class="xref py py-attr docutils literal"><span class="pre">current_url</span></tt></a>.</p>
 <p><tt class="docutils literal"><span class="pre">query</span></tt> can be final string or dictionary. On dictionary it calls
 <a class="reference external" href="http://docs.python.org/2.7/library/urllib.html#urllib.urlencode" title="(in Python v2.7)"><tt class="xref py py-func docutils literal"><span class="pre">urllib.urlencode()</span></tt></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.wrapper._WebdriverWrapper.go_to">
 <tt class="descname">go_to</tt><big>(</big><em>path=None</em>, <em>query=None</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.go_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.go_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>You have to pass absolute URL to method
-<a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.get" title="(in Selenium v2.0)"><tt class="xref py py-meth docutils literal"><span class="pre">get</span></tt></a>. This
+<a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.get" title="(in Selenium v2.0)"><tt class="xref py py-meth docutils literal"><span class="pre">get()</span></tt></a>. This
 method help you to pass only relative <tt class="docutils literal"><span class="pre">path</span></tt> and/or <tt class="docutils literal"><span class="pre">query</span></tt>. See
 method <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.get_url" title="webdriverwrapper.wrapper._WebdriverWrapper.get_url"><tt class="xref py py-meth docutils literal"><span class="pre">get_url()</span></tt></a> for more information.</p>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 2.0: </span>Removed parameter <tt class="docutils literal"><span class="pre">domain</span></tt>. If you want to go to completely
+another web app, use absolute address.</p>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -257,6 +296,9 @@ returns that element. Same as following:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">selenium</span><span class="o">.</span><span class="n">webdriver</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">wait</span><span class="o">.</span><span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="ow">not</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
 </pre></div>
 </div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -300,10 +342,10 @@ API of WebDriver.</p>
 you can have inputs called <tt class="docutils literal"><span class="pre">client.name</span></tt> and <tt class="docutils literal"><span class="pre">client.surname</span></tt> -
 then you will pass to <tt class="docutils literal"><span class="pre">prefix</span></tt> string <tt class="docutils literal"><span class="pre">&quot;client.&quot;</span></tt> and in dictionary
 just <tt class="docutils literal"><span class="pre">&quot;name&quot;</span></tt>.</p>
-<p>Option <tt class="docutils literal"><span class="pre">turbo</span></tt> is for skipping some steps, so it can act faster. For
+<p>Option <tt class="docutils literal"><span class="pre">turbo</span></tt> is for skipping some steps, so it can go faster. For
 example for multiple selects it calls <tt class="docutils literal"><span class="pre">deselect_all</span></tt> first, but it need
 to for every option check if it is selected and it is very slow for
-really big multiple selects. If you know, that it is not filled, you can
+really big multiple selects. If you know that it is not filled, you can
 skip it and safe in some cases up to one minute!</p>
 <p>Example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="s">&#39;formid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fill_out</span><span class="p">({</span>
@@ -347,8 +389,8 @@ form by pressing enter.</p>
 <dt id="webdriverwrapper.download._Download">
 <em class="property">class </em><tt class="descclassname">webdriverwrapper.download.</tt><tt class="descname">_Download</tt><a class="reference internal" href="modules/webdriverwrapper/download.html#_Download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Object returned by calling
-<a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.download_url" title="webdriverwrapper.wrapper._WebdriverWrapper.download_url"><tt class="xref py py-meth docutils literal"><span class="pre">download_url</span></tt></a> or
-<a class="reference internal" href="#webdriverwrapper.wrapper._WebElementWrapper.download_file" title="webdriverwrapper.wrapper._WebElementWrapper.download_file"><tt class="xref py py-meth docutils literal"><span class="pre">download_file</span></tt></a>.</p>
+<a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.download_url" title="webdriverwrapper.wrapper._WebdriverWrapper.download_url"><tt class="xref py py-meth docutils literal"><span class="pre">download_url()</span></tt></a> or
+<a class="reference internal" href="#webdriverwrapper.wrapper._WebElementWrapper.download_file" title="webdriverwrapper.wrapper._WebElementWrapper.download_file"><tt class="xref py py-meth docutils literal"><span class="pre">download_file()</span></tt></a>.</p>
 <dl class="attribute">
 <dt id="webdriverwrapper.download._Download.data">
 <tt class="descname">data</tt><a class="reference internal" href="modules/webdriverwrapper/download.html#_Download.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download.data" title="Permalink to this definition">¶</a></dt>
@@ -433,16 +475,22 @@ feel free to change it like that:</p>
 <dt id="webdriverwrapper.decorators.expected_error_page">
 <tt class="descclassname">webdriverwrapper.decorators.</tt><tt class="descname">expected_error_page</tt><big>(</big><em>error_page</em><big>)</big><a class="headerlink" href="#webdriverwrapper.decorators.expected_error_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator expecting defined error page at the end of test method. As param
-use what <a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_page" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_page"><tt class="xref py py-meth docutils literal"><span class="pre">get_error_page</span></tt></a>
+use what <a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_page" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_page"><tt class="xref py py-meth docutils literal"><span class="pre">get_error_page()</span></tt></a>
 returns.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0: </span>Before this decorator was called <tt class="docutils literal"><span class="pre">ShouldBeErrorPage</span></tt>.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="webdriverwrapper.decorators.allowed_error_pages">
 <tt class="descclassname">webdriverwrapper.decorators.</tt><tt class="descname">allowed_error_pages</tt><big>(</big><em>*error_pages</em><big>)</big><a class="headerlink" href="#webdriverwrapper.decorators.allowed_error_pages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator ignoring defined error pages at the end of test method. As param
-use what <a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_page" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_page"><tt class="xref py py-meth docutils literal"><span class="pre">get_error_page</span></tt></a>
+use what <a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_page" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_page"><tt class="xref py py-meth docutils literal"><span class="pre">get_error_page()</span></tt></a>
 returns.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -450,8 +498,11 @@ returns.</p>
 <tt class="descclassname">webdriverwrapper.decorators.</tt><tt class="descname">expected_error_messages</tt><big>(</big><em>*error_messages</em><big>)</big><a class="headerlink" href="#webdriverwrapper.decorators.expected_error_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator expecting defined error messages at the end of test method. As
 param use what
-<a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_messages" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_messages"><tt class="xref py py-meth docutils literal"><span class="pre">get_error_messages</span></tt></a>
+<a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_messages" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_messages"><tt class="xref py py-meth docutils literal"><span class="pre">get_error_messages()</span></tt></a>
 returns.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0: </span>Before this decorator was called <tt class="docutils literal"><span class="pre">ShouldBeError</span></tt>.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -459,8 +510,11 @@ returns.</p>
 <tt class="descclassname">webdriverwrapper.decorators.</tt><tt class="descname">allowed_error_messages</tt><big>(</big><em>*error_messages</em><big>)</big><a class="headerlink" href="#webdriverwrapper.decorators.allowed_error_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator ignoring defined error messages at the end of test method. As
 param use what
-<a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_messages" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_messages"><tt class="xref py py-meth docutils literal"><span class="pre">get_error_messages</span></tt></a>
+<a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_messages" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.get_error_messages"><tt class="xref py py-meth docutils literal"><span class="pre">get_error_messages()</span></tt></a>
 returns.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0: </span>Before this decorator was called <tt class="docutils literal"><span class="pre">CanBeError</span></tt>.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -469,6 +523,9 @@ returns.</p>
 <dd><p>Decorator ignoring any error messages at the end of test method. If you want
 allow only specific error message, use <a class="reference internal" href="#webdriverwrapper.decorators.allowed_error_messages" title="webdriverwrapper.decorators.allowed_error_messages"><tt class="xref py py-func docutils literal"><span class="pre">allowed_error_messages()</span></tt></a>
 instead.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -476,8 +533,11 @@ instead.</p>
 <tt class="descclassname">webdriverwrapper.decorators.</tt><tt class="descname">expected_info_messages</tt><big>(</big><em>*info_messages</em><big>)</big><a class="headerlink" href="#webdriverwrapper.decorators.expected_info_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator expecting defined info messages at the end of test method. As
 param use what
-<a class="reference internal" href="#webdriverwrapper.info.WebdriverWrapperInfoMixin.get_info_messages" title="webdriverwrapper.info.WebdriverWrapperInfoMixin.get_info_messages"><tt class="xref py py-meth docutils literal"><span class="pre">get_info_messages</span></tt></a>
+<a class="reference internal" href="#webdriverwrapper.info.WebdriverWrapperInfoMixin.get_info_messages" title="webdriverwrapper.info.WebdriverWrapperInfoMixin.get_info_messages"><tt class="xref py py-meth docutils literal"><span class="pre">get_info_messages()</span></tt></a>
 returns.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0: </span>Before this decorator was called <tt class="docutils literal"><span class="pre">ShouldBeInfo</span></tt>.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -485,10 +545,23 @@ returns.</p>
 <tt class="descclassname">webdriverwrapper.decorators.</tt><tt class="descname">allowed_info_messages</tt><big>(</big><em>*info_messages</em><big>)</big><a class="headerlink" href="#webdriverwrapper.decorators.allowed_info_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator ignoring defined info messages at the end of test method. As
 param use what
-<a class="reference internal" href="#webdriverwrapper.info.WebdriverWrapperInfoMixin.get_info_messages" title="webdriverwrapper.info.WebdriverWrapperInfoMixin.get_info_messages"><tt class="xref py py-meth docutils literal"><span class="pre">get_info_messages</span></tt></a>
+<a class="reference internal" href="#webdriverwrapper.info.WebdriverWrapperInfoMixin.get_info_messages" title="webdriverwrapper.info.WebdriverWrapperInfoMixin.get_info_messages"><tt class="xref py py-meth docutils literal"><span class="pre">get_info_messages()</span></tt></a>
 returns.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
 </dd></dl>
 
+<div class="section" id="example">
+<h5>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expected_info_messages</span><span class="p">(</span><span class="s">&#39;Your information was updated.&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_save</span><span class="p">(</span><span class="n">driver</span><span class="p">):</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">fill_out_and_submit</span><span class="p">({</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Michael&#39;</span><span class="p">,</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="error-and-info-messages">
 <h4>Error and info messages<a class="headerlink" href="#error-and-info-messages" title="Permalink to this headline">¶</a></h4>
@@ -496,6 +569,12 @@ returns.</p>
 <dt id="webdriverwrapper.errors.WebdriverWrapperErrorMixin">
 <em class="property">class </em><tt class="descclassname">webdriverwrapper.errors.</tt><tt class="descname">WebdriverWrapperErrorMixin</tt><a class="reference internal" href="modules/webdriverwrapper/errors.html#WebdriverWrapperErrorMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mixin used in <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper" title="webdriverwrapper.wrapper._WebdriverWrapper"><tt class="xref py py-obj docutils literal"><span class="pre">_WebdriverWrapper</span></tt></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0: </span>Before you had to change decorators <tt class="docutils literal"><span class="pre">ShouldByError</span></tt>, <tt class="docutils literal"><span class="pre">CanBeError</span></tt>
+and <tt class="docutils literal"><span class="pre">ShouldBeErrorPage</span></tt> which are gone. Now you can use original
+decorators and just change one of these methods. For more information
+check out section testing.</p>
+</div>
 <dl class="method">
 <dt id="webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors">
 <tt class="descname">check_errors</tt><big>(</big><em>expected_error_page=None</em>, <em>allowed_error_pages=</em>, <span class="optional">[</span><span class="optional">]</span><em>expected_error_messages=</em>, <span class="optional">[</span><span class="optional">]</span><em>allowed_error_messages=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="modules/webdriverwrapper/errors.html#WebdriverWrapperErrorMixin.check_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors" title="Permalink to this definition">¶</a></dt>
@@ -571,6 +650,11 @@ record all JS errors and this method will automatically read them.</p>
 <dt id="webdriverwrapper.info.WebdriverWrapperInfoMixin">
 <em class="property">class </em><tt class="descclassname">webdriverwrapper.info.</tt><tt class="descname">WebdriverWrapperInfoMixin</tt><a class="reference internal" href="modules/webdriverwrapper/info.html#WebdriverWrapperInfoMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.info.WebdriverWrapperInfoMixin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mixin used in <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper" title="webdriverwrapper.wrapper._WebdriverWrapper"><tt class="xref py py-obj docutils literal"><span class="pre">_WebdriverWrapper</span></tt></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0: </span>Before you had to change decorator <tt class="docutils literal"><span class="pre">ShouldBeInfo</span></tt> which is gone. Now
+you can use original decorators and just change one of these methods.
+For more information check out section testing.</p>
+</div>
 <dl class="method">
 <dt id="webdriverwrapper.info.WebdriverWrapperInfoMixin.check_expected_infos">
 <tt class="descname">check_expected_infos</tt><big>(</big><em>test_method</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/info.html#WebdriverWrapperInfoMixin.check_expected_infos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.info.WebdriverWrapperInfoMixin.check_expected_infos" title="Permalink to this definition">¶</a></dt>
@@ -608,8 +692,86 @@ this method accordingly to your app.</p>
 </div>
 <div class="section" id="pytest">
 <h4>PyTest<a class="headerlink" href="#pytest" title="Permalink to this headline">¶</a></h4>
-<p>TODO</p>
-<span class="target" id="module-webdriverwrapper.pytest.conftest"></span></div>
+<p>Import whole module in your main <tt class="docutils literal"><span class="pre">conftest.py</span></tt> and define fixture <tt class="docutils literal"><span class="pre">_driver</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">webdriverwrapper</span> <span class="kn">import</span> <span class="n">Chrome</span>
+<span class="kn">from</span> <span class="nn">webdriverwrapper.pytest</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="c"># Create browser once for all tests.</span>
+<span class="nd">@pytest.yield_fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">&#39;session&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">session_driver</span><span class="p">():</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">Chrome</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">driver</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+
+
+<span class="c"># Before every test go to homepage.</span>
+<span class="nd">@pytest.fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">&#39;function&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_driver</span><span class="p">(</span><span class="n">session_driver</span><span class="p">):</span>
+    <span class="n">session_driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;http://www.google.com&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">session_driver</span>
+</pre></div>
+</div>
+<p>Then you can write tests really simply:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">test_doodle</span><span class="p">(</span><span class="n">driver</span><span class="p">):</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;gbqfsb&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">driver</span><span class="o">.</span><span class="n">contains_text</span><span class="p">(</span><span class="s">&#39;Doodles&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test_search</span><span class="p">(</span><span class="n">driver</span><span class="p">):</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="s">&#39;gbqf&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fill_out_and_submit</span><span class="p">({</span>
+        <span class="s">&#39;q&#39;</span><span class="p">:</span> <span class="s">&#39;hello&#39;</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">wait_for_element</span><span class="p">(</span><span class="n">id_</span><span class="o">=</span><span class="s">&#39;resultStats&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<span class="target" id="module-webdriverwrapper.pytest.conftest"></span><dl class="function">
+<dt id="webdriverwrapper.pytest.conftest.pytest_report_header">
+<tt class="descclassname">webdriverwrapper.pytest.conftest.</tt><tt class="descname">pytest_report_header</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/pytest/conftest.html#pytest_report_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.pytest.conftest.pytest_report_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pytest hook, see <tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_report_header()</span></tt> (<a class="reference external" href="http://pytest.org/latest/plugins.html#plugins" title="(in pytest v2.6)"><em>Working with plugins and conftest files</em></a>).</p>
+<p>It&#8217;s important to see which URL is testing with which user and where are
+stored screenshots. It will be displayed before run of tests if you set
+some config values like that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">pytest_configure</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">webdriverwrapper_screenshot_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="s">&#39;tmp&#39;</span><span class="p">,</span> <span class="s">&#39;testresults&#39;</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">webdriverwrapper_testing_url</span> <span class="o">=</span> <span class="s">&#39;http://example.com&#39;</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">webdriverwrapper_testing_username</span> <span class="o">=</span> <span class="s">&#39;testing_username&#39;</span>
+</pre></div>
+</div>
+<p>If your web app does not need any user, just don&#8217;t set it.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="webdriverwrapper.pytest.conftest.pytest_runtest_makereport">
+<tt class="descclassname">webdriverwrapper.pytest.conftest.</tt><tt class="descname">pytest_runtest_makereport</tt><big>(</big><em>item</em>, <em>call</em>, <em>__multicall__</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/pytest/conftest.html#pytest_runtest_makereport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.pytest.conftest.pytest_runtest_makereport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pytest hook, see <a class="reference external" href="http://pytest.org/latest/plugins.html#_pytest.hookspec.pytest_runtest_makereport" title="(in pytest v2.6)"><tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_runtest_makereport()</span></tt></a>.</p>
+<p>After each failed test will be generated screenshot if you specify where to
+save these screenshots.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">pytest_configure</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">webdriverwrapper_screenshot_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="s">&#39;tmp&#39;</span><span class="p">,</span> <span class="s">&#39;testresults&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="webdriverwrapper.pytest.conftest.driver">
+<tt class="descclassname">webdriverwrapper.pytest.conftest.</tt><tt class="descname">driver</tt><big>(</big><em>request</em>, <em>_driver</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/pytest/conftest.html#driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.pytest.conftest.driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fixture for testing. This fixture just take your driver by fixture called
+<tt class="docutils literal"><span class="pre">_driver</span></tt> and after each test call
+<a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_expected_errors" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_expected_errors"><tt class="xref py py-meth docutils literal"><span class="pre">check_expected_errors()</span></tt></a>
+and <a class="reference internal" href="#webdriverwrapper.info.WebdriverWrapperInfoMixin.check_expected_infos" title="webdriverwrapper.info.WebdriverWrapperInfoMixin.check_expected_infos"><tt class="xref py py-meth docutils literal"><span class="pre">check_expected_infos()</span></tt></a>.
+You have to just implement creating of your browser.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@pytest.yield_fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">&#39;session&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_driver</span><span class="p">():</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">Chrome</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">driver</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
 <div class="section" id="unittest">
 <h4>UnitTest<a class="headerlink" href="#unittest" title="Permalink to this headline">¶</a></h4>
 <dl class="attribute">
@@ -630,7 +792,27 @@ this method accordingly to your app.</p>
 <dl class="class">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase">
 <em class="property">class </em><tt class="descclassname">webdriverwrapper.unittest.</tt><tt class="descname">WebdriverTestCase</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase" title="Permalink to this definition">¶</a></dt>
-<dd><p>TODO</p>
+<dd><p>Base <tt class="docutils literal"><span class="pre">TestCase</span></tt> used for testing with <a class="reference external" href="http://docs.python.org/2.7/library/unittest.html#module-unittest" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">unittest</span></tt></a>.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">TestCase</span><span class="p">(</span><span class="n">webdriverwrapper</span><span class="o">.</span><span class="n">unittest</span><span class="o">.</span><span class="n">WebdriverTestCase</span><span class="p">):</span>
+    <span class="n">domain</span> <span class="o">=</span> <span class="s">&#39;www.google.com&#39;</span>
+    <span class="n">instances_of_driver</span> <span class="o">=</span> <span class="n">webdriverwrapper</span><span class="o">.</span><span class="n">unittest</span><span class="o">.</span><span class="n">ONE_INSTANCE_PER_TESTCASE</span>
+    <span class="n">screenshot_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="s">&#39;tmp&#39;</span><span class="p">,</span> <span class="s">&#39;testreport&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_driver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Chrome</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">test_doodle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s">&#39;gbqfsb&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contains_text</span><span class="p">(</span><span class="s">&#39;Doodles&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">test_search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="s">&#39;gbqf&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fill_out_and_submit</span><span class="p">({</span>
+            <span class="s">&#39;q&#39;</span><span class="p">:</span> <span class="s">&#39;hello&#39;</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_element</span><span class="p">(</span><span class="n">id_</span><span class="o">=</span><span class="s">&#39;resultStats&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase._get_driver">
 <tt class="descname">_get_driver</tt><big>(</big><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase._get_driver" title="Permalink to this definition">¶</a></dt>
@@ -647,13 +829,16 @@ Ideal for debuging - checking Chrome console and so on.</p>
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.check_errors">
 <tt class="descname">check_errors</tt><big>(</big><em>expected_error_page=None</em>, <em>allowed_error_pages=</em>, <span class="optional">[</span><span class="optional">]</span><em>expected_error_messages=</em>, <span class="optional">[</span><span class="optional">]</span><em>allowed_error_messages=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.check_errors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <tt class="xref py py-meth docutils literal"><span class="pre">check_errors</span></tt>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors"><tt class="xref py py-meth docutils literal"><span class="pre">check_errors</span></tt></a>.</p>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 2.0: </span>Only alias. Code moved to wrapper so it could be used also by pytest.</p>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.click">
 <tt class="descname">click</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.click" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <tt class="xref py py-meth docutils literal"><span class="pre">click</span></tt>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.click" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.click"><tt class="xref py py-meth docutils literal"><span class="pre">click</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -671,7 +856,7 @@ Ideal for debuging - checking Chrome console and so on.</p>
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.contains_text">
 <tt class="descname">contains_text</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.contains_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <tt class="xref py py-meth docutils literal"><span class="pre">contains_text</span></tt>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text"><tt class="xref py py-meth docutils literal"><span class="pre">contains_text</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -684,21 +869,30 @@ before that you can&#8217;t use relative path), set this attribute.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="webdriverwrapper.unittest.WebdriverTestCase.find_element_by_text">
+<tt class="descname">find_element_by_text</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.find_element_by_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text"><tt class="xref py py-meth docutils literal"><span class="pre">find_element_by_text</span></tt></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.find_elements_by_text">
 <tt class="descname">find_elements_by_text</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.find_elements_by_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <tt class="xref py py-meth docutils literal"><span class="pre">find_elements_by_text</span></tt>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text"><tt class="xref py py-meth docutils literal"><span class="pre">find_elements_by_text</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.get_elm">
 <tt class="descname">get_elm</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.get_elm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <tt class="xref py py-meth docutils literal"><span class="pre">get_elm</span></tt>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm"><tt class="xref py py-meth docutils literal"><span class="pre">get_elm</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.get_elms">
 <tt class="descname">get_elms</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.get_elms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <tt class="xref py py-meth docutils literal"><span class="pre">get_elms</span></tt>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms"><tt class="xref py py-meth docutils literal"><span class="pre">get_elms</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -824,13 +1018,19 @@ for more information.</p>
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">WebDriver Wrapper documentation</a><ul>
-<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#hello-world">Hello World!</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#documentation">Documentation</a><ul>
 <li><a class="reference internal" href="#wrapper">Wrapper</a></li>
 <li><a class="reference internal" href="#forms">Forms</a></li>
 <li><a class="reference internal" href="#downloading">Downloading</a></li>
 <li><a class="reference internal" href="#testing">Testing</a><ul>
-<li><a class="reference internal" href="#decorators">Decorators</a></li>
+<li><a class="reference internal" href="#decorators">Decorators</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#error-and-info-messages">Error and info messages</a></li>
 <li><a class="reference internal" href="#pytest">PyTest</a></li>
 <li><a class="reference internal" href="#unittest">UnitTest</a></li>

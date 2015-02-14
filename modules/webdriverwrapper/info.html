@@ -66,8 +66,11 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator expecting defined info messages at the end of test method. As</span>
 <span class="sd">    param use what</span>
-<span class="sd">    :py:meth:`get_info_messages &lt;.WebdriverWrapperInfoMixin.get_info_messages&gt;`</span>
+<span class="sd">    :py:meth:`~.WebdriverWrapperInfoMixin.get_info_messages`</span>
 <span class="sd">    returns.</span>
+
+<span class="sd">    .. versionadded:: 2.0</span>
+<span class="sd">        Before this decorator was called ``ShouldBeInfo``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">EXPECTED_INFO_MESSAGES</span><span class="p">,</span> <span class="n">info_messages</span><span class="p">)</span>
@@ -79,8 +82,10 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator ignoring defined info messages at the end of test method. As</span>
 <span class="sd">    param use what</span>
-<span class="sd">    :py:meth:`get_info_messages &lt;.WebdriverWrapperInfoMixin.get_info_messages&gt;`</span>
+<span class="sd">    :py:meth:`~.WebdriverWrapperInfoMixin.get_info_messages`</span>
 <span class="sd">    returns.</span>
+
+<span class="sd">    .. versionadded:: 2.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ALLOWED_INFO_MESSAGES</span><span class="p">,</span> <span class="n">info_messages</span><span class="p">)</span>
@@ -90,7 +95,12 @@
 
 <div class="viewcode-block" id="WebdriverWrapperInfoMixin"><a class="viewcode-back" href="../../index.html#webdriverwrapper.info.WebdriverWrapperInfoMixin">[docs]</a><span class="k">class</span> <span class="nc">WebdriverWrapperInfoMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Mixin used in :py:obj:`_WebdriverWrapper &lt;webdriverwrapper.wrapper._WebdriverWrapper&gt;`.</span>
+<span class="sd">    Mixin used in :py:obj:`~webdriverwrapper.wrapper._WebdriverWrapper`.</span>
+
+<span class="sd">    .. versionadded:: 2.0</span>
+<span class="sd">        Before you had to change decorator ``ShouldBeInfo`` which is gone. Now</span>
+<span class="sd">        you can use original decorators and just change one of these methods.</span>
+<span class="sd">        For more information check out section testing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="WebdriverWrapperInfoMixin.check_expected_infos"><a class="viewcode-back" href="../../index.html#webdriverwrapper.info.WebdriverWrapperInfoMixin.check_expected_infos">[docs]</a>    <span class="k">def</span> <span class="nf">check_expected_infos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_method</span><span class="p">):</span>

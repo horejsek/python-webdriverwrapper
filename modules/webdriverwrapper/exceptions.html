@@ -54,34 +54,47 @@
 
 
 <span class="k">def</span> <span class="nf">_create_exception_msg</span><span class="p">(</span>
-    <span class="n">id_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xpath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">id_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
     <span class="n">parent_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-    <span class="n">url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">css_selector</span><span class="o">=</span><span class="bp">None</span>
+    <span class="n">xpath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">css_selector</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="n">elm_text</span> <span class="o">=</span> <span class="n">_create_exception_msg_tag</span><span class="p">(</span><span class="n">id_</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">css_selector</span><span class="p">)</span>
-    <span class="n">parent_text</span> <span class="o">=</span> <span class="n">_create_exception_msg_tag</span><span class="p">(</span><span class="n">parent_id</span><span class="p">,</span> <span class="n">parent_class_name</span><span class="p">,</span> <span class="n">parent_name</span><span class="p">,</span> <span class="n">parent_tag_name</span><span class="p">)</span>
-
-    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;No element </span><span class="si">%s</span><span class="s"> found&#39;</span> <span class="o">%</span> <span class="n">elm_text</span>
-    <span class="k">if</span> <span class="n">parent_text</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; in parent element </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">parent_text</span>
+    <span class="n">elm_text</span> <span class="o">=</span> <span class="n">_create_exception_msg_tag</span><span class="p">(</span>
+        <span class="n">id_</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span>
+        <span class="n">parent_id</span><span class="p">,</span> <span class="n">parent_class_name</span><span class="p">,</span> <span class="n">parent_name</span><span class="p">,</span> <span class="n">parent_tag_name</span><span class="p">,</span>
+        <span class="n">xpath</span><span class="p">,</span> <span class="n">css_selector</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;No element {} found&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elm_text</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; at </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">url</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; at {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">msg</span>
 
 
-<span class="k">def</span> <span class="nf">_create_exception_msg_tag</span><span class="p">(</span><span class="n">id_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xpath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">css_selector</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_create_exception_msg_tag</span><span class="p">(</span>
+    <span class="n">id_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">parent_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">xpath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">css_selector</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">elm_text</span> <span class="o">=</span> <span class="n">_create_exception_msg_tag_element</span><span class="p">(</span><span class="n">id_</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span> <span class="n">xpath</span><span class="p">,</span> <span class="n">css_selector</span><span class="p">)</span>
+    <span class="n">parent_text</span> <span class="o">=</span> <span class="n">_create_exception_msg_tag_element</span><span class="p">(</span><span class="n">parent_id</span><span class="p">,</span> <span class="n">parent_class_name</span><span class="p">,</span> <span class="n">parent_name</span><span class="p">,</span> <span class="n">parent_tag_name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">parent_text</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;{} in parent element {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elm_text</span><span class="p">,</span> <span class="n">parent_text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">elm_text</span>
+
+
+<span class="k">def</span> <span class="nf">_create_exception_msg_tag_element</span><span class="p">(</span><span class="n">id_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xpath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">css_selector</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">xpath</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">xpath</span>
     <span class="k">elif</span> <span class="n">css_selector</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">css_selector</span>
     <span class="k">elif</span> <span class="n">id_</span> <span class="ow">or</span> <span class="n">class_name</span> <span class="ow">or</span> <span class="n">tag_name</span> <span class="ow">or</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;&lt;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tag_name</span> <span class="ow">or</span> <span class="s">&#39;*&#39;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;&lt;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tag_name</span> <span class="ow">or</span> <span class="s">&#39;*&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">id_</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; id=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">id_</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; id={}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">id_</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">class_name</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; class=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">class_name</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; class={}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; name=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">name</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; name={}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;&gt;&#39;</span>
         <span class="k">return</span> <span class="n">msg</span>
     <span class="k">return</span> <span class="s">&#39;&#39;</span>
