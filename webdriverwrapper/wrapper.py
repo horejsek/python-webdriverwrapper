@@ -87,13 +87,28 @@ class _WebdriverBaseWrapper(object):
         """
         return bool(self.find_elements_by_text(text))
 
+    def find_element_by_text(self, text):
+        """
+        Returns first element on page or in element containing ``text``.
+
+        .. versionadded:: 2.0
+        """
+        elms = self.find_elements_by_text(text)
+        if not elms:
+            raise selenium_exc.NoSuchElementException('No element containing text "{}" at {}.'.format(text, self.current_url))
+        return elms[0]
+
     def find_elements_by_text(self, text):
         """
-        Returns all elements on page or in element containing `text`.
+        Returns all elements on page or in element containing ``text``.
+
+        .. versionchanged:: 2.0
+            Searching in all text nodes. Before it wouldn't find string "text"
+            in HTML like ``<div>some<br />text in another text node</div>``.
         """
         text = force_text(text)
         elms = self.find_elements_by_xpath(
-            './/*[contains(text(), "%s") and not(ancestor-or-self::*[@data-selenium-not-search])]' % text
+            './/*/text()[contains(., "%s") and not(ancestor-or-self::*[@data-selenium-not-search])]/..' % text
         )
         return elms
 

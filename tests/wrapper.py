@@ -16,8 +16,7 @@ def test_find_by_integer(driver):
 
 
 def test_find_by_str(driver):
-    elms = driver.find_elements_by_text('ěščřž')
-    assert len(elms) == 1
+    assert driver.contains_text('ěščřž')
 
 
 def test_find_by_unicode(driver):
@@ -26,18 +25,18 @@ def test_find_by_unicode(driver):
     if hasattr(text, 'decode'):
         text = text.decode('utf8')
 
-    elms = driver.find_elements_by_text(text)
-    assert len(elms) == 1
+    assert driver.find_element_by_text(text)
 
 
 def test_selenium_not_search(driver):
     elms = driver.find_elements_by_text('text')
-    assert len(elms) == 1
+    assert len(elms) == 2
 
 
 def test_wait_for_element(driver):
     assert driver.wait_for_element(id_='somepage')
 
+
 def test_wait_for_element_fail(driver):
     with pytest.raises(Exception) as excinfo:
-        driver.wait_for_element(id_='nosuchelement')
+        driver.wait_for_element(timeout=0.5, id_='nosuchelement')
