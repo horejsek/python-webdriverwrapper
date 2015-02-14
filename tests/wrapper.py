@@ -2,6 +2,7 @@
 
 import pytest
 
+from webdriverwrapper.exceptions import NoSuchElementException, TimeoutException
 from webdriverwrapper.wrapper import _WebElementWrapper
 
 
@@ -10,27 +11,40 @@ def test_returns_wrapped_element(driver):
     assert isinstance(elm, _WebElementWrapper)
 
 
-def test_find_by_integer(driver):
+def test_find_elements_by_integer(driver):
     elms = driver.find_elements_by_text(42)
     assert len(elms) == 1
 
 
-def test_find_by_str(driver):
-    assert driver.contains_text('ěščřž')
+def test_find_elements_by_str(driver):
+    assert driver.find_elements_by_text('ěščřž')
 
 
-def test_find_by_unicode(driver):
+def test_find_elements_by_unicode(driver):
     # six.u is safe only with ASCII, so I need some hack.
     text = 'ěščřž'
     if hasattr(text, 'decode'):
         text = text.decode('utf8')
 
-    assert driver.find_element_by_text(text)
+    assert driver.find_elements_by_text(text)
 
 
-def test_selenium_not_search(driver):
+def test_find_elements_selenium_not_search(driver):
     elms = driver.find_elements_by_text('text')
     assert len(elms) == 2
+
+
+def test_contains_text(driver):
+    assert driver.contains_text('text')
+
+
+def test_find_element_by_text(driver):
+    assert driver.find_element_by_text('text')
+
+
+def test_find_element_by_text_raises_exception(driver):
+    with pytest.raises(NoSuchElementException) as excinfo:
+        driver.find_element_by_text('notextatpage')
 
 
 def test_wait_for_element(driver):
@@ -38,5 +52,5 @@ def test_wait_for_element(driver):
 
 
 def test_wait_for_element_fail(driver):
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(TimeoutException) as excinfo:
         driver.wait_for_element(timeout=0.5, id_='nosuchelement')

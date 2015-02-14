@@ -95,7 +95,7 @@ class _WebdriverBaseWrapper(object):
         """
         elms = self.find_elements_by_text(text)
         if not elms:
-            raise selenium_exc.NoSuchElementException('No element containing text "{}" at {}.'.format(text, self.current_url))
+            raise selenium_exc.NoSuchElementException(u'No element containing text "{}" at {}.'.format(force_text(text), self.current_url))
         return elms[0]
 
     def find_elements_by_text(self, text):
