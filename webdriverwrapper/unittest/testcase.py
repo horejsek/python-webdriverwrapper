@@ -25,7 +25,29 @@ ONE_INSTANCE_PER_TEST = 2
 
 class WebdriverTestCase(unittest.TestCase):
     """
-    TODO
+    Base ``TestCase`` used for testing with :py:mod:`unittest`.
+
+    Example:
+
+    .. code-block:: python
+
+        class TestCase(webdriverwrapper.unittest.WebdriverTestCase):
+            domain = 'www.google.com'
+            instances_of_driver = webdriverwrapper.unittest.ONE_INSTANCE_PER_TESTCASE
+            screenshot_path = os.path.join('/', 'tmp', 'testreport')
+
+            def _get_driver(self):
+                return Chrome()
+
+            def test_doodle(self):
+                self.click('gbqfsb')
+                self.assertTrue(self.contains_text('Doodles'))
+
+            def test_search(self):
+                self.get_elm('gbqf').fill_out_and_submit({
+                    'q': 'hello',
+                })
+                self.wait_for_element(id_='resultStats')
     """
 
     domain = None
@@ -206,37 +228,48 @@ class WebdriverTestCase(unittest.TestCase):
 
     def check_errors(self, expected_error_page=None, allowed_error_pages=[], expected_error_messages=[], allowed_error_messages=[]):
         """
-        Alias for :py:meth:`check_errors <webdriverwrapper.wrapper._WebdriverWrapper.check_errors>`.
+        Alias for :py:meth:`check_errors <webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors>`.
+
+        .. versionchanged:: 2.0
+            Only alias. Code moved to wrapper so it could be used also by pytest.
         """
         self.driver.check_errors(expected_error_page, allowed_error_pages, expected_error_messages, allowed_error_messages)
 
+    def find_element_by_text(self, text):
+        """
+        Alias for :py:meth:`find_element_by_text <webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text>`.
+
+        .. versionadded:: 2.0
+        """
+        return self.driver.find_element_by_text(text)
+
     def find_elements_by_text(self, text):
         """
-        Alias for :py:meth:`find_elements_by_text <webdriverwrapper.wrapper._WebElementWrapper.find_elements_by_text>`.
+        Alias for :py:meth:`find_elements_by_text <webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text>`.
         """
         return self.driver.find_elements_by_text(text)
 
     def contains_text(self, text):
         """
-        Alias for :py:meth:`contains_text <webdriverwrapper.wrapper._WebElementWrapper.contains_text>`.
+        Alias for :py:meth:`contains_text <webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text>`.
         """
         return self.driver.contains_text(text)
 
     def get_elm(self, *args, **kwds):
         """
-        Alias for :py:meth:`get_elm <webdriverwrapper.wrapper._WebElementWrapper.get_elm>`.
+        Alias for :py:meth:`get_elm <webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm>`.
         """
         return self.driver.get_elm(*args, **kwds)
 
     def get_elms(self, *args, **kwds):
         """
-        Alias for :py:meth:`get_elms <webdriverwrapper.wrapper._WebElementWrapper.get_elms>`.
+        Alias for :py:meth:`get_elms <webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms>`.
         """
         return self.driver.get_elms(*args, **kwds)
 
     def click(self, *args, **kwds):
         """
-        Alias for :py:meth:`click <webdriverwrapper.wrapper._WebElementWrapper.click>`.
+        Alias for :py:meth:`click <webdriverwrapper.wrapper._WebdriverBaseWrapper.click>`.
         """
         self.driver.click(*args, **kwds)
 

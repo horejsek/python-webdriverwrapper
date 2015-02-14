@@ -16,8 +16,11 @@ def expected_info_messages(*info_messages):
     """
     Decorator expecting defined info messages at the end of test method. As
     param use what
-    :py:meth:`get_info_messages <.WebdriverWrapperInfoMixin.get_info_messages>`
+    :py:meth:`~.WebdriverWrapperInfoMixin.get_info_messages`
     returns.
+
+    .. versionadded:: 2.0
+        Before this decorator was called ``ShouldBeInfo``.
     """
     def wrapper(func):
         setattr(func, EXPECTED_INFO_MESSAGES, info_messages)
@@ -29,8 +32,10 @@ def allowed_info_messages(*info_messages):
     """
     Decorator ignoring defined info messages at the end of test method. As
     param use what
-    :py:meth:`get_info_messages <.WebdriverWrapperInfoMixin.get_info_messages>`
+    :py:meth:`~.WebdriverWrapperInfoMixin.get_info_messages`
     returns.
+
+    .. versionadded:: 2.0
     """
     def wrapper(func):
         setattr(func, ALLOWED_INFO_MESSAGES, info_messages)
@@ -40,7 +45,12 @@ def allowed_info_messages(*info_messages):
 
 class WebdriverWrapperInfoMixin(object):
     """
-    Mixin used in :py:obj:`_WebdriverWrapper <webdriverwrapper.wrapper._WebdriverWrapper>`.
+    Mixin used in :py:obj:`~webdriverwrapper.wrapper._WebdriverWrapper`.
+
+    .. versionadded:: 2.0
+        Before you had to change decorator ``ShouldBeInfo`` which is gone. Now
+        you can use original decorators and just change one of these methods.
+        For more information check out section testing.
     """
 
     def check_expected_infos(self, test_method):

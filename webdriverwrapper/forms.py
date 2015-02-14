@@ -15,7 +15,7 @@ __all__ = ('Form',)
 class Form(_WebElementWrapper):
     def fill_out_and_submit(self, data, prefix='', turbo=False):
         """
-        Calls :py:meth:`.fill_out` and then :py:meth:`.submit`.
+        Calls :py:meth:`~.Form.fill_out` and then :py:meth:`.submit`.
         """
         self.fill_out(data, prefix, turbo)
         self.submit()
@@ -31,10 +31,10 @@ class Form(_WebElementWrapper):
         then you will pass to ``prefix`` string ``"client."`` and in dictionary
         just ``"name"``.
 
-        Option ``turbo`` is for skipping some steps, so it can act faster. For
+        Option ``turbo`` is for skipping some steps, so it can go faster. For
         example for multiple selects it calls ``deselect_all`` first, but it need
         to for every option check if it is selected and it is very slow for
-        really big multiple selects. If you know, that it is not filled, you can
+        really big multiple selects. If you know that it is not filled, you can
         skip it and safe in some cases up to one minute!
 
         Example:

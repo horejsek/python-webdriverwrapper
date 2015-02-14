@@ -19,8 +19,11 @@ ALLOWED_ERROR_MESSAGES = '__allowed_error_messages__'
 def expected_error_page(error_page):
     """
     Decorator expecting defined error page at the end of test method. As param
-    use what :py:meth:`get_error_page <.WebdriverWrapperErrorMixin.get_error_page>`
+    use what :py:meth:`~.WebdriverWrapperErrorMixin.get_error_page`
     returns.
+
+    .. versionadded:: 2.0
+        Before this decorator was called ``ShouldBeErrorPage``.
     """
     def wrapper(func):
         setattr(func, EXPECTED_ERROR_PAGE, error_page)
@@ -31,8 +34,10 @@ def expected_error_page(error_page):
 def allowed_error_pages(*error_pages):
     """
     Decorator ignoring defined error pages at the end of test method. As param
-    use what :py:meth:`get_error_page <.WebdriverWrapperErrorMixin.get_error_page>`
+    use what :py:meth:`~.WebdriverWrapperErrorMixin.get_error_page`
     returns.
+
+    .. versionadded:: 2.0
     """
     def wrapper(func):
         setattr(func, ALLOWED_ERROR_PAGES, error_pages)
@@ -44,8 +49,11 @@ def expected_error_messages(*error_messages):
     """
     Decorator expecting defined error messages at the end of test method. As
     param use what
-    :py:meth:`get_error_messages <.WebdriverWrapperErrorMixin.get_error_messages>`
+    :py:meth:`~.WebdriverWrapperErrorMixin.get_error_messages`
     returns.
+
+    .. versionadded:: 2.0
+        Before this decorator was called ``ShouldBeError``.
     """
     def wrapper(func):
         setattr(func, EXPECTED_ERROR_MESSAGES, error_messages)
@@ -57,8 +65,11 @@ def allowed_error_messages(*error_messages):
     """
     Decorator ignoring defined error messages at the end of test method. As
     param use what
-    :py:meth:`get_error_messages <.WebdriverWrapperErrorMixin.get_error_messages>`
+    :py:meth:`~.WebdriverWrapperErrorMixin.get_error_messages`
     returns.
+
+    .. versionadded:: 2.0
+        Before this decorator was called ``CanBeError``.
     """
     def wrapper(func):
         setattr(func, ALLOWED_ERROR_MESSAGES, error_messages)
@@ -71,6 +82,8 @@ def allowed_any_error_message(func):
     Decorator ignoring any error messages at the end of test method. If you want
     allow only specific error message, use :py:func:`.allowed_error_messages`
     instead.
+
+    .. versionadded:: 2.0
     """
     setattr(func, ALLOWED_ERROR_MESSAGES, ANY)
     return func
@@ -82,7 +95,13 @@ class ANY:
 
 class WebdriverWrapperErrorMixin(object):
     """
-    Mixin used in :py:obj:`_WebdriverWrapper <webdriverwrapper.wrapper._WebdriverWrapper>`.
+    Mixin used in :py:obj:`~webdriverwrapper.wrapper._WebdriverWrapper`.
+
+    .. versionadded:: 2.0
+        Before you had to change decorators ``ShouldByError``, ``CanBeError``
+        and ``ShouldBeErrorPage`` which are gone. Now you can use original
+        decorators and just change one of these methods. For more information
+        check out section testing.
     """
 
     def check_expected_errors(self, test_method):

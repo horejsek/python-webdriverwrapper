@@ -10,8 +10,8 @@ __all__ = ('DownloadUrl', 'DownloadFile')
 class _Download(object):
     """
     Object returned by calling
-    :py:meth:`download_url <webdriverwrapper.wrapper._WebdriverWrapper.download_url>` or
-    :py:meth:`download_file <webdriverwrapper.wrapper._WebElementWrapper.download_file>`.
+    :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.download_url` or
+    :py:meth:`~webdriverwrapper.wrapper._WebElementWrapper.download_file`.
     """
 
     @property
