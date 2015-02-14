@@ -106,9 +106,10 @@ class _WebdriverBaseWrapper(object):
             Searching in all text nodes. Before it wouldn't find string "text"
             in HTML like ``<div>some<br />text in another text node</div>``.
         """
-        text = force_text(text)
+        # XPATH have to be byte string.
+        text = force_text(text).encode('utf8')
         elms = self.find_elements_by_xpath(
-            './/*/text()[contains(., "%s") and not(ancestor-or-self::*[@data-selenium-not-search])]/..' % text
+            './/*/text()[contains(., "{}") and not(ancestor-or-self::*[@data-selenium-not-search])]/..'.format(text)
         )
         return elms
 
@@ -145,9 +146,9 @@ class _WebdriverBaseWrapper(object):
         )
         if not elms:
             raise selenium_exc.NoSuchElementException(_create_exception_msg(
-                id_, class_name, name, tag_name, xpath,
+                id_, class_name, name, tag_name,
                 parent_id, parent_class_name, parent_name, parent_tag_name,
-                self.current_url,
+                xpath, css_selector, self.current_url,
             ))
         return elms[0]
 
@@ -281,7 +282,7 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         """
         if not message:
             message = 'Element {} still visible.'.format(_create_exception_msg_tag(*args, **kwds))
-        self.wait(timeout).until(lambda driver: not driver.get_elm(*args, **kwds) or not driver.get_elm(*args, **kwds).is_displayed(), message=message)
+        self.wait(timeout).until(lambda driver: not driver.get_elms(*args, **kwds) or not driver.get_elm(*args, **kwds).is_displayed(), message=message)
 
     def wait(self, timeout=10):
         """

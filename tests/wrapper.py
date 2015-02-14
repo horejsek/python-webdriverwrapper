@@ -42,15 +42,24 @@ def test_find_element_by_text(driver):
     assert driver.find_element_by_text('text')
 
 
-def test_find_element_by_text_raises_exception(driver):
+def test_find_element_by_text_fail(driver):
     with pytest.raises(NoSuchElementException) as excinfo:
         driver.find_element_by_text('notextatpage')
 
 
 def test_wait_for_element(driver):
-    assert driver.wait_for_element(id_='somepage')
+    assert driver.wait_for_element(timeout=0.5, id_='somepage')
 
 
 def test_wait_for_element_fail(driver):
     with pytest.raises(TimeoutException) as excinfo:
-        driver.wait_for_element(timeout=0.5, id_='nosuchelement')
+        driver.wait_for_element(timeout=0.5, id_='nosuchelement', parent_tag_name='body')
+
+
+def test_wait_for_element_hide(driver):
+    driver.wait_for_element_hide(timeout=0.5, id_='nosuchelement')
+
+
+def test_wait_for_element_hide_fail(driver):
+    with pytest.raises(TimeoutException) as excinfo:
+        driver.wait_for_element_hide(timeout=0.5, id_='somepage', parent_tag_name='body')

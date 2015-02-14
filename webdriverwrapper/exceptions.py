@@ -4,34 +4,47 @@ from selenium.common.exceptions import *
 
 
 def _create_exception_msg(
-    id_=None, class_name=None, name=None, tag_name=None, xpath=None,
+    id_=None, class_name=None, name=None, tag_name=None,
     parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
-    url=None, css_selector=None
+    xpath=None, css_selector=None, url=None,
 ):
-    elm_text = _create_exception_msg_tag(id_, class_name, name, tag_name, xpath, css_selector)
-    parent_text = _create_exception_msg_tag(parent_id, parent_class_name, parent_name, parent_tag_name)
-
-    msg = 'No element %s found' % elm_text
-    if parent_text:
-        msg += ' in parent element %s' % parent_text
+    elm_text = _create_exception_msg_tag(
+        id_, class_name, name, tag_name,
+        parent_id, parent_class_name, parent_name, parent_tag_name,
+        xpath, css_selector,
+    )
+    msg = 'No element {} found'.format(elm_text)
     if url:
-        msg += ' at %s' % url
+        msg += ' at {}'.format(url)
     return msg
 
 
-def _create_exception_msg_tag(id_=None, class_name=None, name=None, tag_name=None, xpath=None, css_selector=None):
+def _create_exception_msg_tag(
+    id_=None, class_name=None, name=None, tag_name=None,
+    parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
+    xpath=None, css_selector=None,
+):
+    elm_text = _create_exception_msg_tag_element(id_, class_name, name, tag_name, xpath, css_selector)
+    parent_text = _create_exception_msg_tag_element(parent_id, parent_class_name, parent_name, parent_tag_name)
+
+    if parent_text:
+        return '{} in parent element {}'.format(elm_text, parent_text)
+    return elm_text
+
+
+def _create_exception_msg_tag_element(id_=None, class_name=None, name=None, tag_name=None, xpath=None, css_selector=None):
     if xpath:
         return xpath
     elif css_selector:
         return css_selector
     elif id_ or class_name or tag_name or name:
-        msg = '<%s' % (tag_name or '*')
+        msg = '<{}'.format(tag_name or '*')
         if id_:
-            msg += ' id=%s' % id_
+            msg += ' id={}'.format(id_)
         if class_name:
-            msg += ' class=%s' % class_name
+            msg += ' class={}'.format(class_name)
         if name:
-            msg += ' name=%s' % name
+            msg += ' name={}'.format(name)
         msg += '>'
         return msg
     return ''

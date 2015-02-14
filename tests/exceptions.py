@@ -2,35 +2,35 @@
 
 import pytest
 
-from webdriverwrapper.exceptions import _create_exception_msg, _create_exception_msg_tag, NoSuchElementException
+from webdriverwrapper.exceptions import _create_exception_msg, _create_exception_msg_tag_element, NoSuchElementException
 
 
 def test_make_msg_id():
-    assert '<* id=id>' == _create_exception_msg_tag(id_='id')
+    assert '<* id=id>' == _create_exception_msg_tag_element(id_='id')
 
 
 def test_make_msg_class_name():
-    assert '<* class=class>' == _create_exception_msg_tag(class_name='class')
+    assert '<* class=class>' == _create_exception_msg_tag_element(class_name='class')
 
 
 def test_make_msg_tag_name():
-    assert '<div>' == _create_exception_msg_tag(tag_name='div')
+    assert '<div>' == _create_exception_msg_tag_element(tag_name='div')
 
 
 def test_make_msg_name():
-    assert '<* name=xx>' == _create_exception_msg_tag(name='xx')
+    assert '<* name=xx>' == _create_exception_msg_tag_element(name='xx')
 
 
 def test_make_msg_combined():
-    assert '<div id=id name=xx>' == _create_exception_msg_tag(tag_name='div', id_='id', name='xx')
+    assert '<div id=id name=xx>' == _create_exception_msg_tag_element(tag_name='div', id_='id', name='xx')
 
 
 def test_make_msg_xpath():
-    assert '//*' == _create_exception_msg_tag(xpath='//*')
+    assert '//*' == _create_exception_msg_tag_element(xpath='//*')
 
 
 def test_make_msg_css_selector():
-    assert 'div.class' == _create_exception_msg_tag(css_selector='div.class')
+    assert 'div.class' == _create_exception_msg_tag_element(css_selector='div.class')
 
 
 def test_make_msg_with_url():
