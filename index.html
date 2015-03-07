@@ -167,6 +167,16 @@ methods. It&#8217;s shorter and you can quickly find element in element.</p>
 <em class="property">class </em><tt class="descclassname">webdriverwrapper.wrapper.</tt><tt class="descname">_WebdriverWrapper</tt><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class wrapping <a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver" title="(in Selenium v2.0)"><tt class="xref py py-class docutils literal"><span class="pre">selenium.WebDriver</span></tt></a>.</p>
 <dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.break_point">
+<tt class="descname">break_point</tt><big>(</big><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.break_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.break_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops testing and wait for pressing enter to continue.</p>
+<p>Useful when you need check Chrome console for some info for example.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="webdriverwrapper.wrapper._WebdriverWrapper.close_alert">
 <tt class="descname">close_alert</tt><big>(</big><em>ignore_exception=False</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.close_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.close_alert" title="Permalink to this definition">¶</a></dt>
 <dd><p>JS alerts all blocking. This method closes it. If there is no alert,
@@ -407,7 +417,7 @@ form by pressing enter.</p>
 <dt id="webdriverwrapper.download._Download.headers">
 <tt class="descname">headers</tt><a class="reference internal" href="modules/webdriverwrapper/download.html#_Download.headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download.headers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Headers of response.</p>
-<p>See <a class="reference external" href="http://docs.python-requests.org/en/latest/api/#requests.Response.headers" title="(in Requests v2.5.1)"><tt class="xref py py-attr docutils literal"><span class="pre">requests.Response.headers</span></tt></a> for more information.</p>
+<p>See <a class="reference external" href="http://docs.python-requests.org/en/latest/api/#requests.Response.headers" title="(in Requests v2.5.3)"><tt class="xref py py-attr docutils literal"><span class="pre">requests.Response.headers</span></tt></a> for more information.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -822,14 +832,13 @@ You have to just implement creating of your browser.</p>
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.break_point">
 <tt class="descname">break_point</tt><big>(</big><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.break_point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Break point when it stops tests and wait for pressing enter to continue.
-Ideal for debuging - checking Chrome console and so on.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.break_point" title="webdriverwrapper.wrapper._WebdriverWrapper.break_point"><tt class="xref py py-meth docutils literal"><span class="pre">break_point()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.check_errors">
 <tt class="descname">check_errors</tt><big>(</big><em>expected_error_page=None</em>, <em>allowed_error_pages=</em>, <span class="optional">[</span><span class="optional">]</span><em>expected_error_messages=</em>, <span class="optional">[</span><span class="optional">]</span><em>allowed_error_messages=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.check_errors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors"><tt class="xref py py-meth docutils literal"><span class="pre">check_errors</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors"><tt class="xref py py-meth docutils literal"><span class="pre">check_errors()</span></tt></a>.</p>
 <div class="versionchanged">
 <p><span class="versionmodified">Changed in version 2.0: </span>Only alias. Code moved to wrapper so it could be used also by pytest.</p>
 </div>
@@ -838,25 +847,25 @@ Ideal for debuging - checking Chrome console and so on.</p>
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.click">
 <tt class="descname">click</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.click" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.click" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.click"><tt class="xref py py-meth docutils literal"><span class="pre">click</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.click" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.click"><tt class="xref py py-meth docutils literal"><span class="pre">click()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.close_other_windows">
 <tt class="descname">close_other_windows</tt><big>(</big><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.close_other_windows" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.close_other_windows" title="webdriverwrapper.wrapper._WebdriverWrapper.close_other_windows"><tt class="xref py py-meth docutils literal"><span class="pre">close_other_windows</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.close_other_windows" title="webdriverwrapper.wrapper._WebdriverWrapper.close_other_windows"><tt class="xref py py-meth docutils literal"><span class="pre">close_other_windows()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.close_window">
 <tt class="descname">close_window</tt><big>(</big><em>window_name=None</em>, <em>title=None</em>, <em>url=None</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.close_window" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.close_window" title="webdriverwrapper.wrapper._WebdriverWrapper.close_window"><tt class="xref py py-meth docutils literal"><span class="pre">close_window</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.close_window" title="webdriverwrapper.wrapper._WebdriverWrapper.close_window"><tt class="xref py py-meth docutils literal"><span class="pre">close_window()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.contains_text">
 <tt class="descname">contains_text</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.contains_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text"><tt class="xref py py-meth docutils literal"><span class="pre">contains_text</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text"><tt class="xref py py-meth docutils literal"><span class="pre">contains_text()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -871,7 +880,7 @@ before that you can&#8217;t use relative path), set this attribute.</p>
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.find_element_by_text">
 <tt class="descname">find_element_by_text</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.find_element_by_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text"><tt class="xref py py-meth docutils literal"><span class="pre">find_element_by_text</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text"><tt class="xref py py-meth docutils literal"><span class="pre">find_element_by_text()</span></tt></a>.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 2.0.</span></p>
 </div>
@@ -880,25 +889,25 @@ before that you can&#8217;t use relative path), set this attribute.</p>
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.find_elements_by_text">
 <tt class="descname">find_elements_by_text</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.find_elements_by_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text"><tt class="xref py py-meth docutils literal"><span class="pre">find_elements_by_text</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text"><tt class="xref py py-meth docutils literal"><span class="pre">find_elements_by_text()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.get_elm">
 <tt class="descname">get_elm</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.get_elm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm"><tt class="xref py py-meth docutils literal"><span class="pre">get_elm</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm"><tt class="xref py py-meth docutils literal"><span class="pre">get_elm()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.get_elms">
 <tt class="descname">get_elms</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.get_elms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms"><tt class="xref py py-meth docutils literal"><span class="pre">get_elms</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms"><tt class="xref py py-meth docutils literal"><span class="pre">get_elms()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.go_to">
 <tt class="descname">go_to</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.go_to" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.go_to" title="webdriverwrapper.wrapper._WebdriverWrapper.go_to"><tt class="xref py py-meth docutils literal"><span class="pre">go_to</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.go_to" title="webdriverwrapper.wrapper._WebdriverWrapper.go_to"><tt class="xref py py-meth docutils literal"><span class="pre">go_to()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -937,13 +946,13 @@ tests and saved them to this path.</p>
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.switch_to_window">
 <tt class="descname">switch_to_window</tt><big>(</big><em>window_name=None</em>, <em>title=None</em>, <em>url=None</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.switch_to_window" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window" title="webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window"><tt class="xref py py-meth docutils literal"><span class="pre">switch_to_window</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window" title="webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window"><tt class="xref py py-meth docutils literal"><span class="pre">switch_to_window()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.wait">
 <tt class="descname">wait</tt><big>(</big><em>timeout=10</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.wait" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait" title="webdriverwrapper.wrapper._WebdriverWrapper.wait"><tt class="xref py py-meth docutils literal"><span class="pre">wait</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait" title="webdriverwrapper.wrapper._WebdriverWrapper.wait"><tt class="xref py py-meth docutils literal"><span class="pre">wait()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -952,13 +961,13 @@ tests and saved them to this path.</p>
 <dd><p>For debug only. When you set to <tt class="docutils literal"><span class="pre">True</span></tt>, it will wait for pressing enter
 after each test before moving to next test. Ideal when you need to check
 out for example Chrome console.</p>
-<p>But maybe better debuging is with <a class="reference internal" href="#webdriverwrapper.unittest.WebdriverTestCase.break_point" title="webdriverwrapper.unittest.WebdriverTestCase.break_point"><tt class="xref py py-meth docutils literal"><span class="pre">break_point()</span></tt></a>.</p>
+<p>But maybe better debuging is with <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.break_point" title="webdriverwrapper.wrapper._WebdriverWrapper.break_point"><tt class="xref py py-meth docutils literal"><span class="pre">break_point()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.wait_for_element">
 <tt class="descname">wait_for_element</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.wait_for_element" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element" title="webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element"><tt class="xref py py-meth docutils literal"><span class="pre">wait_for_element</span></tt></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element" title="webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element"><tt class="xref py py-meth docutils literal"><span class="pre">wait_for_element()</span></tt></a>.</p>
 </dd></dl>
 
 </dd></dl>
