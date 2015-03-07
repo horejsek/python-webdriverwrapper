@@ -213,22 +213,20 @@ class WebdriverTestCase(unittest.TestCase):
             WebdriverTestCase.driver.quit()
             del WebdriverTestCase.driver
 
-    def break_point(self):
-        """
-        Break point when it stops tests and wait for pressing enter to continue.
-        Ideal for debuging - checking Chrome console and so on.
-        """
-        logging.info('Break point. Type enter to continue.')
-        raw_input()
-
     def debug(self, msg):
         logging.info(msg)
 
     ### Aliases to driver.
 
+    def break_point(self):
+        """
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.break_point`.
+        """
+        self.driver.break_point()
+
     def check_errors(self, expected_error_page=None, allowed_error_pages=[], expected_error_messages=[], allowed_error_messages=[]):
         """
-        Alias for :py:meth:`check_errors <webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors>`.
+        Alias for :py:meth:`~webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors`.
 
         .. versionchanged:: 2.0
             Only alias. Code moved to wrapper so it could be used also by pytest.
@@ -237,7 +235,7 @@ class WebdriverTestCase(unittest.TestCase):
 
     def find_element_by_text(self, text):
         """
-        Alias for :py:meth:`find_element_by_text <webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text`.
 
         .. versionadded:: 2.0
         """
@@ -245,66 +243,66 @@ class WebdriverTestCase(unittest.TestCase):
 
     def find_elements_by_text(self, text):
         """
-        Alias for :py:meth:`find_elements_by_text <webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text`.
         """
         return self.driver.find_elements_by_text(text)
 
     def contains_text(self, text):
         """
-        Alias for :py:meth:`contains_text <webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text`.
         """
         return self.driver.contains_text(text)
 
     def get_elm(self, *args, **kwds):
         """
-        Alias for :py:meth:`get_elm <webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm`.
         """
         return self.driver.get_elm(*args, **kwds)
 
     def get_elms(self, *args, **kwds):
         """
-        Alias for :py:meth:`get_elms <webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms`.
         """
         return self.driver.get_elms(*args, **kwds)
 
     def click(self, *args, **kwds):
         """
-        Alias for :py:meth:`click <webdriverwrapper.wrapper._WebdriverBaseWrapper.click>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.click`.
         """
         self.driver.click(*args, **kwds)
 
     def wait_for_element(self, *args, **kwds):
         """
-        Alias for :py:meth:`wait_for_element <webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element`.
         """
         return self.driver.wait_for_element(*args, **kwds)
 
     def wait(self, timeout=10):
         """
-        Alias for :py:meth:`wait <webdriverwrapper.wrapper._WebdriverWrapper.wait>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.wait`.
         """
         return self.driver.wait(timeout)
 
     def go_to(self, *args, **kwds):
         """
-        Alias for :py:meth:`go_to <webdriverwrapper.wrapper._WebdriverWrapper.go_to>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.go_to`.
         """
         self.driver.go_to(*args, **kwds)
 
     def switch_to_window(self, window_name=None, title=None, url=None):
         """
-        Alias for :py:meth:`switch_to_window <webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window`.
         """
         self.driver.switch_to_window(window_name, title, url)
 
     def close_window(self, window_name=None, title=None, url=None):
         """
-        Alias for :py:meth:`close_window <webdriverwrapper.wrapper._WebdriverWrapper.close_window>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.close_window`.
         """
         self.driver.close_window(window_name, title, url)
 
     def close_other_windows(self):
         """
-        Alias for :py:meth:`close_other_windows <webdriverwrapper.wrapper._WebdriverWrapper.close_other_windows>`.
+        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.close_other_windows`.
         """
         self.driver.close_other_windows()

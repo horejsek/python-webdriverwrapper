@@ -3,6 +3,8 @@
 from __future__ import absolute_import
 
 import functools
+import logging
+logging.basicConfig(level=logging.INFO)
 try:
     from urlparse import urlparse, urlunparse
     from urllib import urlencode
@@ -254,6 +256,17 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
     """
     Class wrapping :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`.
     """
+
+    def break_point(self):
+        """
+        Stops testing and wait for pressing enter to continue.
+
+        Useful when you need check Chrome console for some info for example.
+
+        .. versionadded:: 2.1
+        """
+        logging.info('Break point. Type enter to continue.')
+        raw_input()
 
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
         """
