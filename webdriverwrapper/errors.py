@@ -2,8 +2,6 @@
 
 from __future__ import absolute_import
 
-from sets import ImmutableSet
-
 from selenium.common.exceptions import NoSuchElementException
 
 from .exceptions import ErrorPageException, ErrorMessagesException, JSErrorsException

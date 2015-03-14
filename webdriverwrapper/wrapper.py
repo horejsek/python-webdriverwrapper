@@ -11,6 +11,11 @@ try:
 except ImportError:
     from urllib.parse import urlparse, urlunparse, urlencode
 
+try:
+    input = raw_input
+except NameError:
+    pass
+
 import selenium.common.exceptions as selenium_exc
 from selenium.webdriver import *
 from selenium.webdriver.common.alert import Alert
@@ -266,7 +271,7 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         .. versionadded:: 2.1
         """
         logging.info('Break point. Type enter to continue.')
-        raw_input()
+        input()
 
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
         """
