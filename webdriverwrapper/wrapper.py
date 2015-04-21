@@ -302,7 +302,20 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         """
         if not message:
             message = 'Element {} still visible.'.format(_create_exception_msg_tag(*args, **kwds))
-        self.wait(timeout).until(lambda driver: not driver.get_elms(*args, **kwds) or not driver.get_elm(*args, **kwds).is_displayed(), message=message)
+
+        def callback(driver):
+            elms = driver.get_elms(*args, **kwds)
+            if not elms:
+                return True
+            try:
+                if all(not elm.is_displayed() for elm in elms):
+                    return True
+            except selenium_exc.StaleElementReferenceException:
+                # Some element can be out, but need to check all elements.
+                # Let's wait for another run.
+                return False
+            return False
+        self.wait(timeout).until(callback, message=message)
 
     def wait(self, timeout=10):
         """
