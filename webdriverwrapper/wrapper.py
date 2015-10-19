@@ -262,6 +262,20 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
     Class wrapping :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`.
     """
 
+    @property
+    def html(self):
+        """
+        Returns ``innerHTML`` of whole page. On page have to be tag ``body``.
+
+        .. versionadded:: 2.2
+        """
+        try:
+            body = self.get_elm(tag_name='body')
+        except selenium_exc.NoSuchElementException:
+            return None
+        else:
+            return body.get_attribute('innerHTML')
+
     def break_point(self):
         """
         Stops testing and wait for pressing enter to continue.
@@ -506,6 +520,15 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
             current_url = 'unknown'
         finally:
             return current_url
+
+    @property
+    def html(self):
+        """
+        Returns ``innerHTML``.
+
+        .. versionadded:: 2.2
+        """
+        self.get_attribute('innerHTML')
 
     def download_file(self):
         """
