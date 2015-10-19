@@ -161,6 +161,12 @@ class WebdriverTestCase(unittest.TestCase):
         Save screenshot to :py:attr:`.screenshot_path` with given name
         ``screenshot_name``. If name is not given, then the name is name of
         current test (``self.id()``).
+
+        .. versionchanged:: 2.2
+            Use ``make_screenshot`` directly on ``driver`` instead. This method
+            is used for making screenshot of failed tests and therefor does
+            nothing if ``screenshot_path`` is not configured. It stays there
+            only for compatibility.
         """
         if not screenshot_name:
             # Without name (and possibly path) we cannot make screenshot. Don't
@@ -178,6 +184,7 @@ class WebdriverTestCase(unittest.TestCase):
         self.__class__._number_of_test += 1
         if not hasattr(WebdriverTestCase, 'driver'):
             WebdriverTestCase.driver = self._get_driver()
+            WebdriverTestCase.screenshot_path = self.screenshot_path
             WebdriverTestCase._main_window = WebdriverTestCase.driver.current_window_handle
             if self.domain:
                 WebdriverTestCase.driver.get(self.domain)

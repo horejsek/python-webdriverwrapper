@@ -5,6 +5,7 @@ from __future__ import absolute_import
 import functools
 import logging
 logging.basicConfig(level=logging.INFO)
+import time
 try:
     from urlparse import urlparse, urlunparse
     from urllib import urlencode
@@ -262,6 +263,10 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
     Class wrapping :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`.
     """
 
+    def __init__(self, *args, **kwds):
+        super(_WebdriverWrapper, self).__init__(*args, **kwds)
+        self.screenshot_path = None
+
     @property
     def html(self):
         """
@@ -275,6 +280,24 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
             return None
         else:
             return body.get_attribute('innerHTML')
+
+    def make_screenshot(self, screenshot_name=None):
+        """
+        Shortcut for ``get_screenshot_as_file`` but with configured path. If you
+        are using base :py:class:`~webdriverwrapper.unittest.testcase.WebdriverTestCase`.
+        or pytest, ``screenshot_path`` is passed to driver automatically.
+
+        If ``screenshot_name`` is not passed, current timestamp is used.
+
+        .. versionadded:: 2.2
+        """
+        if not self.screenshot_path:
+            raise Exception('Please, configure screenshot_path first or call get_screenshot_as_file manually')
+
+        if not screenshot_name:
+            screenshot_name = str(time.time())
+
+        self.get_screenshot_as_file('{}/{}.png'.format(self.screenshot_path, screenshot_name))
 
     def break_point(self):
         """

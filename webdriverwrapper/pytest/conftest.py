@@ -107,6 +107,7 @@ def driver(request, _driver):
             yield driver
             driver.quit()
     """
+    _driver.screenshot_path = getattr(request.config, 'webdriverwrapper_screenshot_path', None)
     _driver.close_other_windows()
     yield _driver
     _driver.check_expected_errors(test_method=request.function)
