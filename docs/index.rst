@@ -34,6 +34,19 @@ Installation
 
     pip install webdriverwrapper
 
+If you want also suggestions, then also install extra requirements:
+
+.. code-block:: bash
+
+    pip install webdriverwrapper[seggestions]
+
+Then you will see something like this:
+
+.. code-block:: python
+
+    driver.get_elm('qbdfq')
+    NoSuchElementException: Message: No element <* id=qbdfq> found at https://www.google.com, did you mean id=gbsfw?
+
 Hello World!
 ============
 
