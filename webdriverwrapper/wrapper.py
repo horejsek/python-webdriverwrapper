@@ -26,7 +26,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from .download import DownloadUrl, DownloadFile
 from .errors import WebdriverWrapperErrorMixin
-from .exceptions import _create_exception_msg, _create_exception_msg_tag
+from .exceptions import _create_exception_msg
 from .info import WebdriverWrapperInfoMixin
 from .utils import force_text
 
@@ -320,7 +320,7 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
             selenium.webdriver.support.wait.WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))
         """
         if not message:
-            message = _create_exception_msg(*args, **kwds)
+            message = _create_exception_msg(*args, url=self.current_url, **kwds)
         self.wait(timeout).until(lambda driver: driver.get_elm(*args, **kwds), message=message)
 
         # Also return that element for which is waiting.
@@ -338,7 +338,7 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         .. versionadded:: 2.0
         """
         if not message:
-            message = 'Element {} still visible.'.format(_create_exception_msg_tag(*args, **kwds))
+            message = 'Element {} still visible.'.format(_create_exception_msg(*args, url=self.current_url, **kwds))
 
         def callback(driver):
             elms = driver.get_elms(*args, **kwds)
