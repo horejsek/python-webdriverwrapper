@@ -157,6 +157,7 @@ class _WebdriverBaseWrapper(object):
                 id_, class_name, name, tag_name,
                 parent_id, parent_class_name, parent_name, parent_tag_name,
                 xpath, css_selector, self.current_url,
+                driver=self,
             ))
         return elms[0]
 
@@ -243,6 +244,7 @@ class _WebdriverBaseWrapper(object):
             msg = _create_exception_msg(**{
                 self._by_to_string_param_map[by]: value,
                 'url': self.current_url,
+                'driver': self,
             })
         else:
             msg = ''

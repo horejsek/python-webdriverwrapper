@@ -2,7 +2,12 @@
 
 import pytest
 
-from webdriverwrapper.exceptions import _create_exception_msg, _create_exception_msg_tag_element, NoSuchElementException
+from webdriverwrapper.exceptions import (
+    _create_exception_msg,
+    _create_exception_msg_tag_element,
+    _find_best_suggestion,
+    NoSuchElementException,
+)
 
 
 def test_make_msg_id():
@@ -47,3 +52,14 @@ def test_raises_exception_with_msg_origin_find_methods(driver):
     with pytest.raises(NoSuchElementException) as excinfo:
         driver.find_element_by_id('some_non_exists_id')
     assert 'some_non_exists_id' in str(excinfo.value)
+
+
+def test_suggestions(driver):
+    with pytest.raises(NoSuchElementException) as excinfo:
+        driver.find_element_by_id('some_non_exists_id')
+    assert 'did you mean id=somepage?' in str(excinfo.value)
+
+
+def test_find_best_suggestions():
+    suggestion = _find_best_suggestion('idx', ['id', 'anotherid', 'someid'])
+    assert suggestion == 'id'

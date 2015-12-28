@@ -2,11 +2,19 @@
 
 from selenium.common.exceptions import *
 
+try:
+    from Levenshtein import distance as levenshteinDistance
+except ImportError:
+    levenshteinDistance = None
+
+from .utils import force_text
+
 
 def _create_exception_msg(
     id_=None, class_name=None, name=None, tag_name=None,
     parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
     xpath=None, css_selector=None, url=None,
+    driver=None,
 ):
     elm_text = _create_exception_msg_tag(
         id_, class_name, name, tag_name,
@@ -16,6 +24,11 @@ def _create_exception_msg(
     msg = 'No element {} found'.format(elm_text)
     if url:
         msg += ' at {}'.format(url)
+
+    suggest = _get_suggestion(driver, id_, class_name, tag_name)
+    if suggest:
+        msg += ' {}'.format(suggest)
+
     return msg
 
 
@@ -48,6 +61,45 @@ def _create_exception_msg_tag_element(id_=None, class_name=None, name=None, tag_
         msg += '>'
         return msg
     return ''
+
+
+def _get_suggestion(driver, id_=None, class_name=None, name=None):
+    if not driver:
+        return ''
+
+    if id_:
+        suggest_by = 'id'
+        value = id_
+    elif class_name:
+        suggest_by = 'class'
+        value = class_name
+    elif name:
+        suggest_by = 'name'
+        value = name
+    else:
+        return ''
+
+    items = set(elm.get_attribute(suggest_by) for elm in driver.get_elms(xpath='//*[@{}]'.format(suggest_by)))
+    suggestion = _find_best_suggestion(value, items)
+    if not suggestion:
+        return ''
+
+    return 'did you mean {}={}?'.format(suggest_by, suggestion)
+
+
+def _find_best_suggestion(value, items):
+    if not levenshteinDistance:
+        return None
+
+    value = force_text(value)
+    best = None
+    min_distance = len(value) + 10  # So it can find distance between btn and btn-default for example.
+    for item in items:
+        distance = levenshteinDistance(value, force_text(item))
+        if 0 < distance < min_distance:
+            min_distance = distance
+            best = item
+    return best
 
 
 class WebdriverWrapperException(Exception):
