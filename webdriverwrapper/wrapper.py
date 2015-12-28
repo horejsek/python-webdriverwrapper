@@ -240,14 +240,6 @@ class _WebdriverBaseWrapper(object):
 
     @_ConvertToWebelementWrapper()
     def _find_element_or_elements(self, callback, by, value):
-        if by in self._by_to_string_param_map:
-            msg = _create_exception_msg(**{
-                self._by_to_string_param_map[by]: value,
-                'url': self.current_url,
-                'driver': self,
-            })
-        else:
-            msg = ''
         try:
             return callback(self, by, value)
         except (
@@ -257,6 +249,14 @@ class _WebdriverBaseWrapper(object):
             selenium_exc.ElementNotVisibleException,
             selenium_exc.ElementNotSelectableException,
         ) as exc:
+            if by in self._by_to_string_param_map:
+                msg = _create_exception_msg(**{
+                    self._by_to_string_param_map[by]: value,
+                    'url': self.current_url,
+                    'driver': self,
+                })
+            else:
+                msg = ''
             raise exc.__class__(msg)
 
 
