@@ -8,7 +8,7 @@ except ImportError:
 
 setup(
     name='webdriverwrapper',
-    version='2.2.0',  # Can't use VERSION because of imports during install before installing dependencies.
+    version='2.2.1',  # Can't use VERSION because of imports during install before installing dependencies.
     packages=[
         'webdriverwrapper',
         'webdriverwrapper.pytest',
@@ -16,6 +16,9 @@ setup(
     ],
 
     install_requires=[line.strip() for line in open('requirements.txt').readlines() if line],
+    extras_require={
+        'suggestion': ['python-Levenshtein'],
+    },
 
     url='https://github.com/horejsek/python-webdriverwrapper',
     author='Michal Horejsek',
