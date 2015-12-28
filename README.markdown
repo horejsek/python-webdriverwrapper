@@ -8,7 +8,7 @@ Support for Python 2.6 and higher (including Python 3).
 
 ## How to install chromedriver
 
-Just install Chrome/ium and put [chromedriver](https://code.google.com/p/chromedriver/downloads/list) into `/bin`.
+Just install Chrome/ium and put [chromedriver](http://chromedriver.storage.googleapis.com/index.html) into `/bin`.
 
 ## Documentation
 
