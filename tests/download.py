@@ -26,6 +26,7 @@ def test_download_file_by_link(driver):
 
 def test_download_file_by_form(driver):
     driver.get('http://www.google.com')
-    driver.get_elm('gbqfq').send_keys('selenium')
-    result = driver.get_elm('gbqf').download_file()
+    form = driver.get_elm(tag_name='form')
+    form.fill_out({'q': 'selenium'})
+    result = form.download_file()
     assert 'selenium' in result.data
