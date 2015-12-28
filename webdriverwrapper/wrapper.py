@@ -553,6 +553,18 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
         """
         self.get_attribute('innerHTML')
 
+    def clear(self):
+        # Just add some context when calling clear fails.
+        try:
+            return super(_WebElementWrapper, self).clear()
+        except (
+            selenium_exc.StaleElementReferenceException,
+            selenium_exc.InvalidElementStateException,
+            selenium_exc.ElementNotVisibleException,
+            selenium_exc.ElementNotSelectableException,
+        ) as exc:
+            raise exc.__class__('Problem clearing element at {}.'.format(self.current_url))
+
     def download_file(self):
         """
         With WebDriver you can't check status code or headers. For this you have
