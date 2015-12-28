@@ -53,11 +53,19 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">urlunparse</span>
     <span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">urlencode</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">urlunparse</span><span class="p">,</span> <span class="n">urlencode</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="nb">raw_input</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="k">pass</span>
 
 <span class="kn">import</span> <span class="nn">selenium.common.exceptions</span> <span class="kn">as</span> <span class="nn">selenium_exc</span>
 <span class="kn">from</span> <span class="nn">selenium.webdriver</span> <span class="kn">import</span> <span class="o">*</span>
@@ -68,7 +76,7 @@
 
 <span class="kn">from</span> <span class="nn">.download</span> <span class="kn">import</span> <span class="n">DownloadUrl</span><span class="p">,</span> <span class="n">DownloadFile</span>
 <span class="kn">from</span> <span class="nn">.errors</span> <span class="kn">import</span> <span class="n">WebdriverWrapperErrorMixin</span>
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">_create_exception_msg</span><span class="p">,</span> <span class="n">_create_exception_msg_tag</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">_create_exception_msg</span>
 <span class="kn">from</span> <span class="nn">.info</span> <span class="kn">import</span> <span class="n">WebdriverWrapperInfoMixin</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">force_text</span>
 
@@ -199,6 +207,7 @@
                 <span class="n">id_</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span>
                 <span class="n">parent_id</span><span class="p">,</span> <span class="n">parent_class_name</span><span class="p">,</span> <span class="n">parent_name</span><span class="p">,</span> <span class="n">parent_tag_name</span><span class="p">,</span>
                 <span class="n">xpath</span><span class="p">,</span> <span class="n">css_selector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span>
+                <span class="n">driver</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="p">))</span>
         <span class="k">return</span> <span class="n">elms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </div>
@@ -281,13 +290,6 @@
 
     <span class="nd">@_ConvertToWebelementWrapper</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">_find_element_or_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">by</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_by_to_string_param_map</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">_create_exception_msg</span><span class="p">(</span><span class="o">**</span><span class="p">{</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_by_to_string_param_map</span><span class="p">[</span><span class="n">by</span><span class="p">]:</span> <span class="n">value</span><span class="p">,</span>
-                <span class="s">&#39;url&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span>
-            <span class="p">})</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span>
@@ -297,6 +299,14 @@
             <span class="n">selenium_exc</span><span class="o">.</span><span class="n">ElementNotVisibleException</span><span class="p">,</span>
             <span class="n">selenium_exc</span><span class="o">.</span><span class="n">ElementNotSelectableException</span><span class="p">,</span>
         <span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">by</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_by_to_string_param_map</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">_create_exception_msg</span><span class="p">(</span><span class="o">**</span><span class="p">{</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_by_to_string_param_map</span><span class="p">[</span><span class="n">by</span><span class="p">]:</span> <span class="n">value</span><span class="p">,</span>
+                    <span class="s">&#39;url&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span>
+                    <span class="s">&#39;driver&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span>
+                <span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
             <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 </div>
@@ -305,6 +315,42 @@
 <span class="sd">    Class wrapping :py:class:`selenium.WebDriver &lt;selenium.webdriver.remote.webdriver.WebDriver&gt;`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">_WebdriverWrapper</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screenshot_path</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="_WebdriverWrapper.html"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.html">[docs]</a>    <span class="k">def</span> <span class="nf">html</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns ``innerHTML`` of whole page. On page have to be tag ``body``.</span>
+
+<span class="sd">        .. versionadded:: 2.2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">tag_name</span><span class="o">=</span><span class="s">&#39;body&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">selenium_exc</span><span class="o">.</span><span class="n">NoSuchElementException</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">body</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&#39;innerHTML&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="_WebdriverWrapper.make_screenshot"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.make_screenshot">[docs]</a>    <span class="k">def</span> <span class="nf">make_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screenshot_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shortcut for ``get_screenshot_as_file`` but with configured path. If you</span>
+<span class="sd">        are using base :py:class:`~webdriverwrapper.unittest.testcase.WebdriverTestCase`.</span>
+<span class="sd">        or pytest, ``screenshot_path`` is passed to driver automatically.</span>
+
+<span class="sd">        If ``screenshot_name`` is not passed, current timestamp is used.</span>
+
+<span class="sd">        .. versionadded:: 2.2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">screenshot_path</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Please, configure screenshot_path first or call get_screenshot_as_file manually&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">screenshot_name</span><span class="p">:</span>
+            <span class="n">screenshot_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_screenshot_as_file</span><span class="p">(</span><span class="s">&#39;{}/{}.png&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screenshot_path</span><span class="p">,</span> <span class="n">screenshot_name</span><span class="p">))</span>
+</div>
 <div class="viewcode-block" id="_WebdriverWrapper.break_point"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.break_point">[docs]</a>    <span class="k">def</span> <span class="nf">break_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Stops testing and wait for pressing enter to continue.</span>
@@ -314,7 +360,7 @@
 <span class="sd">        .. versionadded:: 2.1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Break point. Type enter to continue.&#39;</span><span class="p">)</span>
-        <span class="nb">raw_input</span><span class="p">()</span>
+        <span class="nb">input</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="_WebdriverWrapper.wait_for_element"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element">[docs]</a>    <span class="k">def</span> <span class="nf">wait_for_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -326,7 +372,7 @@
 <span class="sd">            selenium.webdriver.support.wait.WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="n">_create_exception_msg</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">_create_exception_msg</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">),</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
 
         <span class="c"># Also return that element for which is waiting.</span>
@@ -344,8 +390,21 @@
 <span class="sd">        .. versionadded:: 2.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;Element {} still visible.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_create_exception_msg_tag</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="ow">not</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span><span class="o">.</span><span class="n">is_displayed</span><span class="p">(),</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;Element {} still visible.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_create_exception_msg</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">driver</span><span class="p">):</span>
+            <span class="n">elms</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">elms</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="ow">not</span> <span class="n">elm</span><span class="o">.</span><span class="n">is_displayed</span><span class="p">()</span> <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">elms</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">except</span> <span class="n">selenium_exc</span><span class="o">.</span><span class="n">StaleElementReferenceException</span><span class="p">:</span>
+                <span class="c"># Some element can be out, but need to check all elements.</span>
+                <span class="c"># Let&#39;s wait for another run.</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="_WebdriverWrapper.wait"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverWrapper.wait">[docs]</a>    <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -537,6 +596,27 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">current_url</span>
 </div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="_WebElementWrapper.html"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebElementWrapper.html">[docs]</a>    <span class="k">def</span> <span class="nf">html</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns ``innerHTML``.</span>
+
+<span class="sd">        .. versionadded:: 2.2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&#39;innerHTML&#39;</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># Just add some context when calling clear fails.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">_WebElementWrapper</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">except</span> <span class="p">(</span>
+            <span class="n">selenium_exc</span><span class="o">.</span><span class="n">StaleElementReferenceException</span><span class="p">,</span>
+            <span class="n">selenium_exc</span><span class="o">.</span><span class="n">InvalidElementStateException</span><span class="p">,</span>
+            <span class="n">selenium_exc</span><span class="o">.</span><span class="n">ElementNotVisibleException</span><span class="p">,</span>
+            <span class="n">selenium_exc</span><span class="o">.</span><span class="n">ElementNotSelectableException</span><span class="p">,</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="s">&#39;Problem clearing element at {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">))</span>
+
 <div class="viewcode-block" id="_WebElementWrapper.download_file"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebElementWrapper.download_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        With WebDriver you can&#39;t check status code or headers. For this you have</span>
@@ -620,7 +700,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2015, Michal Horejsek.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

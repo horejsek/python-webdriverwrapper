@@ -77,6 +77,15 @@ and <a class="reference external" href="http://selenium.googlecode.com/svn/trunk
 <div class="highlight-bash"><div class="highlight"><pre>pip install webdriverwrapper
 </pre></div>
 </div>
+<p>If you want also suggestions, then also install extra requirements:</p>
+<div class="highlight-bash"><div class="highlight"><pre>pip install webdriverwrapper<span class="o">[</span>seggestions<span class="o">]</span>
+</pre></div>
+</div>
+<p>Then you will see something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>driver.get_elm(&#39;qbdfq&#39;)
+NoSuchElementException: Message: No element &lt;* id=qbdfq&gt; found at https://www.google.com, did you mean id=gbsfw?
+</pre></div>
+</div>
 <div class="section" id="hello-world">
 <h3>Hello World!<a class="headerlink" href="#hello-world" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">driver</span> <span class="o">=</span> <span class="n">Chrome</span><span class="p">()</span>
@@ -164,7 +173,7 @@ methods. It&#8217;s shorter and you can quickly find element in element.</p>
 
 <dl class="class">
 <dt id="webdriverwrapper.wrapper._WebdriverWrapper">
-<em class="property">class </em><tt class="descclassname">webdriverwrapper.wrapper.</tt><tt class="descname">_WebdriverWrapper</tt><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">webdriverwrapper.wrapper.</tt><tt class="descname">_WebdriverWrapper</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class wrapping <a class="reference external" href="http://selenium.googlecode.com/svn/trunk/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver" title="(in Selenium v2.0)"><tt class="xref py py-class docutils literal"><span class="pre">selenium.WebDriver</span></tt></a>.</p>
 <dl class="method">
 <dt id="webdriverwrapper.wrapper._WebdriverWrapper.break_point">
@@ -264,6 +273,27 @@ another web app, use absolute address.</p>
 </div>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.html">
+<tt class="descname">html</tt><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <tt class="docutils literal"><span class="pre">innerHTML</span></tt> of whole page. On page have to be tag <tt class="docutils literal"><span class="pre">body</span></tt>.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.2.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.make_screenshot">
+<tt class="descname">make_screenshot</tt><big>(</big><em>screenshot_name=None</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.make_screenshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.make_screenshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for <tt class="docutils literal"><span class="pre">get_screenshot_as_file</span></tt> but with configured path. If you
+are using base <tt class="xref py py-class docutils literal"><span class="pre">WebdriverTestCase</span></tt>.
+or pytest, <tt class="docutils literal"><span class="pre">screenshot_path</span></tt> is passed to driver automatically.</p>
+<p>If <tt class="docutils literal"><span class="pre">screenshot_name</span></tt> is not passed, current timestamp is used.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.2.</span></p>
+</div>
+</dd></dl>
+
 <dl class="method">
 <dt id="webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window">
 <tt class="descname">switch_to_window</tt><big>(</big><em>window_name=None</em>, <em>title=None</em>, <em>url=None</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.switch_to_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window" title="Permalink to this definition">¶</a></dt>
@@ -334,6 +364,15 @@ and by this it gets pretty ugly. You can easily use this method.</p>
 <p>Returns <a class="reference internal" href="#webdriverwrapper.download._Download" title="webdriverwrapper.download._Download"><tt class="xref py py-obj docutils literal"><span class="pre">_Download</span></tt></a> instance.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="webdriverwrapper.wrapper._WebElementWrapper.html">
+<tt class="descname">html</tt><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebElementWrapper.html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebElementWrapper.html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <tt class="docutils literal"><span class="pre">innerHTML</span></tt>.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.2.</span></p>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -344,7 +383,7 @@ and by this it gets pretty ugly. You can easily use this method.</p>
 <em class="property">class </em><tt class="descclassname">webdriverwrapper.forms.</tt><tt class="descname">Form</tt><big>(</big><em>webelement</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/forms.html#Form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.forms.Form" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="webdriverwrapper.forms.Form.fill_out">
-<tt class="descname">fill_out</tt><big>(</big><em>data</em>, <em>prefix=''</em>, <em>turbo=False</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/forms.html#Form.fill_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.forms.Form.fill_out" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fill_out</tt><big>(</big><em>data</em>, <em>prefix=''</em>, <em>skip_reset=False</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/forms.html#Form.fill_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.forms.Form.fill_out" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fill out <tt class="docutils literal"><span class="pre">data</span></tt> by dictionary (key is name attribute of inputs). You
 can pass normal Pythonic data and don&#8217;t have to care about how to use
 API of WebDriver.</p>
@@ -352,11 +391,12 @@ API of WebDriver.</p>
 you can have inputs called <tt class="docutils literal"><span class="pre">client.name</span></tt> and <tt class="docutils literal"><span class="pre">client.surname</span></tt> -
 then you will pass to <tt class="docutils literal"><span class="pre">prefix</span></tt> string <tt class="docutils literal"><span class="pre">&quot;client.&quot;</span></tt> and in dictionary
 just <tt class="docutils literal"><span class="pre">&quot;name&quot;</span></tt>.</p>
-<p>Option <tt class="docutils literal"><span class="pre">turbo</span></tt> is for skipping some steps, so it can go faster. For
+<p>Option <tt class="docutils literal"><span class="pre">skip_reset</span></tt> is for skipping reset, so it can go faster. For
 example for multiple selects it calls <tt class="docutils literal"><span class="pre">deselect_all</span></tt> first, but it need
 to for every option check if it is selected and it is very slow for
 really big multiple selects. If you know that it is not filled, you can
-skip it and safe in some cases up to one minute!</p>
+skip it and safe in some cases up to one minute! Also same with text
+inputs, but first is called <tt class="docutils literal"><span class="pre">clear</span></tt>.</p>
 <p>Example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="s">&#39;formid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fill_out</span><span class="p">({</span>
     <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Michael&#39;</span><span class="p">,</span>
@@ -367,11 +407,15 @@ skip it and safe in some cases up to one minute!</p>
 <span class="p">},</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;user_&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 2.2: </span><tt class="docutils literal"><span class="pre">turbo</span></tt> renamed to <tt class="docutils literal"><span class="pre">skip_reset</span></tt> and used also for common elements
+like text inputs or textareas.</p>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="webdriverwrapper.forms.Form.fill_out_and_submit">
-<tt class="descname">fill_out_and_submit</tt><big>(</big><em>data</em>, <em>prefix=''</em>, <em>turbo=False</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/forms.html#Form.fill_out_and_submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.forms.Form.fill_out_and_submit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fill_out_and_submit</tt><big>(</big><em>data</em>, <em>prefix=''</em>, <em>skip_reset=False</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/forms.html#Form.fill_out_and_submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.forms.Form.fill_out_and_submit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls <a class="reference internal" href="#webdriverwrapper.forms.Form.fill_out" title="webdriverwrapper.forms.Form.fill_out"><tt class="xref py py-meth docutils literal"><span class="pre">fill_out()</span></tt></a> and then <a class="reference internal" href="#webdriverwrapper.forms.Form.submit" title="webdriverwrapper.forms.Form.submit"><tt class="xref py py-meth docutils literal"><span class="pre">submit()</span></tt></a>.</p>
 </dd></dl>
 
@@ -417,7 +461,7 @@ form by pressing enter.</p>
 <dt id="webdriverwrapper.download._Download.headers">
 <tt class="descname">headers</tt><a class="reference internal" href="modules/webdriverwrapper/download.html#_Download.headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download.headers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Headers of response.</p>
-<p>See <a class="reference external" href="http://docs.python-requests.org/en/latest/api/#requests.Response.headers" title="(in Requests v2.5.3)"><tt class="xref py py-attr docutils literal"><span class="pre">requests.Response.headers</span></tt></a> for more information.</p>
+<p>See <a class="reference external" href="http://docs.python-requests.org/en/latest/api/#requests.Response.headers" title="(in Requests v2.9.1)"><tt class="xref py py-attr docutils literal"><span class="pre">requests.Response.headers</span></tt></a> for more information.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -587,7 +631,7 @@ check out section testing.</p>
 </div>
 <dl class="method">
 <dt id="webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors">
-<tt class="descname">check_errors</tt><big>(</big><em>expected_error_page=None</em>, <em>allowed_error_pages=</em>, <span class="optional">[</span><span class="optional">]</span><em>expected_error_messages=</em>, <span class="optional">[</span><span class="optional">]</span><em>allowed_error_messages=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="modules/webdriverwrapper/errors.html#WebdriverWrapperErrorMixin.check_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">check_errors</tt><big>(</big><em>expected_error_page=None</em>, <em>allowed_error_pages=[]</em>, <em>expected_error_messages=[]</em>, <em>allowed_error_messages=[]</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/errors.html#WebdriverWrapperErrorMixin.check_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method should be called whenever you need to check if there is some
 error. Normally you need only <tt class="docutils literal"><span class="pre">check_expected_errors</span></tt> called after each
 test (which you specify only once), but it will check errors only at the
@@ -676,7 +720,7 @@ and <a class="reference internal" href="#webdriverwrapper.decorators.allowed_inf
 
 <dl class="method">
 <dt id="webdriverwrapper.info.WebdriverWrapperInfoMixin.check_infos">
-<tt class="descname">check_infos</tt><big>(</big><em>expected_info_messages=</em>, <span class="optional">[</span><span class="optional">]</span><em>allowed_info_messages=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="modules/webdriverwrapper/info.html#WebdriverWrapperInfoMixin.check_infos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.info.WebdriverWrapperInfoMixin.check_infos" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">check_infos</tt><big>(</big><em>expected_info_messages=[]</em>, <em>allowed_info_messages=[]</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/info.html#WebdriverWrapperInfoMixin.check_infos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.info.WebdriverWrapperInfoMixin.check_infos" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method should be called whenever you need to check if there is some
 info. Normally you need only <tt class="docutils literal"><span class="pre">check_expected_infos</span></tt> called after each
 test (which you specify only once), but it will check infos only at the
@@ -739,7 +783,7 @@ this method accordingly to your app.</p>
 <span class="target" id="module-webdriverwrapper.pytest.conftest"></span><dl class="function">
 <dt id="webdriverwrapper.pytest.conftest.pytest_report_header">
 <tt class="descclassname">webdriverwrapper.pytest.conftest.</tt><tt class="descname">pytest_report_header</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/pytest/conftest.html#pytest_report_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.pytest.conftest.pytest_report_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pytest hook, see <tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_report_header()</span></tt> (<a class="reference external" href="http://pytest.org/latest/plugins.html#plugins" title="(in pytest v2.6)"><em>Working with plugins and conftest files</em></a>).</p>
+<dd><p>Pytest hook, see <tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_report_header()</span></tt> (<a class="reference external" href="http://pytest.org/latest/writing_plugins.html#plugins" title="(in pytest v2.8)"><em>Writing plugins</em></a>).</p>
 <p>It&#8217;s important to see which URL is testing with which user and where are
 stored screenshots. It will be displayed before run of tests if you set
 some config values like that:</p>
@@ -755,7 +799,7 @@ some config values like that:</p>
 <dl class="function">
 <dt id="webdriverwrapper.pytest.conftest.pytest_runtest_makereport">
 <tt class="descclassname">webdriverwrapper.pytest.conftest.</tt><tt class="descname">pytest_runtest_makereport</tt><big>(</big><em>item</em>, <em>call</em>, <em>__multicall__</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/pytest/conftest.html#pytest_runtest_makereport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.pytest.conftest.pytest_runtest_makereport" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pytest hook, see <a class="reference external" href="http://pytest.org/latest/plugins.html#_pytest.hookspec.pytest_runtest_makereport" title="(in pytest v2.6)"><tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_runtest_makereport()</span></tt></a>.</p>
+<dd><p>Pytest hook, see <a class="reference external" href="http://pytest.org/latest/writing_plugins.html#_pytest.hookspec.pytest_runtest_makereport" title="(in pytest v2.8)"><tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_runtest_makereport()</span></tt></a>.</p>
 <p>After each failed test will be generated screenshot if you specify where to
 save these screenshots.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">pytest_configure</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
@@ -837,7 +881,7 @@ You have to just implement creating of your browser.</p>
 
 <dl class="method">
 <dt id="webdriverwrapper.unittest.WebdriverTestCase.check_errors">
-<tt class="descname">check_errors</tt><big>(</big><em>expected_error_page=None</em>, <em>allowed_error_pages=</em>, <span class="optional">[</span><span class="optional">]</span><em>expected_error_messages=</em>, <span class="optional">[</span><span class="optional">]</span><em>allowed_error_messages=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.check_errors" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">check_errors</tt><big>(</big><em>expected_error_page=None</em>, <em>allowed_error_pages=[]</em>, <em>expected_error_messages=[]</em>, <em>allowed_error_messages=[]</em><big>)</big><a class="headerlink" href="#webdriverwrapper.unittest.WebdriverTestCase.check_errors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for <a class="reference internal" href="#webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors" title="webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors"><tt class="xref py py-meth docutils literal"><span class="pre">check_errors()</span></tt></a>.</p>
 <div class="versionchanged">
 <p><span class="versionmodified">Changed in version 2.0: </span>Only alias. Code moved to wrapper so it could be used also by pytest.</p>
@@ -926,6 +970,12 @@ new driver for every <tt class="docutils literal"><span class="pre">TestCase</sp
 <dd><p>Save screenshot to <a class="reference internal" href="#webdriverwrapper.unittest.WebdriverTestCase.screenshot_path" title="webdriverwrapper.unittest.WebdriverTestCase.screenshot_path"><tt class="xref py py-attr docutils literal"><span class="pre">screenshot_path</span></tt></a> with given name
 <tt class="docutils literal"><span class="pre">screenshot_name</span></tt>. If name is not given, then the name is name of
 current test (<tt class="docutils literal"><span class="pre">self.id()</span></tt>).</p>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 2.2: </span>Use <tt class="docutils literal"><span class="pre">make_screenshot</span></tt> directly on <tt class="docutils literal"><span class="pre">driver</span></tt> instead. This method
+is used for making screenshot of failed tests and therefor does
+nothing if <tt class="docutils literal"><span class="pre">screenshot_path</span></tt> is not configured. It stays there
+only for compatibility.</p>
+</div>
 </dd></dl>
 
 <dl class="staticmethod">
@@ -1088,7 +1138,7 @@ for more information.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2015, Michal Horejsek.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

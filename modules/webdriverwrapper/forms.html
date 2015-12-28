@@ -63,14 +63,14 @@
 
 
 <div class="viewcode-block" id="Form"><a class="viewcode-back" href="../../index.html#webdriverwrapper.forms.Form">[docs]</a><span class="k">class</span> <span class="nc">Form</span><span class="p">(</span><span class="n">_WebElementWrapper</span><span class="p">):</span>
-<div class="viewcode-block" id="Form.fill_out_and_submit"><a class="viewcode-back" href="../../index.html#webdriverwrapper.forms.Form.fill_out_and_submit">[docs]</a>    <span class="k">def</span> <span class="nf">fill_out_and_submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Form.fill_out_and_submit"><a class="viewcode-back" href="../../index.html#webdriverwrapper.forms.Form.fill_out_and_submit">[docs]</a>    <span class="k">def</span> <span class="nf">fill_out_and_submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">skip_reset</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calls :py:meth:`~.Form.fill_out` and then :py:meth:`.submit`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fill_out</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">turbo</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fill_out</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">skip_reset</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>
 </div>
-<div class="viewcode-block" id="Form.fill_out"><a class="viewcode-back" href="../../index.html#webdriverwrapper.forms.Form.fill_out">[docs]</a>    <span class="k">def</span> <span class="nf">fill_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Form.fill_out"><a class="viewcode-back" href="../../index.html#webdriverwrapper.forms.Form.fill_out">[docs]</a>    <span class="k">def</span> <span class="nf">fill_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">skip_reset</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fill out ``data`` by dictionary (key is name attribute of inputs). You</span>
 <span class="sd">        can pass normal Pythonic data and don&#39;t have to care about how to use</span>
@@ -81,11 +81,12 @@
 <span class="sd">        then you will pass to ``prefix`` string ``&quot;client.&quot;`` and in dictionary</span>
 <span class="sd">        just ``&quot;name&quot;``.</span>
 
-<span class="sd">        Option ``turbo`` is for skipping some steps, so it can go faster. For</span>
+<span class="sd">        Option ``skip_reset`` is for skipping reset, so it can go faster. For</span>
 <span class="sd">        example for multiple selects it calls ``deselect_all`` first, but it need</span>
 <span class="sd">        to for every option check if it is selected and it is very slow for</span>
 <span class="sd">        really big multiple selects. If you know that it is not filled, you can</span>
-<span class="sd">        skip it and safe in some cases up to one minute!</span>
+<span class="sd">        skip it and safe in some cases up to one minute! Also same with text</span>
+<span class="sd">        inputs, but first is called ``clear``.</span>
 
 <span class="sd">        Example:</span>
 
@@ -98,9 +99,13 @@
 <span class="sd">                &#39;enabled&#39;: True,</span>
 <span class="sd">                &#39;multibox&#39;: [&#39;value1&#39;, &#39;value2&#39;]</span>
 <span class="sd">            }, prefix=&#39;user_&#39;)</span>
+
+<span class="sd">        .. versionchanged:: 2.2</span>
+<span class="sd">            ``turbo`` renamed to ``skip_reset`` and used also for common elements</span>
+<span class="sd">            like text inputs or textareas.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">elm_name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">FormElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">elm_name</span><span class="p">)</span><span class="o">.</span><span class="n">fill_out</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="p">)</span>
+            <span class="n">FormElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">elm_name</span><span class="p">)</span><span class="o">.</span><span class="n">fill_out</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Form.submit"><a class="viewcode-back" href="../../index.html#webdriverwrapper.forms.Form.submit">[docs]</a>    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -145,10 +150,10 @@
             <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
         <span class="k">return</span> <span class="n">force_text</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">fill_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fill_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="p">):</span>
         <span class="n">tag_name</span><span class="p">,</span> <span class="n">elm_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_element</span><span class="p">()</span>
         <span class="n">method_name</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;fill_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">elm_type</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fill_common</span><span class="p">)(</span><span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="p">)</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fill_common</span><span class="p">)(</span><span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">analyze_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">elms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_elm</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">elm_name</span><span class="p">)</span>
@@ -159,17 +164,17 @@
             <span class="k">return</span> <span class="n">elm</span><span class="o">.</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">elm_type</span>
         <span class="k">raise</span> <span class="n">NoSuchElementException</span><span class="p">(</span><span class="n">_create_exception_msg</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">elm_name</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">fill_input_checkbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fill_input_checkbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fill_input_checkbox_multiple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_input_checkbox_single</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">fill_input_checkbox_single</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fill_input_checkbox_single</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="n">elm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_elm</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//input[@type=&quot;checkbox&quot;][@name=&quot;</span><span class="si">%s</span><span class="s">&quot;]&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">elm_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="n">elm</span><span class="o">.</span><span class="n">is_selected</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_click_on_elm_or_his_ancestor</span><span class="p">(</span><span class="n">elm</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">fill_input_checkbox_multiple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fill_input_checkbox_multiple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
             <span class="n">elm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_elm</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//input[@type=&quot;checkbox&quot;][@name=&quot;</span><span class="si">%s</span><span class="s">&quot;][@value=&quot;</span><span class="si">%s</span><span class="s">&quot;]&#39;</span> <span class="o">%</span>  <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">elm_name</span><span class="p">,</span>
@@ -177,34 +182,35 @@
             <span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_click_on_elm_or_his_ancestor</span><span class="p">(</span><span class="n">elm</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">fill_input_radio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fill_input_radio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="n">elm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_elm</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//input[@type=&quot;radio&quot;][@name=&quot;</span><span class="si">%s</span><span class="s">&quot;][@value=&quot;</span><span class="si">%s</span><span class="s">&quot;]&#39;</span> <span class="o">%</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">elm_name</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">convert_value</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
         <span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_click_on_elm_or_his_ancestor</span><span class="p">(</span><span class="n">elm</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">fill_input_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fill_input_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="n">elm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_elm</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">elm_name</span><span class="p">)</span>
         <span class="n">elm</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convert_value</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">fill_select_selectone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fill_select_selectone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="n">select</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_elm</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">elm_name</span><span class="p">)</span>
         <span class="n">select</span><span class="o">.</span><span class="n">select_by_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convert_value</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">fill_select_selectmultiple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fill_select_selectmultiple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
 
         <span class="n">select</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_elm</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">elm_name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">turbo</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_reset</span><span class="p">:</span>
             <span class="n">select</span><span class="o">.</span><span class="n">deselect_all</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
             <span class="n">select</span><span class="o">.</span><span class="n">select_by_value</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">fill_common</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">turbo</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fill_common</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">skip_reset</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="n">elm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_elm</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">elm_name</span><span class="p">)</span>
-        <span class="n">elm</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_reset</span><span class="p">:</span>
+            <span class="n">elm</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">elm</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convert_value</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
         <span class="n">elm</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">Keys</span><span class="o">.</span><span class="n">TAB</span><span class="p">)</span>  <span class="c"># Send TAB for losing focus. (Trigger change events.)</span>
 
@@ -258,7 +264,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2015, Michal Horejsek.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

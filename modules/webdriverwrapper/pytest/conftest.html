@@ -157,6 +157,7 @@
 <span class="sd">            yield driver</span>
 <span class="sd">            driver.quit()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_driver</span><span class="o">.</span><span class="n">screenshot_path</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s">&#39;webdriverwrapper_screenshot_path&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
     <span class="n">_driver</span><span class="o">.</span><span class="n">close_other_windows</span><span class="p">()</span>
     <span class="k">yield</span> <span class="n">_driver</span>
     <span class="n">_driver</span><span class="o">.</span><span class="n">check_expected_errors</span><span class="p">(</span><span class="n">test_method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">function</span><span class="p">)</span>
@@ -201,7 +202,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2015, Michal Horejsek.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

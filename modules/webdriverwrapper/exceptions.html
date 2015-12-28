@@ -52,11 +52,19 @@
 
 <span class="kn">from</span> <span class="nn">selenium.common.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">Levenshtein</span> <span class="kn">import</span> <span class="n">distance</span> <span class="k">as</span> <span class="n">levenshteinDistance</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">levenshteinDistance</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">force_text</span>
+
 
 <span class="k">def</span> <span class="nf">_create_exception_msg</span><span class="p">(</span>
     <span class="n">id_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
     <span class="n">parent_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent_tag_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
     <span class="n">xpath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">css_selector</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">driver</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="n">elm_text</span> <span class="o">=</span> <span class="n">_create_exception_msg_tag</span><span class="p">(</span>
         <span class="n">id_</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">,</span>
@@ -66,6 +74,11 @@
     <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;No element {} found&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elm_text</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; at {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="n">suggest</span> <span class="o">=</span> <span class="n">_get_suggestion</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">id_</span><span class="p">,</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">tag_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">suggest</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">suggest</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">msg</span>
 
 
@@ -98,6 +111,45 @@
         <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;&gt;&#39;</span>
         <span class="k">return</span> <span class="n">msg</span>
     <span class="k">return</span> <span class="s">&#39;&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">_get_suggestion</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">id_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">driver</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="n">id_</span><span class="p">:</span>
+        <span class="n">suggest_by</span> <span class="o">=</span> <span class="s">&#39;id&#39;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">id_</span>
+    <span class="k">elif</span> <span class="n">class_name</span><span class="p">:</span>
+        <span class="n">suggest_by</span> <span class="o">=</span> <span class="s">&#39;class&#39;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">class_name</span>
+    <span class="k">elif</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">suggest_by</span> <span class="o">=</span> <span class="s">&#39;name&#39;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span>
+
+    <span class="n">items</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">elm</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">suggest_by</span><span class="p">)</span> <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//*[@{}]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">suggest_by</span><span class="p">)))</span>
+    <span class="n">suggestion</span> <span class="o">=</span> <span class="n">_find_best_suggestion</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">suggestion</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span>
+
+    <span class="k">return</span> <span class="s">&#39;did you mean {}={}?&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">suggest_by</span><span class="p">,</span> <span class="n">suggestion</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_find_best_suggestion</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">levenshteinDistance</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">force_text</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">min_distance</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span>  <span class="c"># So it can find distance between btn and btn-default for example.</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">levenshteinDistance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">force_text</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">min_distance</span><span class="p">:</span>
+            <span class="n">min_distance</span> <span class="o">=</span> <span class="n">distance</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="n">item</span>
+    <span class="k">return</span> <span class="n">best</span>
 
 
 <div class="viewcode-block" id="WebdriverWrapperException"><a class="viewcode-back" href="../../index.html#webdriverwrapper.exceptions.WebdriverWrapperException">[docs]</a><span class="k">class</span> <span class="nc">WebdriverWrapperException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -214,7 +266,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2015, Michal Horejsek.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>
