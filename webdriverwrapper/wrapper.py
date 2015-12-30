@@ -157,7 +157,7 @@ class _WebdriverBaseWrapper(object):
                 id_, class_name, name, tag_name,
                 parent_id, parent_class_name, parent_name, parent_tag_name,
                 xpath, css_selector, self.current_url,
-                driver=self,
+                driver=self._driver,
             ))
         return elms[0]
 
@@ -253,7 +253,7 @@ class _WebdriverBaseWrapper(object):
                 msg = _create_exception_msg(**{
                     self._by_to_string_param_map[by]: value,
                     'url': self.current_url,
-                    'driver': self,
+                    'driver': self._driver,
                 })
             else:
                 msg = ''
@@ -268,6 +268,14 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
     def __init__(self, *args, **kwds):
         super(_WebdriverWrapper, self).__init__(*args, **kwds)
         self.screenshot_path = None
+
+    @property
+    def _driver(self):
+        """
+        Returns always driver, not element. Use it when you need driver
+        and variable can be driver or element.
+        """
+        return self
 
     @property
     def html(self):
@@ -534,13 +542,21 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
         pass
 
     @property
+    def _driver(self):
+        """
+        Returns always driver, not element. Use it when you need driver
+        and variable can be driver or element.
+        """
+        return self._parent
+
+    @property
     def current_url(self):
         """
         Accessing :py:attr:`~selenium.webdriver.remote.webdriver.WebDriver.current_url`
         also on elements.
         """
         try:
-            current_url = self._parent.current_url
+            current_url = self._driver.current_url
         except Exception:
             current_url = 'unknown'
         finally:

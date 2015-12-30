@@ -64,7 +64,7 @@ def _create_exception_msg_tag_element(id_=None, class_name=None, name=None, tag_
 
 
 def _get_suggestion(driver, id_=None, class_name=None, name=None):
-    if not driver:
+    if not driver or not levenshteinDistance:
         return ''
 
     if id_:
@@ -79,8 +79,14 @@ def _get_suggestion(driver, id_=None, class_name=None, name=None):
     else:
         return ''
 
-    items = set(elm.get_attribute(suggest_by) for elm in driver.get_elms(xpath='//*[@{}]'.format(suggest_by)))
-    suggestion = _find_best_suggestion(value, items)
+    # Can't be used xpath because it can return only element and then
+    # get attribute for every element is very slow. So by JS it's done
+    # by only one Selenium call.
+    items = driver.execute_script('return Array.prototype.map.call(document.querySelectorAll("[id]"), function(el) {return el.id})')
+    if not items:
+        return ''
+
+    suggestion = _find_best_suggestion(value, set(items))
     if not suggestion:
         return ''
 
