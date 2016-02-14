@@ -493,6 +493,26 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         """
         return Alert(self)
 
+    def wait_for_alert(self, timeout=10):
+        """
+        Shortcut for waiting for alert. If it not ends with exception, it
+        returns that alert.
+        """
+
+        alert = Alert(self)
+
+        # There is no better way how to check alert appearance
+        def alert_shown(driver):
+            try:
+                alert.text
+                return True
+            except selenium_exc.NoAlertPresentException:
+                return False
+
+        self.wait(timeout).until(alert_shown)
+
+        return alert
+
     def download_url(self, url=None):
         """
         With WebDriver you can't check status code or headers. For this you have
