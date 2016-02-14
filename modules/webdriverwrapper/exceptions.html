@@ -114,7 +114,7 @@
 
 
 <span class="k">def</span> <span class="nf">_get_suggestion</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">id_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">driver</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">driver</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">levenshteinDistance</span><span class="p">:</span>
         <span class="k">return</span> <span class="s">&#39;&#39;</span>
 
     <span class="k">if</span> <span class="n">id_</span><span class="p">:</span>
@@ -129,8 +129,14 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="s">&#39;&#39;</span>
 
-    <span class="n">items</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">elm</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">suggest_by</span><span class="p">)</span> <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//*[@{}]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">suggest_by</span><span class="p">)))</span>
-    <span class="n">suggestion</span> <span class="o">=</span> <span class="n">_find_best_suggestion</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+    <span class="c"># Can&#39;t be used xpath because it can return only element and then</span>
+    <span class="c"># get attribute for every element is very slow. So by JS it&#39;s done</span>
+    <span class="c"># by only one Selenium call.</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s">&#39;return Array.prototype.map.call(document.querySelectorAll(&quot;[id]&quot;), function(el) {return el.id})&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span>
+
+    <span class="n">suggestion</span> <span class="o">=</span> <span class="n">_find_best_suggestion</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">suggestion</span><span class="p">:</span>
         <span class="k">return</span> <span class="s">&#39;&#39;</span>
 

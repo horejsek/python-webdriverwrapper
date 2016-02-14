@@ -320,6 +320,13 @@ information.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverWrapper.wait_for_alert">
+<tt class="descname">wait_for_alert</tt><big>(</big><em>timeout=10</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.wait_for_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait_for_alert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for waiting for alert. If it not ends with exception, it
+returns that alert.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element">
 <tt class="descname">wait_for_element</tt><big>(</big><em>timeout=10</em>, <em>message=''</em>, <em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverWrapper.wait_for_element"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut for waiting for element. If it not ends with exception, it
@@ -783,7 +790,7 @@ this method accordingly to your app.</p>
 <span class="target" id="module-webdriverwrapper.pytest.conftest"></span><dl class="function">
 <dt id="webdriverwrapper.pytest.conftest.pytest_report_header">
 <tt class="descclassname">webdriverwrapper.pytest.conftest.</tt><tt class="descname">pytest_report_header</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/pytest/conftest.html#pytest_report_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.pytest.conftest.pytest_report_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pytest hook, see <tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_report_header()</span></tt> (<a class="reference external" href="http://pytest.org/latest/writing_plugins.html#plugins" title="(in pytest v2.8)"><em>Writing plugins</em></a>).</p>
+<dd><p>Pytest hook, see <a class="reference external" href="http://pytest.org/latest/writing_plugins.html#_pytest.hookspec.pytest_report_header" title="(in pytest v2.8)"><tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_report_header()</span></tt></a> (<a class="reference external" href="http://pytest.org/latest/writing_plugins.html#plugins" title="(in pytest v2.8)"><em>Writing plugins</em></a>).</p>
 <p>It&#8217;s important to see which URL is testing with which user and where are
 stored screenshots. It will be displayed before run of tests if you set
 some config values like that:</p>
