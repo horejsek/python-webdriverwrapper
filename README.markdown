@@ -14,4 +14,4 @@ Just install Chrome/ium and put [chromedriver](http://chromedriver.storage.googl
 
 Documentation of wrapper: http://horejsek.github.io/python-webdriverwrapper/
 
-Documentation of Selenium: http://selenium.googlecode.com/svn/trunk/docs/api/py/index.html
+Documentation of Selenium: http://selenium-python.readthedocs.io/api.html
