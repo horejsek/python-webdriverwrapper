@@ -2,7 +2,7 @@
 
 import os
 
-from webdriverwrapper import unittest, Chrome
+from webdriverwrapper import unittest, Chrome, ChromeOptions
 from webdriverwrapper.decorators import *
 from webdriverwrapper.exceptions import ErrorMessagesException
 
@@ -14,7 +14,10 @@ class TestCaseTest(unittest.WebdriverTestCase):
         self.path = os.path.dirname(os.path.realpath(__file__))
 
     def _get_driver(self):
-        return Chrome()
+        opt = ChromeOptions()
+        opt.add_argument('--no-sandbox')
+        opt.add_argument('--proxy-auto-detect')
+        return Chrome(chrome_options=opt)
 
     # This test will be OK. Error in the middle Selenium do not see.
     def test_not_check_errors_in_middle_of_test(self):

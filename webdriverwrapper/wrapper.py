@@ -12,6 +12,7 @@ try:
 except ImportError:
     from urllib.parse import urlparse, urlunparse, urlencode
 
+import six
 try:
     input = raw_input
 except NameError:
@@ -114,8 +115,10 @@ class _WebdriverBaseWrapper(object):
             Searching in all text nodes. Before it wouldn't find string "text"
             in HTML like ``<div>some<br />text in another text node</div>``.
         """
-        # XPATH have to be byte string.
-        text = force_text(text).encode('utf8')
+        # XPATH have to be string in Python 2 and unicode in Python 3.
+        text = force_text(text)
+        if not six.PY3:
+            text = text.encode('utf8')
         elms = self.find_elements_by_xpath(
             './/*/text()[contains(., "{}") and not(ancestor-or-self::*[@data-selenium-not-search])]/..'.format(text)
         )

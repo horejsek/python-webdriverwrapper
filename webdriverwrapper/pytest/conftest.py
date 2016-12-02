@@ -75,8 +75,10 @@ def set_driver_to_test_for_failed_screenshot(request, driver):
 
 def _get_test_func(obj):
     # Test function may be method. But attributes can be set only to functions.
-    if hasattr(obj, 'im_func'):
+    if hasattr(obj, 'im_func'):  # Python 2
         return obj.im_func
+    if hasattr(obj, '__func__'):  # Python 3
+        return obj.__func__
     return obj
 
 

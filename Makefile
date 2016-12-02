@@ -1,30 +1,31 @@
 
-PYTHON=`which python`
+PYTHON2=`which python2`
 PYTHON3=`which python3`
 
 
 test:
-	cd tests; py.test `find -iname "*.py"`
+	$(PYTHON2) -m pytest -v tests
+	$(PYTHON3) -m pytest -v tests
 test-lastfail:
-	cd tests; py.test --lf `find -iname "*.py"`
+	$(PYTHON3) -m pytest -v --lf tests
 
 doc:
 	cd docs; make html
 
 source:
-	$(PYTHON) setup.py sdist
+	$(PYTHON2) setup.py sdist
 
 upload:
-	$(PYTHON) setup.py register sdist upload
+	$(PYTHON2) setup.py register sdist upload
 
 install:
 	@echo "Instaling for Python 2..."
-	$(PYTHON) setup.py install
+	$(PYTHON2) setup.py install
 	@echo "Instaling for Python 3..."
 	$(PYTHON3) setup.py install
 
 clean:
-	$(PYTHON) setup.py clean
+	$(PYTHON2) setup.py clean
 	rm -rf build/ MANIFEST
 	find . -name '*.pyc' -delete
 
