@@ -50,19 +50,19 @@ __all__ = (
 class _ConvertToWebelementWrapper(object):
     def __call__(self, f):
         @functools.wraps(f)
-        def wrapper(*args, **kwds):
-            res = f(*args, **kwds)
-            res = self._convert_result(res)
+        def wrapper(driver_self, *args, **kwds):
+            res = f(driver_self, *args, **kwds)
+            res = self._convert_result(driver_self._driver, res)
             return res
         return wrapper
 
     @classmethod
-    def _convert_result(cls, res):
-        if type(res) is WebElement:
+    def _convert_result(cls, driver, res):
+        if type(res) is driver._web_element_cls:
             res = cls._convert_into_webelementwrapper(res)
         elif isinstance(res, (list, tuple)):
             for index, item in enumerate(res):
-                res[index] = cls._convert_result(item)
+                res[index] = cls._convert_result(driver, item)
         return res
 
     @classmethod
