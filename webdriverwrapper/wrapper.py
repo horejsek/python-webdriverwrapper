@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import
 
+import copy
 import functools
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -23,6 +24,7 @@ from selenium.webdriver import *
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.firefox.webelement import FirefoxWebElement
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from .download import DownloadUrl, DownloadFile
@@ -72,13 +74,27 @@ class _ConvertToWebelementWrapper(object):
                 from webdriverwrapper.forms import Form
                 wrapped = Form(webelement)
             elif webelement.tag_name == 'select':
-                wrapped = _SelectWrapper(webelement)
+                wrapped = cls._make_instance(_SelectWrapper, webelement)
             else:
-                wrapped = _WebElementWrapper(webelement)
+                wrapped = cls._make_instance(_WebElementWrapper, webelement)
         except selenium_exc.StaleElementReferenceException:
             return webelement
         else:
             return wrapped
+
+    @classmethod
+    def _make_instance(cls, element_class, webelement):
+        """
+        Firefox uses another implementation of element. This method
+        switch base of wrapped element to firefox one.
+        """
+        if isinstance(webelement, FirefoxWebElement):
+            element_class = copy.deepcopy(element_class)
+            element_class.__bases__ = tuple(
+                FirefoxWebElement if base is WebElement else base
+                for base in element_class.__bases__
+            )
+        return element_class(webelement)
 
 
 class _WebdriverBaseWrapper(object):
