@@ -33,6 +33,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../../../index.html">WebDriver Wrapper  documentation</a> &raquo;</li>
           <li><a href="../../index.html" >Module code</a> &raquo;</li>
           <li><a href="../../webdriverwrapper.html" accesskey="U">webdriverwrapper</a> &raquo;</li> 
@@ -122,8 +125,10 @@
 
 <span class="k">def</span> <span class="nf">_get_test_func</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="c"># Test function may be method. But attributes can be set only to functions.</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&#39;im_func&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&#39;im_func&#39;</span><span class="p">):</span>  <span class="c"># Python 2</span>
         <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">im_func</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&#39;__func__&#39;</span><span class="p">):</span>  <span class="c"># Python 3</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">__func__</span>
     <span class="k">return</span> <span class="n">obj</span>
 
 
@@ -189,6 +194,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../../../index.html">WebDriver Wrapper  documentation</a> &raquo;</li>
           <li><a href="../../index.html" >Module code</a> &raquo;</li>
           <li><a href="../../webdriverwrapper.html" >webdriverwrapper</a> &raquo;</li> 
