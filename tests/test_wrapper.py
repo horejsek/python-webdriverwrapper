@@ -51,6 +51,11 @@ def test_wait_for_element(driver):
     assert driver.wait_for_element(timeout=0.5, id_='somepage')
 
 
+def test_wait_for_element_on_element(driver):
+    with pytest.raises(TimeoutException):
+        assert driver.get_elm(id_='somepage').wait_for_element(timeout=0.5, tag_name='p')
+
+
 def test_wait_for_element_fail(driver):
     with pytest.raises(TimeoutException) as excinfo:
         driver.wait_for_element(timeout=0.5, id_='nosuchelement', parent_tag_name='body')

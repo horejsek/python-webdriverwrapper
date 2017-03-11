@@ -278,67 +278,6 @@ class _WebdriverBaseWrapper(object):
                 msg = ''
             raise exc.__class__(msg)
 
-
-class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _WebdriverBaseWrapper):
-    """
-    Class wrapping :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`.
-    """
-
-    def __init__(self, *args, **kwds):
-        super(_WebdriverWrapper, self).__init__(*args, **kwds)
-        self.screenshot_path = None
-
-    @property
-    def _driver(self):
-        """
-        Returns always driver, not element. Use it when you need driver
-        and variable can be driver or element.
-        """
-        return self
-
-    @property
-    def html(self):
-        """
-        Returns ``innerHTML`` of whole page. On page have to be tag ``body``.
-
-        .. versionadded:: 2.2
-        """
-        try:
-            body = self.get_elm(tag_name='body')
-        except selenium_exc.NoSuchElementException:
-            return None
-        else:
-            return body.get_attribute('innerHTML')
-
-    def make_screenshot(self, screenshot_name=None):
-        """
-        Shortcut for ``get_screenshot_as_file`` but with configured path. If you
-        are using base :py:class:`~webdriverwrapper.unittest.testcase.WebdriverTestCase`.
-        or pytest, ``screenshot_path`` is passed to driver automatically.
-
-        If ``screenshot_name`` is not passed, current timestamp is used.
-
-        .. versionadded:: 2.2
-        """
-        if not self.screenshot_path:
-            raise Exception('Please, configure screenshot_path first or call get_screenshot_as_file manually')
-
-        if not screenshot_name:
-            screenshot_name = str(time.time())
-
-        self.get_screenshot_as_file('{}/{}.png'.format(self.screenshot_path, screenshot_name))
-
-    def break_point(self):
-        """
-        Stops testing and wait for pressing enter to continue.
-
-        Useful when you need check Chrome console for some info for example.
-
-        .. versionadded:: 2.1
-        """
-        logging.info('Break point. Type enter to continue.')
-        input()
-
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
         """
         Shortcut for waiting for element. If it not ends with exception, it
@@ -416,6 +355,67 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         :py:meth:`~._WebdriverWrapper.wait_for_element` instead.
         """
         return WebDriverWait(self, timeout)
+
+
+class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _WebdriverBaseWrapper):
+    """
+    Class wrapping :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`.
+    """
+
+    def __init__(self, *args, **kwds):
+        super(_WebdriverWrapper, self).__init__(*args, **kwds)
+        self.screenshot_path = None
+
+    @property
+    def _driver(self):
+        """
+        Returns always driver, not element. Use it when you need driver
+        and variable can be driver or element.
+        """
+        return self
+
+    @property
+    def html(self):
+        """
+        Returns ``innerHTML`` of whole page. On page have to be tag ``body``.
+
+        .. versionadded:: 2.2
+        """
+        try:
+            body = self.get_elm(tag_name='body')
+        except selenium_exc.NoSuchElementException:
+            return None
+        else:
+            return body.get_attribute('innerHTML')
+
+    def make_screenshot(self, screenshot_name=None):
+        """
+        Shortcut for ``get_screenshot_as_file`` but with configured path. If you
+        are using base :py:class:`~webdriverwrapper.unittest.testcase.WebdriverTestCase`.
+        or pytest, ``screenshot_path`` is passed to driver automatically.
+
+        If ``screenshot_name`` is not passed, current timestamp is used.
+
+        .. versionadded:: 2.2
+        """
+        if not self.screenshot_path:
+            raise Exception('Please, configure screenshot_path first or call get_screenshot_as_file manually')
+
+        if not screenshot_name:
+            screenshot_name = str(time.time())
+
+        self.get_screenshot_as_file('{}/{}.png'.format(self.screenshot_path, screenshot_name))
+
+    def break_point(self):
+        """
+        Stops testing and wait for pressing enter to continue.
+
+        Useful when you need check Chrome console for some info for example.
+
+        .. versionadded:: 2.1
+        """
+        logging.info('Break point. Type enter to continue.')
+        input()
 
     def go_to(self, path=None, query=None):
         """
