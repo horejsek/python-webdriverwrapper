@@ -280,7 +280,7 @@ class _WebdriverBaseWrapper(object):
 
     def wait_for_element(self, timeout=10, message='', *args, **kwds):
         """
-        Shortcut for waiting for element. If it not ends with exception, it
+        Shortcut for waiting for visible element. If it not ends with exception, it
         returns that element. Same as following:
 
         .. code-block:: python
