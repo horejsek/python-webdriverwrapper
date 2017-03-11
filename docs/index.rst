@@ -12,7 +12,7 @@ wrapper wraps it and handle following for you:
 
   * :py:meth:`find_elements_by_text <webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text>`,
   * :py:meth:`contains_text <webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text>`,
-  * :py:meth:`wait_for_element <webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element>`,
+  * :py:meth:`wait_for_element <webdriverwrapper.wrapper._WebdriverBaseWrapper.wait_for_element>`,
   * :py:meth:`go_to <webdriverwrapper.wrapper._WebdriverWrapper.go_to>`,
   * :py:meth:`download_file <webdriverwrapper.wrapper._WebElementWrapper.download_file>`
   * and more.
