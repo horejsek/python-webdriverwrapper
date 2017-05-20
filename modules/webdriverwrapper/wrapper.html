@@ -330,12 +330,37 @@
 
 <div class="viewcode-block" id="_WebdriverBaseWrapper.wait_for_element"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverBaseWrapper.wait_for_element">[docs]</a>    <span class="k">def</span> <span class="nf">wait_for_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shortcut for waiting for element. If it not ends with exception, it</span>
+<span class="sd">        returns that element. Same as following:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            selenium.webdriver.support.wait.WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))</span>
+
+<span class="sd">        .. versionchanged:: 2.5</span>
+<span class="sd">            Waits only for visible elements.</span>
+<span class="sd">        .. versionchanged:: 2.6</span>
+<span class="sd">            Returned functionality back in favor of new method</span>
+<span class="sd">            :py:meth:`~._WebdriverBaseWrapper.wait_for_element_show`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">_create_exception_msg</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">),</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="c"># Also return that element for which is waiting.</span>
+        <span class="n">elm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">elm</span>
+</div>
+<div class="viewcode-block" id="_WebdriverBaseWrapper.wait_for_element_show"><a class="viewcode-back" href="../../index.html#webdriverwrapper.wrapper._WebdriverBaseWrapper.wait_for_element_show">[docs]</a>    <span class="k">def</span> <span class="nf">wait_for_element_show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shortcut for waiting for visible element. If it not ends with exception, it</span>
 <span class="sd">        returns that element. Same as following:</span>
 
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            selenium.webdriver.support.wait.WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))</span>
+
+<span class="sd">        .. versionadded:: 2.6</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="n">_create_exception_msg</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>

@@ -189,10 +189,17 @@ information.</p>
 <dl class="method">
 <dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper.wait_for_element">
 <tt class="descname">wait_for_element</tt><big>(</big><em>timeout=10</em>, <em>message=''</em>, <em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.wait_for_element"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.wait_for_element" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shortcut for waiting for visible element. If it not ends with exception, it
+<dd><p>Shortcut for waiting for element. If it not ends with exception, it
 returns that element. Same as following:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">selenium</span><span class="o">.</span><span class="n">webdriver</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">wait</span><span class="o">.</span><span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
 </pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 2.5: </span>Waits only for visible elements.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 2.6: </span>Returned functionality back in favor of new method
+<a class="reference internal" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.wait_for_element_show" title="webdriverwrapper.wrapper._WebdriverBaseWrapper.wait_for_element_show"><tt class="xref py py-meth docutils literal"><span class="pre">wait_for_element_show()</span></tt></a>.</p>
 </div>
 </dd></dl>
 
@@ -205,6 +212,19 @@ returns that element. Same as following:</p>
 </div>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 2.0.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="webdriverwrapper.wrapper._WebdriverBaseWrapper.wait_for_element_show">
+<tt class="descname">wait_for_element_show</tt><big>(</big><em>timeout=10</em>, <em>message=''</em>, <em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/wrapper.html#_WebdriverBaseWrapper.wait_for_element_show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.wrapper._WebdriverBaseWrapper.wait_for_element_show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for waiting for visible element. If it not ends with exception, it
+returns that element. Same as following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">selenium</span><span class="o">.</span><span class="n">webdriver</span><span class="o">.</span><span class="n">support</span><span class="o">.</span><span class="n">wait</span><span class="o">.</span><span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.6.</span></p>
 </div>
 </dd></dl>
 
@@ -468,7 +488,7 @@ form by pressing enter.</p>
 <dt id="webdriverwrapper.download._Download.headers">
 <tt class="descname">headers</tt><a class="reference internal" href="modules/webdriverwrapper/download.html#_Download.headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.download._Download.headers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Headers of response.</p>
-<p>See <a class="reference external" href="http://docs.python-requests.org/en/latest/api/#requests.Response.headers" title="(in Requests v2.13.0)"><tt class="xref py py-attr docutils literal"><span class="pre">requests.Response.headers</span></tt></a> for more information.</p>
+<p>See <a class="reference external" href="http://docs.python-requests.org/en/latest/api/#requests.Response.headers" title="(in Requests v2.14.2)"><tt class="xref py py-attr docutils literal"><span class="pre">requests.Response.headers</span></tt></a> for more information.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -790,7 +810,7 @@ this method accordingly to your app.</p>
 <span class="target" id="module-webdriverwrapper.pytest.conftest"></span><dl class="function">
 <dt id="webdriverwrapper.pytest.conftest.pytest_report_header">
 <tt class="descclassname">webdriverwrapper.pytest.conftest.</tt><tt class="descname">pytest_report_header</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/pytest/conftest.html#pytest_report_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.pytest.conftest.pytest_report_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pytest hook, see <a class="reference external" href="http://pytest.org/latest/writing_plugins.html#_pytest.hookspec.pytest_report_header" title="(in pytest v3.0.7.dev0)"><tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_report_header()</span></tt></a> (<a class="reference external" href="http://pytest.org/latest/writing_plugins.html#plugins" title="(in pytest v3.0.7.dev0)"><em>Writing plugins</em></a>).</p>
+<dd><p>Pytest hook, see <tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_report_header()</span></tt> (<em class="xref std std-ref">pytest:plugins</em>).</p>
 <p>It&#8217;s important to see which URL is testing with which user and where are
 stored screenshots. It will be displayed before run of tests if you set
 some config values like that:</p>
@@ -806,7 +826,7 @@ some config values like that:</p>
 <dl class="function">
 <dt id="webdriverwrapper.pytest.conftest.pytest_runtest_makereport">
 <tt class="descclassname">webdriverwrapper.pytest.conftest.</tt><tt class="descname">pytest_runtest_makereport</tt><big>(</big><em>item</em>, <em>call</em>, <em>__multicall__</em><big>)</big><a class="reference internal" href="modules/webdriverwrapper/pytest/conftest.html#pytest_runtest_makereport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#webdriverwrapper.pytest.conftest.pytest_runtest_makereport" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pytest hook, see <a class="reference external" href="http://pytest.org/latest/writing_plugins.html#_pytest.hookspec.pytest_runtest_makereport" title="(in pytest v3.0.7.dev0)"><tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_runtest_makereport()</span></tt></a>.</p>
+<dd><p>Pytest hook, see <tt class="xref py py-func docutils literal"><span class="pre">_pytest.hookspec.pytest_runtest_makereport()</span></tt>.</p>
 <p>After each failed test will be generated screenshot if you specify where to
 save these screenshots.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">pytest_configure</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
