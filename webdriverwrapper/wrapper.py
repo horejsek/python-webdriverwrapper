@@ -282,8 +282,16 @@ class _WebdriverBaseWrapper(object):
         """
         Shortcut for waiting for element. If it not ends with exception, it
         returns that element. Same as following:
+
         .. code-block:: python
+
             selenium.webdriver.support.wait.WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))
+
+        .. versionchanged:: 2.5
+            Waits only for visible elements.
+        .. versionchanged:: 2.6
+            Returned functionality back in favor of new method
+            :py:meth:`~._WebdriverBaseWrapper.wait_for_element_show`.
         """
         if not message:
             message = _create_exception_msg(*args, url=self.current_url, **kwds)
@@ -301,6 +309,8 @@ class _WebdriverBaseWrapper(object):
         .. code-block:: python
 
             selenium.webdriver.support.wait.WebDriverWait(driver, timeout).until(lambda driver: driver.get_elm(...))
+
+        .. versionadded:: 2.6
         """
         if not message:
             message = _create_exception_msg(*args, url=self.current_url, **kwds)
