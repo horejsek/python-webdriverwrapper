@@ -4,7 +4,7 @@
 
 `pip install webdriverwrapper`
 
-Support for Python 2.6 and higher (including Python 3).
+Support for Python 3.4 and higher.
 
 ## How to install chromedriver
 

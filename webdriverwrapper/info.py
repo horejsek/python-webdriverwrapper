@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
-
 from selenium.common.exceptions import NoSuchElementException
 
 from .exceptions import InfoMessagesException
@@ -43,7 +39,7 @@ def allowed_info_messages(*info_messages):
     return wrapper
 
 
-class WebdriverWrapperInfoMixin(object):
+class WebdriverWrapperInfoMixin:
     """
     Mixin used in :py:obj:`~webdriverwrapper.wrapper._WebdriverWrapper`.
 
@@ -84,9 +80,9 @@ class WebdriverWrapperInfoMixin(object):
         allowed_info_messages = set(allowed_info_messages)
         info_messages = set(self.get_info_messages())
         if (
-            info_messages & expected_info_messages != expected_info_messages
-            or
-            (expected_info_messages and info_messages - (expected_info_messages | allowed_info_messages))
+                info_messages & expected_info_messages != expected_info_messages
+                or
+                (expected_info_messages and info_messages - (expected_info_messages | allowed_info_messages))
         ):
             raise InfoMessagesException(self.current_url, info_messages, expected_info_messages, allowed_info_messages)
 
@@ -108,7 +104,7 @@ class WebdriverWrapperInfoMixin(object):
         else:
             try:
                 info_values = [info_elm.get_attribute('info') for info_elm in info_elms]
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 info_values = [info_elm.text for info_elm in info_elms]
             finally:
                 return info_values

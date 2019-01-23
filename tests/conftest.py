@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os
 import sys
 
@@ -28,7 +26,7 @@ def session_driver():
     opt.add_argument('--no-sandbox')
     opt.add_argument('--proxy-auto-detect')
 
-    driver = webdriverwrapper.Chrome(chrome_options=opt)
+    driver = webdriverwrapper.Chrome(options=opt)
     return driver
 
 

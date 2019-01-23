@@ -1,23 +1,10 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
+# pylint: disable=wildcard-import,unused-wildcard-import,function-redefined,too-many-ancestors
 
 import copy
 import functools
 import logging
-logging.basicConfig(level=logging.INFO)
 import time
-try:
-    from urlparse import urlparse, urlunparse
-    from urllib import urlencode
-except ImportError:
-    from urllib.parse import urlparse, urlunparse, urlencode
-
-import six
-try:
-    input = raw_input
-except NameError:
-    pass
+from urllib.parse import urlparse, urlunparse, urlencode
 
 import selenium.common.exceptions as selenium_exc
 from selenium.webdriver import *
@@ -31,7 +18,8 @@ from .download import DownloadUrl, DownloadFile
 from .errors import WebdriverWrapperErrorMixin
 from .exceptions import _create_exception_msg
 from .info import WebdriverWrapperInfoMixin
-from .utils import force_text
+
+logging.basicConfig(level=logging.INFO)
 
 __all__ = (
     'Firefox',
@@ -49,7 +37,7 @@ __all__ = (
 )
 
 
-class _ConvertToWebelementWrapper(object):
+class _ConvertToWebelementWrapper:
     def __call__(self, f):
         @functools.wraps(f)
         def wrapper(driver_self, *args, **kwds):
@@ -97,7 +85,7 @@ class _ConvertToWebelementWrapper(object):
         return element_class(webelement)
 
 
-class _WebdriverBaseWrapper(object):
+class _WebdriverBaseWrapper:
     """
     Class wrapping both
     :py:class:`selenium.WebDriver <selenium.webdriver.remote.webdriver.WebDriver>`
@@ -127,7 +115,7 @@ class _WebdriverBaseWrapper(object):
         """
         elms = self.find_elements_by_text(text)
         if not elms:
-            raise selenium_exc.NoSuchElementException(u'No element containing text "{}" at {}.'.format(force_text(text), self.current_url))
+            raise selenium_exc.NoSuchElementException(u'No element containing text "{}" at {}.'.format(text, self.current_url))
         return elms[0]
 
     def find_elements_by_text(self, text):
@@ -138,10 +126,6 @@ class _WebdriverBaseWrapper(object):
             Searching in all text nodes. Before it wouldn't find string "text"
             in HTML like ``<div>some<br />text in another text node</div>``.
         """
-        # XPATH have to be string in Python 2 and unicode in Python 3.
-        text = force_text(text)
-        if not six.PY3:
-            text = text.encode('utf8')
         elms = self.find_elements_by_xpath(
             './/*/text()[contains(., "{}") and not(ancestor-or-self::*[@data-selenium-not-search])]/..'.format(text)
         )
@@ -161,13 +145,13 @@ class _WebdriverBaseWrapper(object):
             elm = self.get_elm(*args, **kwds)
             elm.click()
         else:
-            super(_WebdriverBaseWrapper, self).click()
+            super().click()
 
     def get_elm(
-        self,
-        id_=None, class_name=None, name=None, tag_name=None, xpath=None,
-        parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
-        css_selector=None
+            self,
+            id_=None, class_name=None, name=None, tag_name=None, xpath=None,
+            parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
+            css_selector=None
     ):
         """
         Returns first found element. This method uses
@@ -188,10 +172,10 @@ class _WebdriverBaseWrapper(object):
         return elms[0]
 
     def get_elms(
-        self,
-        id_=None, class_name=None, name=None, tag_name=None, xpath=None,
-        parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
-        css_selector=None
+            self,
+            id_=None, class_name=None, name=None, tag_name=None, xpath=None,
+            parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
+            css_selector=None
     ):
         """
         Shortcut for :py:meth:`find_element* <selenium.webdriver.remote.webelement.WebElement.find_element>`
@@ -216,18 +200,17 @@ class _WebdriverBaseWrapper(object):
 
         if id_ is not None:
             return parent.find_elements_by_id(id_)
-        elif class_name is not None:
+        if class_name is not None:
             return parent.find_elements_by_class_name(class_name)
-        elif name is not None:
+        if name is not None:
             return parent.find_elements_by_name(name)
-        elif tag_name is not None:
+        if tag_name is not None:
             return parent.find_elements_by_tag_name(tag_name)
-        elif xpath is not None:
+        if xpath is not None:
             return parent.find_elements_by_xpath(xpath)
-        elif css_selector is not None:
+        if css_selector is not None:
             return parent.find_elements_by_css_selector(css_selector)
-        else:
-            raise Exception('You must specify id or name of element on which you want to click.')
+        raise Exception('You must specify id or name of element on which you want to click.')
 
     def find_element(self, by=By.ID, value=None):
         callback = self._get_seleniums_driver_class().find_element
@@ -269,11 +252,11 @@ class _WebdriverBaseWrapper(object):
         try:
             return callback(self, by, value)
         except (
-            selenium_exc.NoSuchElementException,
-            selenium_exc.StaleElementReferenceException,
-            selenium_exc.InvalidElementStateException,
-            selenium_exc.ElementNotVisibleException,
-            selenium_exc.ElementNotSelectableException,
+                selenium_exc.NoSuchElementException,
+                selenium_exc.StaleElementReferenceException,
+                selenium_exc.InvalidElementStateException,
+                selenium_exc.ElementNotVisibleException,
+                selenium_exc.ElementNotSelectableException,
         ) as exc:
             if by in self._by_to_string_param_map:
                 msg = _create_exception_msg(**{
@@ -406,7 +389,7 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
     """
 
     def __init__(self, *args, **kwds):
-        super(_WebdriverWrapper, self).__init__(*args, **kwds)
+        super().__init__(*args, **kwds)
         self.screenshot_path = None
 
     @property
@@ -512,14 +495,14 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         can be also relative path.
         """
         if window_name:
-            self._get_seleniums_driver_class().switch_to.window(self, window_name)
+            self.switch_to.window(window_name)
             return
 
         if url:
             url = self.get_url(path=url)
 
         for window_handle in self.window_handles:
-            self._get_seleniums_driver_class().switch_to.window(self, window_handle)
+            self.switch_to.window(window_handle)
             if title and self.title == title:
                 return
             if url and self.current_url == url:
@@ -629,7 +612,7 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
     """
 
     def __new__(cls, webelement):
-        instance = super(_WebElementWrapper, cls).__new__(cls)
+        instance = super().__new__(cls)
         instance.__dict__.update(webelement.__dict__)
         return instance
 
@@ -654,7 +637,7 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
         """
         try:
             current_url = self._driver.current_url
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             current_url = 'unknown'
         finally:
             return current_url
@@ -671,12 +654,12 @@ class _WebElementWrapper(_WebdriverBaseWrapper, WebElement):
     def clear(self):
         # Just add some context when calling clear fails.
         try:
-            return super(_WebElementWrapper, self).clear()
+            return super().clear()
         except (
-            selenium_exc.StaleElementReferenceException,
-            selenium_exc.InvalidElementStateException,
-            selenium_exc.ElementNotVisibleException,
-            selenium_exc.ElementNotSelectableException,
+                selenium_exc.StaleElementReferenceException,
+                selenium_exc.InvalidElementStateException,
+                selenium_exc.ElementNotVisibleException,
+                selenium_exc.ElementNotSelectableException,
         ) as exc:
             raise exc.__class__('Problem clearing element at {}.'.format(self.current_url))
 

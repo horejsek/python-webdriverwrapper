@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
+# pylint: disable=unused-argument
 
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 
 from webdriverwrapper.wrapper import _WebElementWrapper
 from webdriverwrapper.exceptions import _create_exception_msg
-from webdriverwrapper.utils import force_text
 
 __all__ = ('Form',)
 
@@ -79,7 +76,7 @@ class Form(_WebElementWrapper):
         self.click(elm_name)
 
 
-class FormElement(object):
+class FormElement:
     def __init__(self, form_elm, elm_name):
         self.form_elm = form_elm
         self.elm_name = elm_name
@@ -93,12 +90,13 @@ class FormElement(object):
             values.append(self._convert_value_to_string(item))
         return values
 
+    # pylint: disable=no-self-use
     def _convert_value_to_string(self, value):
         if isinstance(value, bool):
             value = int(value)
         elif value is None:
             value = ''
-        return force_text(value)
+        return str(value)
 
     def fill_out(self, value, skip_reset):
         tag_name, elm_type = self.analyze_element()
@@ -165,7 +163,7 @@ class FormElement(object):
         elm.send_keys(Keys.TAB)  # Send TAB for losing focus. (Trigger change events.)
 
     @classmethod
-    def _click_on_elm_or_his_ancestor(self, elm):
+    def _click_on_elm_or_his_ancestor(cls, elm):
         """
         For example Bootstrap wraps chboxes or radio button into label and hide
         that element, so Selenium can't click on it.

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# pylint: disable=wildcard-import,unused-wildcard-import
 
 from selenium.common.exceptions import *
 
@@ -7,14 +7,12 @@ try:
 except ImportError:
     levenshteinDistance = None
 
-from .utils import force_text
-
 
 def _create_exception_msg(
-    id_=None, class_name=None, name=None, tag_name=None,
-    parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
-    xpath=None, css_selector=None, url=None,
-    driver=None,
+        id_=None, class_name=None, name=None, tag_name=None,
+        parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
+        xpath=None, css_selector=None, url=None,
+        driver=None,
 ):
     elm_text = _create_exception_msg_tag(
         id_, class_name, name, tag_name,
@@ -33,9 +31,9 @@ def _create_exception_msg(
 
 
 def _create_exception_msg_tag(
-    id_=None, class_name=None, name=None, tag_name=None,
-    parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
-    xpath=None, css_selector=None,
+        id_=None, class_name=None, name=None, tag_name=None,
+        parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
+        xpath=None, css_selector=None,
 ):
     elm_text = _create_exception_msg_tag_element(id_, class_name, name, tag_name, xpath, css_selector)
     parent_text = _create_exception_msg_tag_element(parent_id, parent_class_name, parent_name, parent_tag_name)
@@ -48,9 +46,9 @@ def _create_exception_msg_tag(
 def _create_exception_msg_tag_element(id_=None, class_name=None, name=None, tag_name=None, xpath=None, css_selector=None):
     if xpath:
         return xpath
-    elif css_selector:
+    if css_selector:
         return css_selector
-    elif id_ or class_name or tag_name or name:
+    if id_ or class_name or tag_name or name:
         msg = '<{}'.format(tag_name or '*')
         if id_:
             msg += ' id={}'.format(id_)
@@ -80,8 +78,8 @@ def _get_suggestion(driver, id_=None, class_name=None, name=None):
         return ''
 
     # Can't be used xpath because it can return only element and then
-    # get attribute for every element is very slow. So by JS it's done
-    # by only one Selenium call.
+    # get attribute for every element is very slow. So by JS it's done
+    # by only one Selenium call.
     items = driver.execute_script('return Array.prototype.map.call(document.querySelectorAll("[id]"), function(el) {return el.id})')
     if not items:
         return ''
@@ -97,11 +95,10 @@ def _find_best_suggestion(value, items):
     if not levenshteinDistance:
         return None
 
-    value = force_text(value)
     best = None
     min_distance = len(value) + 10  # So it can find distance between btn and btn-default for example.
     for item in items:
-        distance = levenshteinDistance(value, force_text(item))
+        distance = levenshteinDistance(value, item)
         if 0 < distance < min_distance:
             min_distance = distance
             best = item
@@ -114,6 +111,7 @@ class WebdriverWrapperException(Exception):
     """
 
     def __init__(self, url, msg):
+        super().__init__()
         self.url = url
         self.msg = msg
 

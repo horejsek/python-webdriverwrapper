@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
+# pylint: disable=all
 
 import logging
 logging.basicConfig(level=logging.INFO)

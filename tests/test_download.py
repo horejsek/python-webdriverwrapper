@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 def test_download_page_by_url(driver):
     result = driver.download_url('http://www.google.com')
     assert 'Google' in result.data

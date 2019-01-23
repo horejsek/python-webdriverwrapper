@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
+# pylint: disable=attribute-defined-outside-init,protected-access
 
 import requests
-
-from webdriverwrapper.utils import force_text
 
 __all__ = ('DownloadUrl', 'DownloadFile')
 
 
-class _Download(object):
+class _Download:
     """
     Object returned by calling
     :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.download_url` or
@@ -113,15 +111,15 @@ class DownloadFile(_Download):
 
         elms = form_elm.get_elms(xpath='.//*[@name]')
         data = dict((
-            force_text(elm.get_attribute('name')).encode('utf8'),
-            force_text(elm.get_attribute('value')).encode('utf8'),
+            elm.get_attribute('name').encode('utf8'),
+            elm.get_attribute('value').encode('utf8'),
         ) for elm in elms)
         return data
 
     def _get_form_elm(self):
         try:
             form_elm = self._elm.get_elm(xpath='.//ancestor::form')
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             return None
         else:
             return form_elm

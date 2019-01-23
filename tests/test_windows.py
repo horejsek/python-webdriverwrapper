@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 def test_switch_to_window_by_title(driver_windows):
     _test_switch_to_window(driver_windows, lambda: driver_windows.switch_to_window(title='New window'))
 

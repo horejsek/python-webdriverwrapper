@@ -1,11 +1,17 @@
-build/
-_build
-dist/
-*.sublime-*
-*.komodo*
+# Python files
+__pycache__/
+.cache/
 *.pyc
-MANIFEST
-chromedriver.log
-*egg-info
-.cache
-.testmondata
+*.pyo
+
+# Test files
+.pytest_cache/
+temp/
+
+# Build files
+.eggs/
+*.egg-info/
+build/
+_build/
+dist/
+venv/

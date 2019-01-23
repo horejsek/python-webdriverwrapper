@@ -1,12 +1,14 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
-
 from selenium.common.exceptions import NoSuchElementException
 
 from .exceptions import ErrorPageException, ErrorMessagesException, JSErrorsException
 
-__all__ = ('expected_error_page', 'allowed_error_pages', 'expected_error_messages', 'allowed_error_messages', 'allowed_any_error_message')
+__all__ = (
+    'expected_error_page',
+    'allowed_error_pages',
+    'expected_error_messages',
+    'allowed_error_messages',
+    'allowed_any_error_message',
+)
 
 EXPECTED_ERROR_PAGE = '__expected_error_page__'
 ALLOWED_ERROR_PAGES = '__allowed_error_pages__'
@@ -91,7 +93,7 @@ class ANY:
     pass
 
 
-class WebdriverWrapperErrorMixin(object):
+class WebdriverWrapperErrorMixin:
     """
     Mixin used in :py:obj:`~webdriverwrapper.wrapper._WebdriverWrapper`.
 
@@ -116,7 +118,12 @@ class WebdriverWrapperErrorMixin(object):
         allowed_error_pages = f(ALLOWED_ERROR_PAGES)
         expected_error_messages = f(EXPECTED_ERROR_MESSAGES)
         allowed_error_messages = f(ALLOWED_ERROR_MESSAGES)
-        self.check_errors(expected_error_page, allowed_error_pages, expected_error_messages, allowed_error_messages)
+        self.check_errors(
+            expected_error_page,
+            allowed_error_pages,
+            expected_error_messages,
+            allowed_error_messages,
+        )
 
     def check_errors(self, expected_error_page=None, allowed_error_pages=[], expected_error_messages=[], allowed_error_messages=[]):
         """
@@ -138,9 +145,9 @@ class WebdriverWrapperErrorMixin(object):
         error_page = self.get_error_page()
         error_pages = set([error_page]) if error_page else set()
         if (
-            error_pages & expected_error_pages != expected_error_pages
-            or
-            error_pages - (expected_error_pages | allowed_error_pages)
+                error_pages & expected_error_pages != expected_error_pages
+                or
+                error_pages - (expected_error_pages | allowed_error_pages)
         ):
             traceback = self.get_error_traceback()
             raise ErrorPageException(self.current_url, error_page, expected_error_page, allowed_error_pages, traceback)
@@ -149,9 +156,9 @@ class WebdriverWrapperErrorMixin(object):
         expected_error_messages = set(expected_error_messages)
         allowed_error_messages = error_messages if allowed_error_messages is ANY else set(allowed_error_messages)
         if (
-            error_messages & expected_error_messages != expected_error_messages
-            or
-            error_messages - (expected_error_messages | allowed_error_messages)
+                error_messages & expected_error_messages != expected_error_messages
+                or
+                error_messages - (expected_error_messages | allowed_error_messages)
         ):
             raise ErrorMessagesException(self.current_url, error_messages, expected_error_messages, allowed_error_messages)
 

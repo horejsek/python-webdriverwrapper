@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# pylint: disable=unused-argument,redefined-outer-name
 
 import os
 

@@ -8,16 +8,26 @@ except ImportError:
 
 setup(
     name='webdriverwrapper',
-    version='2.6.0',  # Can't use VERSION because of imports during install before installing dependencies.
+    version='2.7.0',  # Can't use VERSION because of imports during install before installing dependencies.
     packages=[
         'webdriverwrapper',
         'webdriverwrapper.pytest',
         'webdriverwrapper.unittest',
     ],
 
-    install_requires=[line.strip() for line in open('requirements.txt').readlines() if line],
+    install_requires=[
+        'requests',
+        'selenium',
+    ],
     extras_require={
-        'suggestion': ['python-Levenshtein'],
+        'suggestion': [
+            'python-Levenshtein',
+        ],
+        'devel': [
+            'pylint',
+            'pytest',
+            'pyvirtualdisplay',
+        ],
     },
 
     url='https://github.com/horejsek/python-webdriverwrapper',
@@ -27,7 +37,6 @@ setup(
     license='PSF',
 
     classifiers=[
-        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',

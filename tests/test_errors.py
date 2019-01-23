@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import pytest
 
 from webdriverwrapper.decorators import allowed_error_pages, allowed_any_error_message
