@@ -494,14 +494,14 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         can be also relative path.
         """
         if window_name:
-            self._get_seleniums_driver_class().switch_to_window(self, window_name)
+            self._get_seleniums_driver_class().switch_to.window(self, window_name)
             return
 
         if url:
             url = self.get_url(path=url)
 
         for window_handle in self.window_handles:
-            self._get_seleniums_driver_class().switch_to_window(self, window_handle)
+            self._get_seleniums_driver_class().switch_to.window(self, window_handle)
             if title and self.title == title:
                 return
             if url and self.current_url == url:
