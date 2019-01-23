@@ -104,6 +104,13 @@ class _WebdriverBaseWrapper(object):
     and :py:class:`selenium.WebElement <selenium.webdriver.remote.webelement.WebElement>`.
     """
 
+    default_wait_timeout = 10
+    """
+    Default timeout in seconds for wait* methods (such as wait_for_element).
+
+    .. versionadded:: 2.7
+    """
+
     def contains_text(self, text):
         """
         Does page or element contains `text`?
@@ -278,10 +285,11 @@ class _WebdriverBaseWrapper(object):
                 msg = ''
             raise exc.__class__(msg)
 
-    def wait_for_element(self, timeout=10, message='', *args, **kwds):
+    def wait_for_element(self, timeout=None, message='', *args, **kwds):
         """
         Shortcut for waiting for element. If it not ends with exception, it
-        returns that element. Same as following:
+        returns that element. Detault timeout is `~.default_wait_timeout`.
+        Same as following:
 
         .. code-block:: python
 
@@ -293,6 +301,8 @@ class _WebdriverBaseWrapper(object):
             Returned functionality back in favor of new method
             :py:meth:`~._WebdriverBaseWrapper.wait_for_element_show`.
         """
+        if not timeout:
+            timeout = self.default_wait_timeout
         if not message:
             message = _create_exception_msg(*args, url=self.current_url, **kwds)
         self.wait(timeout).until(lambda driver: driver.get_elm(*args, **kwds), message=message)
@@ -301,10 +311,11 @@ class _WebdriverBaseWrapper(object):
         elm = self.get_elm(*args, **kwds)
         return elm
 
-    def wait_for_element_show(self, timeout=10, message='', *args, **kwds):
+    def wait_for_element_show(self, timeout=None, message='', *args, **kwds):
         """
         Shortcut for waiting for visible element. If it not ends with exception, it
-        returns that element. Same as following:
+        returns that element. Detault timeout is `~.default_wait_timeout`.
+        Same as following:
 
         .. code-block:: python
 
@@ -312,6 +323,8 @@ class _WebdriverBaseWrapper(object):
 
         .. versionadded:: 2.6
         """
+        if not timeout:
+            timeout = self.default_wait_timeout
         if not message:
             message = _create_exception_msg(*args, url=self.current_url, **kwds)
 
@@ -333,9 +346,10 @@ class _WebdriverBaseWrapper(object):
         elm = self.get_elm(*args, **kwds)
         return elm
 
-    def wait_for_element_hide(self, timeout=10, message='', *args, **kwds):
+    def wait_for_element_hide(self, timeout=None, message='', *args, **kwds):
         """
-        Shortcut for waiting for hiding of element. Same as following:
+        Shortcut for waiting for hiding of element. Detault timeout is `~.default_wait_timeout`.
+        Same as following:
 
         .. code-block:: python
 
@@ -343,6 +357,8 @@ class _WebdriverBaseWrapper(object):
 
         .. versionadded:: 2.0
         """
+        if not timeout:
+            timeout = self.default_wait_timeout
         if not message:
             message = 'Element {} still visible.'.format(_create_exception_msg(*args, url=self.current_url, **kwds))
 
@@ -360,11 +376,11 @@ class _WebdriverBaseWrapper(object):
             return False
         self.wait(timeout).until(callback, message=message)
 
-    def wait(self, timeout=10):
+    def wait(self, timeout=None):
         """
         Calls following snippet so you don't have to remember what import. See
         :py:obj:`WebDriverWait <selenium.webdriver.support.wait.WebDriverWait>` for more
-        information.
+        information. Detault timeout is `~.default_wait_timeout`.
 
         .. code-block:: python
 
@@ -379,6 +395,8 @@ class _WebdriverBaseWrapper(object):
         If you need to wait for element, consider using
         :py:meth:`~._WebdriverWrapper.wait_for_element` instead.
         """
+        if not timeout:
+            timeout = self.default_wait_timeout
         return WebDriverWait(self, timeout)
 
 
@@ -550,11 +568,13 @@ class _WebdriverWrapper(WebdriverWrapperErrorMixin, WebdriverWrapperInfoMixin, _
         """
         return Alert(self)
 
-    def wait_for_alert(self, timeout=10):
+    def wait_for_alert(self, timeout=None):
         """
         Shortcut for waiting for alert. If it not ends with exception, it
-        returns that alert.
+        returns that alert. Detault timeout is `~.default_wait_timeout`.
         """
+        if not timeout:
+            timeout = self.default_wait_timeout
 
         alert = Alert(self)
 
