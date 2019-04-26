@@ -61,9 +61,10 @@ def pytest_runtest_makereport(item, call, __multicall__):
     # Execute all other hooks to obtain the report object.
     report = __multicall__.execute()
 
-    if report.when in ('call', 'teardown') and report.failed:
+    if report.failed:
         test_func = _get_test_func(item.obj)
-        make_screenshot_of_failed_tests(test_func.driver, item.config, item.nodeid)
+        if hasattr(test_func, 'driver'):  # When the problem is in `driver` fixture, it will not be here.
+            make_screenshot_of_failed_tests(test_func.driver, item.config, item.nodeid)
 
     return report
 
