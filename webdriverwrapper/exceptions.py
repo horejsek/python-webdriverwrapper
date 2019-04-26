@@ -11,13 +11,13 @@ except ImportError:
 def _create_exception_msg(
         id_=None, class_name=None, name=None, tag_name=None,
         parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
-        xpath=None, css_selector=None, url=None,
+        text=None, xpath=None, css_selector=None, url=None,
         driver=None,
 ):
     elm_text = _create_exception_msg_tag(
         id_, class_name, name, tag_name,
         parent_id, parent_class_name, parent_name, parent_tag_name,
-        xpath, css_selector,
+        text, xpath, css_selector,
     )
     msg = 'No element {} found'.format(elm_text)
     if url:
@@ -33,9 +33,9 @@ def _create_exception_msg(
 def _create_exception_msg_tag(
         id_=None, class_name=None, name=None, tag_name=None,
         parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
-        xpath=None, css_selector=None,
+        text=None, xpath=None, css_selector=None,
 ):
-    elm_text = _create_exception_msg_tag_element(id_, class_name, name, tag_name, xpath, css_selector)
+    elm_text = _create_exception_msg_tag_element(id_, class_name, name, tag_name, text, xpath, css_selector)
     parent_text = _create_exception_msg_tag_element(parent_id, parent_class_name, parent_name, parent_tag_name)
 
     if parent_text:
@@ -43,7 +43,9 @@ def _create_exception_msg_tag(
     return elm_text
 
 
-def _create_exception_msg_tag_element(id_=None, class_name=None, name=None, tag_name=None, xpath=None, css_selector=None):
+def _create_exception_msg_tag_element(id_=None, class_name=None, name=None, tag_name=None, text=None, xpath=None, css_selector=None):
+    if text:
+        return '"{}"'.format(text)
     if xpath:
         return xpath
     if css_selector:

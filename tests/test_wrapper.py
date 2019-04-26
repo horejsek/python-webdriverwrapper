@@ -10,12 +10,12 @@ def test_returns_wrapped_element(driver):
 
 
 def test_find_elements_by_integer(driver):
-    elms = driver.find_elements_by_text(42)
+    elms = driver.get_elms(text=42)
     assert len(elms) == 1
 
 
 def test_find_elements_by_str(driver):
-    assert driver.find_elements_by_text('ěščřž')
+    assert driver.get_elms(text='ěščřž')
 
 
 def test_find_elements_by_unicode(driver):
@@ -24,11 +24,11 @@ def test_find_elements_by_unicode(driver):
     if hasattr(text, 'decode'):
         text = text.decode('utf8')
 
-    assert driver.find_elements_by_text(text)
+    assert driver.get_elms(text=text)
 
 
 def test_find_elements_selenium_not_search(driver):
-    elms = driver.find_elements_by_text('text')
+    elms = driver.get_elms(text='text')
     assert len(elms) == 2
 
 
@@ -37,12 +37,12 @@ def test_contains_text(driver):
 
 
 def test_find_element_by_text(driver):
-    assert driver.find_element_by_text('text')
+    assert driver.get_elm(text='text')
 
 
 def test_find_element_by_text_fail(driver):
     with pytest.raises(NoSuchElementException) as excinfo:
-        driver.find_element_by_text('notextatpage')
+        driver.get_elm(text='notextatpage')
 
 
 def test_wait_for_element(driver):

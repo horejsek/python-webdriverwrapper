@@ -103,20 +103,19 @@ class _WebdriverBaseWrapper:
         """
         Does page or element contains `text`?
 
-        Uses method :py:meth:`~._WebdriverBaseWrapper.find_elements_by_text`.
+        Uses method :py:meth:`~._WebdriverBaseWrapper.get_elms`.
         """
-        return bool(self.find_elements_by_text(text))
+        return bool(self.get_elms(text=text))
 
     def find_element_by_text(self, text):
         """
         Returns first element on page or in element containing ``text``.
 
         .. versionadded:: 2.0
+        .. deprecated:: 2.8
+            Use :py:meth:`~._WebdriverBaseWrapper.get_elm` instead.
         """
-        elms = self.find_elements_by_text(text)
-        if not elms:
-            raise selenium_exc.NoSuchElementException(u'No element containing text "{}" at {}.'.format(text, self.current_url))
-        return elms[0]
+        return self.get_elm(text=text)
 
     def find_elements_by_text(self, text):
         """
@@ -125,11 +124,10 @@ class _WebdriverBaseWrapper:
         .. versionchanged:: 2.0
             Searching in all text nodes. Before it wouldn't find string "text"
             in HTML like ``<div>some<br />text in another text node</div>``.
+        .. deprecated:: 2.8
+            Use :py:meth:`~._WebdriverBaseWrapper.get_elms` instead.
         """
-        elms = self.find_elements_by_xpath(
-            './/*/text()[contains(., "{}") and not(ancestor-or-self::*[@data-selenium-not-search])]/..'.format(text)
-        )
-        return elms
+        return self.get_elms(text=text)
 
     def click(self, *args, **kwds):
         """
@@ -149,7 +147,7 @@ class _WebdriverBaseWrapper:
 
     def get_elm(
             self,
-            id_=None, class_name=None, name=None, tag_name=None, xpath=None,
+            id_=None, class_name=None, name=None, tag_name=None, text=None, xpath=None,
             parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
             css_selector=None
     ):
@@ -158,7 +156,7 @@ class _WebdriverBaseWrapper:
         :py:meth:`~._WebdriverBaseWrapper.get_elms`.
         """
         elms = self.get_elms(
-            id_, class_name, name, tag_name, xpath,
+            id_, class_name, name, tag_name, text, xpath,
             parent_id, parent_class_name, parent_name, parent_tag_name,
             css_selector
         )
@@ -166,14 +164,14 @@ class _WebdriverBaseWrapper:
             raise selenium_exc.NoSuchElementException(_create_exception_msg(
                 id_, class_name, name, tag_name,
                 parent_id, parent_class_name, parent_name, parent_tag_name,
-                xpath, css_selector, self.current_url,
+                text, xpath, css_selector, self.current_url,
                 driver=self._driver,
             ))
         return elms[0]
 
     def get_elms(
             self,
-            id_=None, class_name=None, name=None, tag_name=None, xpath=None,
+            id_=None, class_name=None, name=None, tag_name=None, text=None, xpath=None,
             parent_id=None, parent_class_name=None, parent_name=None, parent_tag_name=None,
             css_selector=None
     ):
@@ -189,13 +187,17 @@ class _WebdriverBaseWrapper:
             # vs.
 
             elm = driver.get_elm(parent_id='someid', class_name='someclass')
+
+        .. versionchanged:: 2.8
+            Added ``text`` param. Use it instead of old ``find_element[s]_by_text`` methods.
+            Thanks to that it can be used also in ``wait_for_element*`` methods.
         """
         if parent_id or parent_class_name or parent_name or parent_tag_name:
             parent = self.get_elm(parent_id, parent_class_name, parent_name, parent_tag_name)
         else:
             parent = self
 
-        if len([x for x in (id_, class_name, tag_name, xpath) if x is not None]) > 1:
+        if len([x for x in (id_, class_name, tag_name, text, xpath) if x is not None]) > 1:
             raise Exception('You can find element only by one param.')
 
         if id_ is not None:
@@ -206,6 +208,8 @@ class _WebdriverBaseWrapper:
             return parent.find_elements_by_name(name)
         if tag_name is not None:
             return parent.find_elements_by_tag_name(tag_name)
+        if text is not None:
+            xpath = './/*/text()[contains(., "{}") and not(ancestor-or-self::*[@data-selenium-not-search])]/..'.format(text)
         if xpath is not None:
             return parent.find_elements_by_xpath(xpath)
         if css_selector is not None:
