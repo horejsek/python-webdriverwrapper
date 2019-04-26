@@ -1,33 +1,22 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>webdriverwrapper.info &mdash; WebDriver Wrapper  documentation</title>
-    
+    <title>webdriverwrapper.info &#8212; WebDriver Wrapper  documentation</title>
     <link rel="stylesheet" href="../../static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../static/documentation_options.js"></script>
     <script type="text/javascript" src="../../static/jquery.js"></script>
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
-    <link rel="top" title="WebDriver Wrapper  documentation" href="../../index.html" />
-    <link rel="up" title="webdriverwrapper" href="../webdriverwrapper.html" /> 
-  </head>
-  <body>
-    <div class="related">
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,33 +25,28 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">WebDriver Wrapper  documentation</a> &raquo;</li>
-          <li><a href="../index.html" >Module code</a> &raquo;</li>
-          <li><a href="../webdriverwrapper.html" accesskey="U">webdriverwrapper</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">WebDriver Wrapper  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for webdriverwrapper.info</h1><div class="highlight"><pre>
-<span class="c"># -*- coding: utf-8 -*-</span>
+<span></span><span class="kn">from</span> <span class="nn">selenium.common.exceptions</span> <span class="k">import</span> <span class="n">NoSuchElementException</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">InfoMessagesException</span>
 
-<span class="kn">from</span> <span class="nn">selenium.common.exceptions</span> <span class="kn">import</span> <span class="n">NoSuchElementException</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;expected_info_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;allowed_info_messages&#39;</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">InfoMessagesException</span>
-
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;expected_info_messages&#39;</span><span class="p">,</span> <span class="s">&#39;allowed_info_messages&#39;</span><span class="p">)</span>
-
-<span class="n">EXPECTED_INFO_MESSAGES</span> <span class="o">=</span> <span class="s">&#39;__expected_info_messages__&#39;</span>
-<span class="n">ALLOWED_INFO_MESSAGES</span> <span class="o">=</span> <span class="s">&#39;__allowed_info_messages__&#39;</span>
+<span class="n">EXPECTED_INFO_MESSAGES</span> <span class="o">=</span> <span class="s1">&#39;__expected_info_messages__&#39;</span>
+<span class="n">ALLOWED_INFO_MESSAGES</span> <span class="o">=</span> <span class="s1">&#39;__allowed_info_messages__&#39;</span>
 
 
-<span class="k">def</span> <span class="nf">expected_info_messages</span><span class="p">(</span><span class="o">*</span><span class="n">info_messages</span><span class="p">):</span>
+<div class="viewcode-block" id="expected_info_messages"><a class="viewcode-back" href="../../index.html#webdriverwrapper.decorators.expected_info_messages">[docs]</a><span class="k">def</span> <span class="nf">expected_info_messages</span><span class="p">(</span><span class="o">*</span><span class="n">info_messages</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator expecting defined info messages at the end of test method. As</span>
 <span class="sd">    param use what</span>
@@ -75,10 +59,10 @@
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">EXPECTED_INFO_MESSAGES</span><span class="p">,</span> <span class="n">info_messages</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span>
-    <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">wrapper</span></div>
 
 
-<span class="k">def</span> <span class="nf">allowed_info_messages</span><span class="p">(</span><span class="o">*</span><span class="n">info_messages</span><span class="p">):</span>
+<div class="viewcode-block" id="allowed_info_messages"><a class="viewcode-back" href="../../index.html#webdriverwrapper.decorators.allowed_info_messages">[docs]</a><span class="k">def</span> <span class="nf">allowed_info_messages</span><span class="p">(</span><span class="o">*</span><span class="n">info_messages</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator ignoring defined info messages at the end of test method. As</span>
 <span class="sd">    param use what</span>
@@ -90,10 +74,10 @@
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ALLOWED_INFO_MESSAGES</span><span class="p">,</span> <span class="n">info_messages</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span>
-    <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">wrapper</span></div>
 
 
-<div class="viewcode-block" id="WebdriverWrapperInfoMixin"><a class="viewcode-back" href="../../index.html#webdriverwrapper.info.WebdriverWrapperInfoMixin">[docs]</a><span class="k">class</span> <span class="nc">WebdriverWrapperInfoMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="WebdriverWrapperInfoMixin"><a class="viewcode-back" href="../../index.html#webdriverwrapper.decorators.WebdriverWrapperInfoMixin">[docs]</a><span class="k">class</span> <span class="nc">WebdriverWrapperInfoMixin</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Mixin used in :py:obj:`~webdriverwrapper.wrapper._WebdriverWrapper`.</span>
 
@@ -103,7 +87,7 @@
 <span class="sd">        For more information check out section testing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="WebdriverWrapperInfoMixin.check_expected_infos"><a class="viewcode-back" href="../../index.html#webdriverwrapper.info.WebdriverWrapperInfoMixin.check_expected_infos">[docs]</a>    <span class="k">def</span> <span class="nf">check_expected_infos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_method</span><span class="p">):</span>
+<div class="viewcode-block" id="WebdriverWrapperInfoMixin.check_expected_infos"><a class="viewcode-back" href="../../index.html#webdriverwrapper.decorators.WebdriverWrapperInfoMixin.check_expected_infos">[docs]</a>    <span class="k">def</span> <span class="nf">check_expected_infos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_method</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method is called after each test. It will read decorated</span>
 <span class="sd">        informations and check if there are expected infos.</span>
@@ -114,9 +98,9 @@
         <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[]:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">test_method</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
         <span class="n">expected_info_messages</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">EXPECTED_INFO_MESSAGES</span><span class="p">)</span>
         <span class="n">allowed_info_messages</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">ALLOWED_INFO_MESSAGES</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">check_infos</span><span class="p">(</span><span class="n">expected_info_messages</span><span class="p">,</span> <span class="n">allowed_info_messages</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="WebdriverWrapperInfoMixin.check_infos"><a class="viewcode-back" href="../../index.html#webdriverwrapper.info.WebdriverWrapperInfoMixin.check_infos">[docs]</a>    <span class="k">def</span> <span class="nf">check_infos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected_info_messages</span><span class="o">=</span><span class="p">[],</span> <span class="n">allowed_info_messages</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_infos</span><span class="p">(</span><span class="n">expected_info_messages</span><span class="p">,</span> <span class="n">allowed_info_messages</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverWrapperInfoMixin.check_infos"><a class="viewcode-back" href="../../index.html#webdriverwrapper.decorators.WebdriverWrapperInfoMixin.check_infos">[docs]</a>    <span class="k">def</span> <span class="nf">check_infos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected_info_messages</span><span class="o">=</span><span class="p">[],</span> <span class="n">allowed_info_messages</span><span class="o">=</span><span class="p">[]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method should be called whenever you need to check if there is some</span>
 <span class="sd">        info. Normally you need only ``check_expected_infos`` called after each</span>
@@ -127,20 +111,20 @@
 <span class="sd">        To parameters you should pass same values like to decorators</span>
 <span class="sd">        :py:func:`.expected_info_messages` and :py:func:`.allowed_info_messages`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Close unexpected alerts (it&#39;s blocking).</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">close_alert</span><span class="p">(</span><span class="n">ignore_exception</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="c1"># Close unexpected alerts (it&#39;s blocking).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_alert</span><span class="p">(</span><span class="n">ignore_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">expected_info_messages</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">expected_info_messages</span><span class="p">)</span>
         <span class="n">allowed_info_messages</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">allowed_info_messages</span><span class="p">)</span>
         <span class="n">info_messages</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_info_messages</span><span class="p">())</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="n">info_messages</span> <span class="o">&amp;</span> <span class="n">expected_info_messages</span> <span class="o">!=</span> <span class="n">expected_info_messages</span>
-            <span class="ow">or</span>
-            <span class="p">(</span><span class="n">expected_info_messages</span> <span class="ow">and</span> <span class="n">info_messages</span> <span class="o">-</span> <span class="p">(</span><span class="n">expected_info_messages</span> <span class="o">|</span> <span class="n">allowed_info_messages</span><span class="p">))</span>
+                <span class="n">info_messages</span> <span class="o">&amp;</span> <span class="n">expected_info_messages</span> <span class="o">!=</span> <span class="n">expected_info_messages</span>
+                <span class="ow">or</span>
+                <span class="p">(</span><span class="n">expected_info_messages</span> <span class="ow">and</span> <span class="n">info_messages</span> <span class="o">-</span> <span class="p">(</span><span class="n">expected_info_messages</span> <span class="o">|</span> <span class="n">allowed_info_messages</span><span class="p">))</span>
         <span class="p">):</span>
-            <span class="k">raise</span> <span class="n">InfoMessagesException</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span> <span class="n">info_messages</span><span class="p">,</span> <span class="n">expected_info_messages</span><span class="p">,</span> <span class="n">allowed_info_messages</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="WebdriverWrapperInfoMixin.get_info_messages"><a class="viewcode-back" href="../../index.html#webdriverwrapper.info.WebdriverWrapperInfoMixin.get_info_messages">[docs]</a>    <span class="k">def</span> <span class="nf">get_info_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">InfoMessagesException</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">,</span> <span class="n">info_messages</span><span class="p">,</span> <span class="n">expected_info_messages</span><span class="p">,</span> <span class="n">allowed_info_messages</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverWrapperInfoMixin.get_info_messages"><a class="viewcode-back" href="../../index.html#webdriverwrapper.decorators.WebdriverWrapperInfoMixin.get_info_messages">[docs]</a>    <span class="k">def</span> <span class="nf">get_info_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method returning info messages. Should return list of messages.</span>
 
@@ -152,13 +136,13 @@
 <span class="sd">        :py:func:`.expected_info_messages` and :py:func:`.allowed_info_messages`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">info_elms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="s">&#39;info&#39;</span><span class="p">)</span>
+            <span class="n">info_elms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="s1">&#39;info&#39;</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">NoSuchElementException</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">info_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">info_elm</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">info_elm</span> <span class="ow">in</span> <span class="n">info_elms</span><span class="p">]</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">info_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">info_elm</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">info_elm</span> <span class="ow">in</span> <span class="n">info_elms</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
                 <span class="n">info_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">info_elm</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">info_elm</span> <span class="ow">in</span> <span class="n">info_elms</span><span class="p">]</span>
             <span class="k">finally</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">info_values</span></div></div>
@@ -167,26 +151,25 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -195,14 +178,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">WebDriver Wrapper  documentation</a> &raquo;</li>
-          <li><a href="../index.html" >Module code</a> &raquo;</li>
-          <li><a href="../webdriverwrapper.html" >webdriverwrapper</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">WebDriver Wrapper  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2015, Michal Horejsek.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, Michal Horejsek.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
     </div>
   </body>
 </html>

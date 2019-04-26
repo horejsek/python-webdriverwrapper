@@ -1,0 +1,393 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>webdriverwrapper.unittest.testcase &#8212; WebDriver Wrapper  documentation</title>
+    <link rel="stylesheet" href="../../../static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">WebDriver Wrapper  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for webdriverwrapper.unittest.testcase</h1><div class="highlight"><pre>
+<span></span><span class="c1"># pylint: disable=all</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">webdriverwrapper.exceptions</span> <span class="k">as</span> <span class="nn">exceptions</span>
+<span class="kn">from</span> <span class="nn">webdriverwrapper.wrapper</span> <span class="k">import</span> <span class="n">Firefox</span><span class="p">,</span> <span class="n">Chrome</span><span class="p">,</span> <span class="n">ChromeOptions</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;WebdriverTestCase&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ONE_INSTANCE_FOR_ALL_TESTS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ONE_INSTANCE_PER_TESTCASE&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ONE_INSTANCE_PER_TEST&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">ONE_INSTANCE_FOR_ALL_TESTS</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">ONE_INSTANCE_PER_TESTCASE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">ONE_INSTANCE_PER_TEST</span> <span class="o">=</span> <span class="mi">2</span>
+
+
+<div class="viewcode-block" id="WebdriverTestCase"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase">[docs]</a><span class="k">class</span> <span class="nc">WebdriverTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base ``TestCase`` used for testing with :py:mod:`unittest`.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        class TestCase(webdriverwrapper.unittest.WebdriverTestCase):</span>
+<span class="sd">            domain = &#39;www.google.com&#39;</span>
+<span class="sd">            instances_of_driver = webdriverwrapper.unittest.ONE_INSTANCE_PER_TESTCASE</span>
+<span class="sd">            screenshot_path = os.path.join(&#39;/&#39;, &#39;tmp&#39;, &#39;testreport&#39;)</span>
+
+<span class="sd">            def _get_driver(self):</span>
+<span class="sd">                return Chrome()</span>
+
+<span class="sd">            def test_doodle(self):</span>
+<span class="sd">                self.click(&#39;gbqfsb&#39;)</span>
+<span class="sd">                self.assertTrue(self.contains_text(&#39;Doodles&#39;))</span>
+
+<span class="sd">            def test_search(self):</span>
+<span class="sd">                self.get_elm(&#39;gbqf&#39;).fill_out_and_submit({</span>
+<span class="sd">                    &#39;q&#39;: &#39;hello&#39;,</span>
+<span class="sd">                })</span>
+<span class="sd">                self.wait_for_element(id_=&#39;resultStats&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">domain</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If you want working relative :py:meth:`go_to &lt;webdriverwrapper.wrapper._WebdriverWrapper.go_to&gt;`</span>
+<span class="sd">    without having to call for first time</span>
+<span class="sd">    :py:meth:`get &lt;selenium.webdriver.remote.webdriver.WebDriver.get&gt;` (because</span>
+<span class="sd">    before that you can&#39;t use relative path), set this attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">instances_of_driver</span> <span class="o">=</span> <span class="n">ONE_INSTANCE_FOR_ALL_TESTS</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Specify when you want to create *fresh* driver. By default there is one</span>
+<span class="sd">    driver for all tests (:py:attr:`.ONE_INSTANCE_FOR_ALL_TESTS`) and you have</span>
+<span class="sd">    to close it by yourself by calling :py:meth:`.quit_driver`.</span>
+
+<span class="sd">    If you need clear cookies, local storage and everything, then consider to use</span>
+<span class="sd">    new driver for every ``TestCase`` or even every test method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">wait_after_test</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For debug only. When you set to ``True``, it will wait for pressing enter</span>
+<span class="sd">    after each test before moving to next test. Ideal when you need to check</span>
+<span class="sd">    out for example Chrome console.</span>
+
+<span class="sd">    But maybe better debuging is with :py:meth:`.break_point`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">screenshot_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    When you set this path, it will make automatically screenshots of failed</span>
+<span class="sd">    tests and saved them to this path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">WebdriverTestCase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">_number_of_test</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">_count_of_tests</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultTestResult</span><span class="p">()</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">startTest</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">test_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_testMethodName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_test_method</span> <span class="o">=</span> <span class="n">test_method</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_up</span><span class="p">()</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">addError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">())</span>
+                <span class="c1">#  setUp can fail because of app in some state returns internal</span>
+                <span class="c1">#+ server error. It&#39;s good to know about it - it can say more</span>
+                <span class="c1">#+ than that some element couldn&#39;t be found.</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">check_expected_errors</span><span class="p">(</span><span class="n">test_method</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">check_expected_infos</span><span class="p">(</span><span class="n">test_method</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">addError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">())</span>
+                <span class="k">return</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">test_method</span><span class="p">()</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">failureException</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">make_screenshot</span><span class="p">()</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">addFailure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">())</span>
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">make_screenshot</span><span class="p">()</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">addError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">())</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">check_expected_errors</span><span class="p">(</span><span class="n">test_method</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">check_expected_infos</span><span class="p">(</span><span class="n">test_method</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">addError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">())</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tearDown</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">addError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">())</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">addSuccess</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">make_screenshot</span><span class="p">()</span>
+
+            <span class="n">result</span><span class="o">.</span><span class="n">stopTest</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="c1"># Is nice to see at break point if test passed or not.</span>
+            <span class="c1"># So this call have to be after stopTest which print result of test.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tear_down</span><span class="p">()</span>
+
+<div class="viewcode-block" id="WebdriverTestCase.make_screenshot"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.make_screenshot">[docs]</a>    <span class="k">def</span> <span class="nf">make_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screenshot_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save screenshot to :py:attr:`.screenshot_path` with given name</span>
+<span class="sd">        ``screenshot_name``. If name is not given, then the name is name of</span>
+<span class="sd">        current test (``self.id()``).</span>
+
+<span class="sd">        .. versionchanged:: 2.2</span>
+<span class="sd">            Use ``make_screenshot`` directly on ``driver`` instead. This method</span>
+<span class="sd">            is used for making screenshot of failed tests and therefor does</span>
+<span class="sd">            nothing if ``screenshot_path`` is not configured. It stays there</span>
+<span class="sd">            only for compatibility.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">screenshot_name</span><span class="p">:</span>
+            <span class="c1"># Without name (and possibly path) we cannot make screenshot. Don&#39;t</span>
+            <span class="c1"># know where to store it.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">screenshot_path</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">screenshot_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+
+        <span class="c1"># Close unexpected alerts (it&#39;s blocking and then tests fails completely).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">close_alert</span><span class="p">(</span><span class="n">ignore_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get_screenshot_as_file</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">.png&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screenshot_path</span><span class="p">,</span> <span class="n">screenshot_name</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">_number_of_test</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">WebdriverTestCase</span><span class="p">,</span> <span class="s1">&#39;driver&#39;</span><span class="p">):</span>
+            <span class="n">WebdriverTestCase</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_driver</span><span class="p">()</span>
+            <span class="n">WebdriverTestCase</span><span class="o">.</span><span class="n">screenshot_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">screenshot_path</span>
+            <span class="n">WebdriverTestCase</span><span class="o">.</span><span class="n">_main_window</span> <span class="o">=</span> <span class="n">WebdriverTestCase</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">current_window_handle</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span>
+                <span class="n">WebdriverTestCase</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span>
+
+        <span class="c1"># Ensure that test starts in main window.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">current_window_handle</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main_window</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_main_window</span><span class="p">)</span>
+
+<div class="viewcode-block" id="WebdriverTestCase._get_driver"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase._get_driver">[docs]</a>    <span class="k">def</span> <span class="nf">_get_driver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create driver. By default it creates Firefox. Change it to your needs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Firefox</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_tear_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_after_test</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">break_point</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances_of_driver</span> <span class="o">==</span> <span class="n">ONE_INSTANCE_PER_TEST</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">instances_of_driver</span> <span class="o">==</span> <span class="n">ONE_INSTANCE_PER_TESTCASE</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_test</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count_of_tests</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quit_driver</span><span class="p">()</span>
+
+<div class="viewcode-block" id="WebdriverTestCase.quit_driver"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.quit_driver">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">quit_driver</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        When you set :py:attr:`.instances_of_driver` to</span>
+<span class="sd">        :py:attr:`.ONE_INSTANCE_FOR_ALL_TESTS` (which is default), then you</span>
+<span class="sd">        have to quit driver by yourself by this method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">WebdriverTestCase</span><span class="p">,</span> <span class="s1">&#39;driver&#39;</span><span class="p">):</span>
+            <span class="n">WebdriverTestCase</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+            <span class="k">del</span> <span class="n">WebdriverTestCase</span><span class="o">.</span><span class="n">driver</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.debug"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.debug">[docs]</a>    <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+    <span class="c1">### Aliases to driver.</span>
+
+<div class="viewcode-block" id="WebdriverTestCase.break_point"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.break_point">[docs]</a>    <span class="k">def</span> <span class="nf">break_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.break_point`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">break_point</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.check_errors"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.check_errors">[docs]</a>    <span class="k">def</span> <span class="nf">check_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected_error_page</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allowed_error_pages</span><span class="o">=</span><span class="p">[],</span> <span class="n">expected_error_messages</span><span class="o">=</span><span class="p">[],</span> <span class="n">allowed_error_messages</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.errors.WebdriverWrapperErrorMixin.check_errors`.</span>
+
+<span class="sd">        .. versionchanged:: 2.0</span>
+<span class="sd">            Only alias. Code moved to wrapper so it could be used also by pytest.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">check_errors</span><span class="p">(</span><span class="n">expected_error_page</span><span class="p">,</span> <span class="n">allowed_error_pages</span><span class="p">,</span> <span class="n">expected_error_messages</span><span class="p">,</span> <span class="n">allowed_error_messages</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.find_element_by_text"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.find_element_by_text">[docs]</a>    <span class="k">def</span> <span class="nf">find_element_by_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.find_element_by_text`.</span>
+
+<span class="sd">        .. versionadded:: 2.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.find_elements_by_text"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.find_elements_by_text">[docs]</a>    <span class="k">def</span> <span class="nf">find_elements_by_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.find_elements_by_text`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.contains_text"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.contains_text">[docs]</a>    <span class="k">def</span> <span class="nf">contains_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.contains_text`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">contains_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.get_elm"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.get_elm">[docs]</a>    <span class="k">def</span> <span class="nf">get_elm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elm`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get_elm</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.get_elms"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.get_elms">[docs]</a>    <span class="k">def</span> <span class="nf">get_elms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.get_elms`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get_elms</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.click"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.click">[docs]</a>    <span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverBaseWrapper.click`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.wait_for_element"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.wait_for_element">[docs]</a>    <span class="k">def</span> <span class="nf">wait_for_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.wait_for_element`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">wait_for_element</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.wait"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.wait">[docs]</a>    <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.wait`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.go_to"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.go_to">[docs]</a>    <span class="k">def</span> <span class="nf">go_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.go_to`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">go_to</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.switch_to_window"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.switch_to_window">[docs]</a>    <span class="k">def</span> <span class="nf">switch_to_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.switch_to_window`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">window_name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.close_window"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.close_window">[docs]</a>    <span class="k">def</span> <span class="nf">close_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.close_window`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">close_window</span><span class="p">(</span><span class="n">window_name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WebdriverTestCase.close_other_windows"><a class="viewcode-back" href="../../../index.html#webdriverwrapper.unittest.WebdriverTestCase.close_other_windows">[docs]</a>    <span class="k">def</span> <span class="nf">close_other_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :py:meth:`~webdriverwrapper.wrapper._WebdriverWrapper.close_other_windows`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">close_other_windows</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">WebDriver Wrapper  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, Michal Horejsek.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>
