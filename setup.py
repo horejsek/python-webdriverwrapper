@@ -8,7 +8,7 @@ except ImportError:
 
 setup(
     name='webdriverwrapper',
-    version='2.7.0',  # Can't use VERSION because of imports during install before installing dependencies.
+    version='2.8.0',  # Can't use VERSION because of imports during install before installing dependencies.
     packages=[
         'webdriverwrapper',
         'webdriverwrapper.pytest',
