@@ -10,6 +10,8 @@ Support for Python 3.4 and higher.
 
 Just install Chrome/ium and put [chromedriver](http://chromedriver.storage.googleapis.com/index.html) into `/bin`.
 
+Visit https://chromedriver.chromium.org/downloads
+
 ## Documentation
 
 Documentation of wrapper: http://horejsek.github.io/python-webdriverwrapper/
